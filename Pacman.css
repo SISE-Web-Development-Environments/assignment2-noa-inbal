@@ -1,0 +1,84 @@
+.Header {
+    width: 100%;
+    height: 40px;
+    color: aliceblue;
+    background: black;
+    overflow: hidden;
+    position: fixed;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    top: 0;
+    text-align: center;
+}
+
+.imoji{
+    width: 20px;
+    height: 20px;
+}
+
+.topnav {
+    width: 100%;
+    background: black;
+    overflow: hidden;
+    border: 4px solid black;
+    position: fixed;
+    margin-top: 35px;
+    top: 0;
+    text-align: center;
+}
+.topnav a {
+    overflow-x: hidden;
+    float: left;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    color: #F8F8FF;
+    text-shadow: 1px 1px black;
+    display: block;
+    transition: 0.3s;
+    position: relative;
+    left: 15%;
+}
+.topnav a:hover:not(.active)  {
+    color: #FFD433;
+}
+
+.Content{
+    margin-top: 150px;
+}
+
+.footer{
+    width: 100%;
+    height: 35px;
+    color: aliceblue;
+    background: black;
+    overflow: hidden;
+    border: 4px solid black;
+    position: fixed;
+    bottom: 0px;
+    text-align: center;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.section{
+    display: none;
+}
+#Register{
+    display: none;
+}
+
+#Welcome{
+
+}
+
+#Login{
+
+}
+
+#About{
+
+}
+
+#GameScreen{
+
+}

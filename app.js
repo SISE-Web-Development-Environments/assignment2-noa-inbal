@@ -170,3 +170,16 @@ function UpdatePosition() {
 		Draw();
 	}
 }
+
+function ShowDiv(show) {
+
+	var allDives = document.getElementsByClassName('section');
+	var target = document.getElementById(show);
+
+	for(var i = 0 ; i < allDives.length ; i++){
+		allDives[i].style.display = 'none';
+	}
+
+	target.style.display = 'block';
+
+}

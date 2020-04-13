@@ -3,19 +3,45 @@
 	<head>
 		<script src="./jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
+		<link rel="stylesheet" type="text/css" href="Pacman.css" />
 	</head>
 
 	<body>
-		<div id="score">
-			<label for="lblScore">SCORE:</label>
-			<input id="lblScore" type="text" />
+		<div class="Header">
+				Gossip PacGirl
+				<img class="imoji" src="imoji.png">
 		</div>
-		<div id="time">
-			<label for="lblTime">TIME:</label>
-			<input id="lblTime" type="text" />
+		<div class="topnav">
+			<a onclick="ShowDiv('Welcome')">Welcome</a>
+			<a onclick="ShowDiv('Register')">Register</a>
+			<a onclick="ShowDiv('Login')">Login</a>
+			<a onclick="ShowDiv('About')">About</a>
 		</div>
-		<div id="game">
-			<canvas id="canvas" height="600" width="600"></canvas>
+		<div class="Content">
+			<div class="section" id="GameScreen">
+				<div id="score">
+					<label for="lblScore">SCORE:</label>
+					<input id="lblScore" type="text" />
+				</div>
+				<div id="time">
+					<label for="lblTime">TIME:</label>
+					<input id="lblTime" type="text" />
+				</div>
+				<div id="game">
+					<canvas id="canvas" height="600" width="600"></canvas>
+				</div>
+			</div>
+			<div class="section" id="Welcome">
+				<h3>Welcome</h3>
+			</div>
+			<div class="section" id="Register">
+				<h3>Register</h3>
+			</div>
+		</div>
+		<div class="footer">
+			<h5>
+				Inbal&Noa
+			</h5>
 		</div>
 	</body>
 </html>
