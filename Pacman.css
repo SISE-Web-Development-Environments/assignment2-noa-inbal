@@ -66,19 +66,22 @@
 #Register{
     display: none;
 }
-
+.errorMsg {
+    display:none;        
+    color:Red;
+}
 #Welcome{
-
+    display: block;
 }
 
 #Login{
-
+    display: none;
 }
 
 #About{
-
+    display: none;
 }
 
 #GameScreen{
-
+    display: none;
 }

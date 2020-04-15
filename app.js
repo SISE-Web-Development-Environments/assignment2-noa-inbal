@@ -183,3 +183,91 @@ function ShowDiv(show) {
 	target.style.display = 'block';
 
 }
+function checkPassword(str)
+{
+	// at least one number, one lowercase and one uppercase letter
+    // at least six characters that are letters, numbers or the underscore
+  var passwordValid = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+  return passwordValid.test(str);
+}
+function checkPwd(str) {
+    if (str.length < 6) {
+        return(false);
+    }else if (str.search(/[\!\@\#\$\%\^\&\*\(\)\_\+\,\.\?\\\'\`\~\{\}\[\]\|\-]/) != -1) {
+        return(false);
+	}
+	else if(str.search(/[^a-zA-Z0-9]/) != -1){
+		return(false);
+	}
+    return(true);
+}
+
+function checkForm(form){
+  fullNameValid = /^[a-zA-Z]+ [a-zA-Z]+$/;
+  if(!fullNameValid.test(form.rfullname.value)) {
+	alert("Error: full name must contain only letters and white space"+form.rfullname.value);
+	document.getElementsById("rfullname-error").style.display = "inline";
+	form.rfullname.focus();
+	return false;
+  }
+  if(form.rpassword.value != "") {
+	if(!checkPwd(form.rpassword.value)) {
+	alert("Error pass");
+	form.rpassword.focus();
+	  return false;
+	}
+  }
+  emailValid = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
+  if(!emailValid.test(form.remail.value)){
+	alert("Error email");
+	form.emailValid.focus();
+	return false;
+  }
+  return true;
+}
+function validatePass(value, message) {
+	var isValid;
+	if (value.length < 6) {
+        isValid = false;
+    }else if (value.search(/[\!\@\#\$\%\^\&\*\(\)\_\+\,\.\?\\\'\`\~\{\}\[\]\|\-]/) != -1) {
+        isValid = false;
+	}
+	else if(value.search(/[^a-zA-Z0-9]/) != -1){
+        isValid = false;
+	}
+    else{
+		isValid = true;
+	}
+
+    if (isValid) {
+        document.getElementById(message).style.display = "none";
+    }else {
+        document.getElementById(message).style.display= "inline";
+    }
+    return isValid;
+}
+function validateMail(value, message) {
+	emailValid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    var isValid = emailValid.test(value)
+    
+    if (isValid) {
+        document.getElementById(message).style.display = "none";
+    }else {
+        document.getElementById(message).style.display= "inline";
+    }
+    return isValid;
+}
+function validateName(value, message) {
+	fullNameValid = /^[a-zA-Z]+ [a-zA-Z]+$/;
+	var isValid = fullNameValid.test(value)
+    
+    if (isValid) {
+        document.getElementById(message).style.display = "none";
+    }else {
+        document.getElementById(message).style.display= "inline";
+    }
+    return isValid;
+}
+function saveUser(form){
+	//todo
+}

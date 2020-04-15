@@ -1,9 +1,22 @@
 <!DOCTYPE html>
 <html>
 	<head>
+
 		<script src="./jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
 		<link rel="stylesheet" type="text/css" href="Pacman.css" />
+		/*datepicker*/
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	 	<link rel="stylesheet" href="/resources/demos/style.css">
+  		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script>
+			$( function() {
+			  $( "#datepicker" ).datepicker();} );
+		</script>
+			
+	
+		
 	</head>
 
 	<body>
@@ -36,6 +49,42 @@
 			</div>
 			<div class="section" id="Register">
 				<h3>Register</h3>
+				<form class="registerform" id="signinform" name="registerform" method="get">
+					<fieldset>
+					<legend>Please provide your user name, password, full name, email address, date of birth</legend>
+					<p>
+						<label for="rusername">User Name (required)</label>
+						<input id="rusername" name="rusername" type="text" required></br>
+					</p>
+					<p>
+						<label for="rpassword">Password (required)</label>
+						<input id="rpassword" name="rpassword" type="text" required onchange="validatePass(this.value, 'rpassword-error');"></br>
+						<label id="rpassword-error" class="errorMsg">password must be at least 6 letter, only letters and numbers</label><br />
+
+					</p>
+					<p>
+						<label for="rfullname">Full Name (required)</label>
+						<input id="rfullname" name="rfullname" type="text" required onchange="validateName(this.value, 'rfullname-error');"></br>
+						<label id="rfullname-error" class="errorMsg">Please enter valid full name - only letters and white space</label><br />
+					</p>
+					<p>
+						<label for="remail">E-Mail (required)</label>
+						<input id="remail" name="remail" type="email" required onchange="validateMail(this.value, 'remail-error');"></br>
+						<label id="remail-error" class="errorMsg">Please enter valid email</label><br />
+					</p>
+					<p>
+						<label for="rdate">Date Of Birth (required)</label>
+						<input id="datepicker" name="rdate" type="text" required></br>
+					</p>
+					<p>
+					<input class="submit" type="submit" value="Submit">
+					</p>
+					</fieldset>
+					</form>
+					
+			</div>
+			<div class="section" id="About">
+				About
 			</div>
 		</div>
 		<div class="footer">
