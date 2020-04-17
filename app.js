@@ -190,6 +190,13 @@ function checkPassword(str)
   var passwordValid = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
   return passwordValid.test(str);
 }
+function checkUserName(str) {
+	if (localStorage.getItem(str)===null){
+		return (true);
+	}
+	return (false);
+}
+
 function checkPwd(str) {
     if (str.length < 6) {
         return(false);
@@ -268,6 +275,39 @@ function validateName(value, message) {
     }
     return isValid;
 }
-function saveUser(form){
+
+function saveUser(){
 	//todo
+	/*
+	var uName = $('#rusername').value;
+	var uPSW = $("#rpassword").value;
+	var uFullName = $("#rfullname").value;
+	var uEmail = $("#remail").value;
+	var uDate = $("#datepicker").value;
+	*/
+	var uName = document.getElementById('#rusername').value;
+	var uPSW = document.getElementById("#rpassword").value;
+	var uFullName = document.getElementById("#rfullname").value;
+	var uEmail = document.getElementById("#remail").value;
+	var uDate = document.getElementById("#datepicker").value;
+	var info = uName + ',' + uPSW + ',' + uFullName + ',' + uEmail + ',' + uDate
+	localStorage.setItem(uName , info)
+
+}
+function checkLoginForm(message){
+	//var username = document.getElementById("username").value;
+	//var password = document.getElementById("password").value;
+	var userName = $("#LoginUN").value;
+	var Password = $("#LoginPW").value;
+	var pswTocheck = localStorage.getItem(userName)
+	if ( pswTocheck === null && Password===pswTocheck){
+		//create new window with "Login succesfuly!"
+		//show game screen
+		document.getElementById(message).style.display = "none";
+		ShowDiv('GameScreen');
+	}
+	else {
+		document.getElementById(message).style.display= "inline"
+	}
+
 }

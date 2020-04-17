@@ -14,9 +14,11 @@
 			$( function() {
 			  $( "#datepicker" ).datepicker();} );
 		</script>
-			
-	
-		
+		<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+
+
+
 	</head>
 
 	<body>
@@ -31,6 +33,7 @@
 			<a onclick="ShowDiv('About')">About</a>
 		</div>
 		<div class="Content">
+
 			<div class="section" id="GameScreen">
 				<div id="score">
 					<label for="lblScore">SCORE:</label>
@@ -44,53 +47,90 @@
 					<canvas id="canvas" height="600" width="600"></canvas>
 				</div>
 			</div>
-			<div class="section" id="Welcome">
-				<h3>Welcome</h3>
-			</div>
-			<div class="section" id="Register">
-				<h3>Register</h3>
-				<form class="registerform" id="signinform" name="registerform" method="get">
-					<fieldset>
-					<legend>Please provide your user name, password, full name, email address, date of birth</legend>
-					<p>
-						<label for="rusername">User Name (required)</label>
-						<input id="rusername" name="rusername" type="text" required></br>
-					</p>
-					<p>
-						<label for="rpassword">Password (required)</label>
-						<input id="rpassword" name="rpassword" type="text" required onchange="validatePass(this.value, 'rpassword-error');"></br>
-						<label id="rpassword-error" class="errorMsg">password must be at least 6 letter, only letters and numbers</label><br />
 
-					</p>
-					<p>
-						<label for="rfullname">Full Name (required)</label>
-						<input id="rfullname" name="rfullname" type="text" required onchange="validateName(this.value, 'rfullname-error');"></br>
-						<label id="rfullname-error" class="errorMsg">Please enter valid full name - only letters and white space</label><br />
-					</p>
-					<p>
-						<label for="remail">E-Mail (required)</label>
-						<input id="remail" name="remail" type="email" required onchange="validateMail(this.value, 'remail-error');"></br>
-						<label id="remail-error" class="errorMsg">Please enter valid email</label><br />
-					</p>
-					<p>
-						<label for="rdate">Date Of Birth (required)</label>
-						<input id="datepicker" name="rdate" type="text" required></br>
-					</p>
-					<p>
-					<input class="submit" type="submit" value="Submit">
-					</p>
-					</fieldset>
+			<div class="section" id="Welcome">
+				<h1 class="PageTitle">Welcome</h1>
+				<img src="pcmn.jpg">
+				<br>
+				<h2 class="subTitle">Login&nbsp;&nbsp;&nbsp;&nbsp;Register</h2>
+				<br>
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+				<i class="fa fa-sign-in" onclick="ShowDiv('Login')" style='cursor: pointer;font-size: 110px;' aria-hidden="true"></i>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<i class='fas fa-edit' onclick="ShowDiv('Register')" style='cursor: pointer;font-size: 100px;' aria-hidden="true"></i>
+			</div>
+
+			<div class="section" id="Register">
+				<h1 class="PageTitle">Register</h1>
+				<form class="MyForm" id="signinform" name="registerform" method="get">
+					<div class="FormContainer">
+							<legend>Please provide your user name, password, full name, email address, date of birth</legend>
+							<p>
+								<label for="rusername">User Name (required)</label>
+								<input id="rusername" name="rusername" type="text" required onchange="validatePass(this.value, 'rpassword-error');"></br>
+								<label id="rusername-error" class="errorMsg">User NameAlready Exist</label><br />
+							</p>
+							<p>
+								<label for="rpassword">Password (required)</label>
+								<input id="rpassword" name="rpassword" type="password" required onchange="validatePass(this.value, 'rpassword-error');"></br>
+								<label id="rpassword-error" class="errorMsg">password must be at least 6 letter, only letters and numbers</label><br />
+
+							</p>
+							<p>
+								<label for="rfullname">Full Name (required)</label>
+								<input id="rfullname" name="rfullname" type="text" required onchange="validateName(this.value, 'rfullname-error');"></br>
+								<label id="rfullname-error" class="errorMsg">Please enter valid full name - only letters and white space</label><br />
+							</p>
+							<p>
+								<label for="remail">E-Mail (required)</label>
+								<input id="remail" name="remail" type="email" required onchange="validateMail(this.value, 'remail-error');"></br>
+								<label id="remail-error" class="errorMsg">Please enter valid email</label><br />
+							</p>
+							<p>
+								<label for="rdate">Date Of Birth (required)</label>
+								<input id="datepicker" name="rdate" type="text" required></br>
+							</p>
+							<p>
+								<button type="submit" onclick="saveUser()">Submit</button>
+							</p>
+					</div>
 					</form>
-					
 			</div>
+
+			<div class="section" id="Login">
+				<form class="MyForm" id="LoginModel">
+					<h1 class="PageTitle">Login</h1>
+					<div class="FormContainer">
+						<p>
+							<label for="rusername">Username</label>
+							<input id="LoginUN" type="text" name="uname" required>
+						</p>
+						<br>
+						<p>
+							<label for="rpassword">Password</label>
+							<input id="LoginPW" type="password" name="psw" required onchange="validatePass(this.value, 'rpassword-error');">
+						</p>
+						</br>
+						<p>
+							<label for="rpassword-error" class="errorMsg">Incorrect Password</label>
+						</p>
+						<br>
+						<p>
+						<button type="submit" onclick="checkLoginForm('submit-error')">Login</button>
+							<br>
+						<label id="submit-error" class="errorMsg">Invalid Details! Try Again Lozer!</label>
+						</p>
+					</div>
+				</form>
+			</div>
+
 			<div class="section" id="About">
-				About
+				<h1 class="PageTitle">About</h1>
 			</div>
+
 		</div>
 		<div class="footer">
-			<h5>
-				Inbal&Noa
-			</h5>
+				Inbal &nbsp; &amp; &nbsp; Noa
 		</div>
 	</body>
 </html>
