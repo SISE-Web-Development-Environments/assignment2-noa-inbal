@@ -210,26 +210,34 @@ function checkPwd(str) {
 }
 
 function checkForm(form){
+	if(form.rusername.value == ""){
+		form.rusername.focus();
+		return false;
+	}
+
   fullNameValid = /^[a-zA-Z]+ [a-zA-Z]+$/;
-  if(!fullNameValid.test(form.rfullname.value)) {
-	alert("Error: full name must contain only letters and white space"+form.rfullname.value);
-	document.getElementsById("rfullname-error").style.display = "inline";
+  if(form.rfullname.value == "" || !fullNameValid.test(form.rfullname.value)) {
+	//alert("Error: full name must contain only letters and white space"+form.rfullname.value);
+	//document.getElementsById("rfullname-error").style.display = "inline";
 	form.rfullname.focus();
 	return false;
   }
-  if(form.rpassword.value != "") {
-	if(!checkPwd(form.rpassword.value)) {
-	alert("Error pass");
+  if(form.rpassword.value == "" || !checkPwd(form.rpassword.value)) {
+	// alert("Error pass");
 	form.rpassword.focus();
-	  return false;
-	}
-  }
-  emailValid = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
-  if(!emailValid.test(form.remail.value)){
-	alert("Error email");
-	form.emailValid.focus();
 	return false;
   }
+
+  emailValid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  if(form.remail.value == "" || !emailValid.test(form.remail.value)){
+	//alert("Error email");
+	form.remail.focus();
+	return false;
+  }
+  if(form.rdate.value == ""){
+	form.rdate.focus();
+	return false;
+	}
   return true;
 }
 function validatePass(value, message) {
@@ -285,14 +293,19 @@ function saveUser(){
 	var uEmail = $("#remail").value;
 	var uDate = $("#datepicker").value;
 	*/
-	var uName = document.getElementById('#rusername').value;
-	var uPSW = document.getElementById("#rpassword").value;
-	var uFullName = document.getElementById("#rfullname").value;
-	var uEmail = document.getElementById("#remail").value;
-	var uDate = document.getElementById("#datepicker").value;
+	if(!checkForm(document.forms["registerform"])){
+		document.forms["registerform"].focus();
+		return false;
+	}
+	var uName = document.forms["registerform"]["rusername"].value;//.getElementById('#rusername').value;
+	console.log(uName);
+	var uPSW = document.forms["registerform"]["rpassword"].value;//getElementById("#rpassword").value;
+	var uFullName = document.forms["registerform"]["rfullname"].value;//getElementById("#rfullname").value;
+	var uEmail = document.forms["registerform"]["remail"].value;//getElementById("#remail").value;
+	var uDate = document.forms["registerform"]["datepicker"].value;//getElementById("#datepicker").value;
 	var info = uName + ',' + uPSW + ',' + uFullName + ',' + uEmail + ',' + uDate
+	console.log(info);
 	localStorage.setItem(uName , info)
-
 }
 function checkLoginForm(message){
 	//var username = document.getElementById("username").value;
