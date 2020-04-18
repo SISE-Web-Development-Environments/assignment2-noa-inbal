@@ -324,3 +324,7 @@ function checkLoginForm(message){
 	}
 
 }
+
+function RandomProperties(){
+
+}
