@@ -25,7 +25,7 @@
 			<a onclick="ShowDiv('Welcome')">Welcome</a>
 			<a onclick="ShowDiv('Register')">Register</a>
 			<a onclick="ShowDiv('Login')">Login</a>
-			<a onclick="ShowDiv('About')">About</a>
+			<a onclick="document.getElementById('About').style.display='block'" style="width:auto;">About</a>
 		</div>
 		<div class="Content">
 			<div class="section" id="GameScreen">
@@ -118,8 +118,15 @@
 				</form>
 			</div>
 
-			<div class="section" id="About">
-				<h1 class="PageTitle">About</h1>
+			<div class="model" id="About">
+				<form class="modal-content animate" action="/action_page.php" method="post">
+					<h1 class="PageTitle">About</h1>
+					<div class="imgcontainer">
+					  <span onclick="document.getElementById('About').style.display='none'" class="close" title="Close Modal">&times;</span>
+					</div>
+					  <button type="button" onclick="document.getElementById('About').style.display='none'" class="cancelbtn">Cancel</button>
+					</div>
+				  </form>
 			</div>
 
 			<div class="section" id="Properties">
@@ -142,5 +149,18 @@
 		<div class="footer">
 				Inbal &nbsp; &amp; &nbsp; Noa
 		</div>
+
+		<script>
+			// Get the modal
+			var modal = document.getElementById('About');
+			
+			// When the user clicks anywhere outside of the modal, close it
+			window.onclick = function(event) {
+				if (event.target == modal) {
+					modal.style.display = "none";
+				}
+			}
+			</script>
+
 	</body>
 </html>
