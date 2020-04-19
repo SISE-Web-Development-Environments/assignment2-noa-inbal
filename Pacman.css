@@ -73,8 +73,8 @@ body{
     padding-top: 0px;
     padding-bottom: 0px;
 }
+
 .section{
-    display: none;
     padding-top: 0px;
     padding-bottom: 0px;
     text-align: center;
@@ -85,6 +85,7 @@ body{
     color: darksalmon;
     font-size: 50px;
 }
+
 .subTitle{
     font-family: "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
     color: darksalmon;
@@ -93,19 +94,6 @@ body{
 
 .PageTitle:before, .PageTitle:after {
     border-bottom: 3px solid darksalmon;
-}
-
-#Welcome{
-    display: block;
-}
-
-#Register , #Login , #About , #Properties{
-    display: none;
-}
-
-#MoveButtoms , #Balls , #GameTime , #Monsters , #GameScreen{
-    display: none;
-
 }
 
 .errorMsg {
@@ -118,7 +106,6 @@ body{
     outline: none;
     text-align: center;
     font-size: 20px;
-
 }
 
 lable{
@@ -126,6 +113,8 @@ lable{
 }
 
 input[type=text], input[type=password], input[type=email] {
+    margin-bottom: 5px;
+    margin-top: 5px;
     width: 450px;
     color: aliceblue;
     background: transparent;
@@ -137,8 +126,16 @@ input[type=text], input[type=password], input[type=email] {
     resize: both;
 }
 
+input[type=range]{
+    margin-top: 5px;
+    width: 25%;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 button, input[type=submit] {
     background-color: antiquewhite;
+    border: white solid 1px;
     color: black;
     padding: 14px 20px;
     margin: 8px 0;
@@ -152,6 +149,20 @@ button:hover,input[type=submit]:hover {
     opacity: 0.8;
     cursor: pointer;
 }
+
+.displayColor{
+    height: 100px;
+    width: 25%;
+    margin-left: 38%;
+    border: aliceblue solid 1px;
+    transition: background 100ms;
+}
+
+.lablball{
+    font-size: 25px;
+    color: darksalmon;
+}
+
 /***************************************model dialog*********************************************/
 /* Center the image and position the close button */
 .imgcontainer {

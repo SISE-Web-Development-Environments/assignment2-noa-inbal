@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html>
 	<head>
-
 		<script src="./jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
 		<link rel="stylesheet" type="text/css" href="Pacman.css" />
 		/*datepicker*/
   		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script src="jquery.js" type="text/javascript"></script>
 		<script>
 			$( function() {
 			  $( "#datepicker" ).datepicker();} );
 		</script>
-
-
 	</head>
 
 	<body>
@@ -25,6 +23,7 @@
 			<a onclick="ShowDiv('Welcome')">Welcome</a>
 			<a onclick="ShowDiv('Register')">Register</a>
 			<a onclick="ShowDiv('Login')">Login</a>
+			<a onclick="ShowDiv('Properties')">Properties</a>
 			<a onclick="document.getElementById('About').style.display='block'" style="width:auto;">About</a>
 		</div>
 		<div class="Content">
@@ -88,7 +87,7 @@
 								<button type="submit" onclick="return saveUser();">Submit</button>
 							</p>
 					</div>
-					</form>
+				</form>
 			</div>
 
 			<div class="section" id="Login">
@@ -110,57 +109,133 @@
 						</p>
 						<br>
 						<p>
-						<button type="submit" onclick="checkLoginForm('submit-error')">Login</button>
+							<button onclick="checkLoginForm('login-error')">Login</button>
 							<br>
-						<label id="submit-error" class="errorMsg">Invalid Details! Try Again Lozer!</label>
+							<label id="login-error" class="errorMsg">Invalid Details! Try Again!</label>
 						</p>
 					</div>
 				</form>
+				<div>
+					<dialog id="LoginDialog">
+						<p>You've Logged in Successfully!</p>
+						<button onclick="CloseLogDialog()">Close</button>
+					</dialog>
+				</div>
 			</div>
 
-			<div class="model" id="About">
-				<form class="modal-content animate" action="/action_page.php" method="post">
-					<h1 class="PageTitle">About</h1>
-					<div class="imgcontainer">
-					  <span onclick="document.getElementById('About').style.display='none'" class="close" title="Close Modal">&times;</span>
-					</div>
-					  <button type="button" onclick="document.getElementById('About').style.display='none'" class="cancelbtn">Cancel</button>
-					</div>
-				  </form>
+			<div class="section">
+				<div class="model" id="About">
+					<form class="modal-content animate" action="/action_page.php" method="post">
+						<h1 class="PageTitle">About</h1>
+						<div class="imgcontainer">
+							<span onclick="document.getElementById('About').style.display='none'" class="close" title="Close Modal">&times;</span>
+							<button type="button" onclick="document.getElementById('About').style.display='none'" class="cancelbtn">Cancel</button>
+						</div>
+					</form>
+				</div>
 			</div>
 
 			<div class="section" id="Properties">
-				<button type="submit" onclick="RandomProperties()">Random</button>
-				<div class="section" id="MoveButtoms">
+				<div class="PropSection" id="introProperties">
+					<p>
+						Choose Start To Initialize Game Properties
+						<br>
+						Choose Random To Auto Initialize
+					</p>
+					<button onclick="ShowDivInProp('MoveButtoms')">Start</button>
+					<button onclick="RandomProperties()">Random</button>
+				</div>
+				<div class="PropSection" id="MoveButtoms">
+					<p>
+						<label class="lablball"><strong>Choose Moves Buttons:</strong></label>
+						<br>
+						<button onclick="ShowDivInProp('Balls')">Submit</button>
+					</p>
+				</div>
+				<div class="PropSection" id="Balls">
+					<div id="balls1">
+						<p>
+							<label class="lablball"><strong>Choose Number Of Balls In The Game (Between 50 To 90):</strong></label>
+							<br>
+							<input id="numBalls" type="text" name="numB" required onchange="validNumBalls('balls-error')">
+							<br>
+							<label class="errorMsg" id="balls-error">Invalid Number Of Balls</label>
+							<br>
+							<button onclick="SaveBalls()">Choose</button>
+							<br>
+							<button id="cp" onclick="ColorPickerDisplay()" style="display: none;">Choose Colors</button>
+						</p>
+					</div>
+					<div id="balls2" style="display: none;">
+						<p>
+							<lable class="lablball">Choose Different Colors For 3 Type Of Balls:</lable>
+						</p>
+						<p>
+							<label class="lablball"><strong>5 Points Ball Color:</strong> </label><br>
+							Red <input class="c1" type="range" min="0" max="255" step="1" id="red1" ><br>
+							Green <input class="c1" type="range" min="0" max="255" step="1" id="grn1"><br>
+							Blue <input class="c1" type="range" min="0" max="255" step="1" id="blu1"><br>
+						<div class="displayColor" id="color1"></div>
+						</p>
+						<br>
+						<p>
+							<label class="lablball"><strong>15 Points Ball Color:</strong> </label><br>
+							Red <input class="c2" type="range" min="0" max="255" step="1" id="red2" ><br>
+							Green <input class="c2" type="range" min="0" max="255" step="1" id="grn2"><br>
+							Blue <input class="c2" type="range" min="0" max="255" step="1" id="blu2"><br>
+						<div class="displayColor" id="color2"></div>
+						</p>
+						<br>
+						<p>
+							<label class="lablball"><strong>25 Points Ball Color: </strong></label><br>
+							Red<input class="c3" type="range" min="0" max="255" step="1" id="red3"><br>
+							Green<input class="c3" type="range" min="0" max="255" step="1" id="grn3"><br>
+							Blue<input class="c3" type="range" min="0" max="255" step="1" id="blu3"><br>
+						<div class="displayColor" id="color3"></div>
+						</p>
+						<p>
+							<button onclick="submitBalls('color-error')">Submit</button><br>
+							<label class="errorMsg" id="color-error">Invalid Colors! 1 Or More are The Same!</label>
+						</p>
+					</div>
+				</div>
+				<div class="PropSection" id="GameTime">
+					<p>
+						<lable class="lablball"><strong>Choose Timer For The Game in Seconds (60 seconds Or More):</strong></lable>
+						<br>
+						<input id="timer" type="text" name="time" required onchange="validTimer('time-error')">
+						<br>
+						<button onclick="SaveTime()">Submit</button>
+						<br>
+						<label class="errorMsg" id="time-error">Invalid Time!</label>
+					</p>
 
 				</div>
-				<div class="section" id="Balls">
-
+				<div class="PropSection" id="Monsters">
+					<lable class="lablball"><strong>Choose Number Of Monsters:</strong></lable>
+					<br>
+					<lable class="lablball"><strong>(Between 1 To 4 include)</strong></lable>
+					<br>
+					<input id="monst" type="text" name="mst" required onchange="validNumberMonst('monst-error')">
+					<br>
+					<button onclick="SaveMonsters()">Submit</button>
+					<br>
+					<label class="errorMsg" id="monst-error">Invalid Time!</label>
 				</div>
-				<div class="section" id="GameTime">
 
-				</div>
-				<div class="section" id="Monsters">
-
+				<div class="PropSection" id="startGame">
+					<button class="StartBut" onclick="ShowDiv('GameScreen')">Start!</button>
 				</div>
 			</div>
 
 		</div>
+		<dialog id="registerDialog">
+			Your Registration Has Been Successful!
+			<button onclick="CloseRegDialog()">Close</button>
+		</dialog>
+
 		<div class="footer">
 				Inbal &nbsp; &amp; &nbsp; Noa
 		</div>
-
-		<script>
-			// Get the modal
-			var modal = document.getElementById('About');
-			
-			// When the user clicks anywhere outside of the modal, close it
-			window.onclick = function(event) {
-				if (event.target == modal) {
-					modal.style.display = "none";
-				}
-			}
-			</script>
-
 	</body>
 </html>

@@ -6,13 +6,22 @@ var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
+var divToShow = "Welcome";
+
+var gameProperties = [];
+
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
-	Start();
+	//divToShow = "Welcome";
+	ShowDiv(divToShow)
+	console.log(divToShow)
+	//Start();
 });
 
+
 function Start() {
+	ShowDiv("Welcome");
 	board = new Array();
 	score = 0;
 	pac_color = "yellow";
@@ -170,21 +179,28 @@ function UpdatePosition() {
 		Draw();
 	}
 }
-
 function ShowDiv(show) {
-
 	var allDives = document.getElementsByClassName('section');
 	var target = document.getElementById(show);
-
 	for(var i = 0 ; i < allDives.length ; i++){
 		allDives[i].style.display = 'none';
 	}
-
 	target.style.display = 'block';
-
+	if(show === 'Properties'){
+		ShowDivInProp('introProperties');
+	}
 }
-function checkPassword(str)
-{
+
+function ShowDivInProp(show){
+	var allDives = document.getElementsByClassName('PropSection');
+	var target = document.getElementById(show);
+	for(var i = 0 ; i < allDives.length ; i++){
+		allDives[i].style.display = 'none';
+	}
+	target.style.display = 'block';
+}
+
+/*function checkPassword(str) {
 	// at least one number, one lowercase and one uppercase letter
     // at least six characters that are letters, numbers or the underscore
   var passwordValid = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
@@ -197,6 +213,7 @@ function checkUserName(str) {
 	return (false);
 }
 
+ */
 function checkPwd(str) {
     if (str.length < 6) {
         return(false);
@@ -208,7 +225,6 @@ function checkPwd(str) {
 	}
     return(true);
 }
-
 function checkForm(form){
 	if(form.rusername.value == ""){
 		form.rusername.focus();
@@ -283,16 +299,7 @@ function validateName(value, message) {
     }
     return isValid;
 }
-
 function saveUser(){
-	//todo
-	/*
-	var uName = $('#rusername').value;
-	var uPSW = $("#rpassword").value;
-	var uFullName = $("#rfullname").value;
-	var uEmail = $("#remail").value;
-	var uDate = $("#datepicker").value;
-	*/
 	if(!checkForm(document.forms["registerform"])){
 		document.forms["registerform"].focus();
 		return false;
@@ -306,25 +313,168 @@ function saveUser(){
 	var info = uName + ',' + uPSW + ',' + uFullName + ',' + uEmail + ',' + uDate
 	console.log(info);
 	localStorage.setItem(uName , info)
+	$("#registerDialog").show();
 }
 function checkLoginForm(message){
-	//var username = document.getElementById("username").value;
-	//var password = document.getElementById("password").value;
-	var userName = $("#LoginUN").value;
-	var Password = $("#LoginPW").value;
-	var pswTocheck = localStorage.getItem(userName)
-	if ( pswTocheck === null && Password===pswTocheck){
-		//create new window with "Login succesfuly!"
-		//show game screen
-		document.getElementById(message).style.display = "none";
-		ShowDiv('GameScreen');
-	}
-	else {
+	var userName = document.getElementById('LoginUN').value;
+	var PassWord = document.getElementById('LoginPW').value;
+	var info = localStorage.getItem(userName);
+	if(info === null){
 		document.getElementById(message).style.display= "inline"
 	}
+	else{
+		var pswToCheck = info.split(',')[1];
+		if ( PassWord === pswToCheck){
+			document.getElementById(message).style.display = "none";
+			document.getElementById("LoginModel").style.display = "none";
+			document.getElementById("LoginDialog").showModal();
+		}
+		else{
+			document.getElementById(message).style.display= "inline";
+		}
+	}
+	divToShow = "Login";
+	console.log(divToShow)
+}
+function CloseLogDialog() {
+	divToShow = "GameScreen"
+	document.getElementById("LoginDialog").close();
+	//ShowDiv("GameScreen");
+}
+function CloseRegDialog() {
+	divToShow = "Properties"
+	//ShowDiv("Properties")
+	$("#registerDialog").hide();
+}
+function RandomProperties(){
 
 }
 
-function RandomProperties(){
+function SaveBalls(){
+	var num = document.getElementById('numBalls').value;
+	if(validNumBalls('balls-error')){
+		gameProperties.push(num);
+		document.getElementById('cp').style.display = "inline";
+	}
+}
 
+function SaveTime(){
+	var num = document.getElementById('timer').value;
+	if(validTimer('time-error')){
+		gameProperties.push(num);
+		ShowDivInProp('Monsters');
+	}
+}
+
+function SaveMonsters(id , show){
+	var num = document.getElementById(id).value;
+	if(validNumberMonst('monst-error')){
+		gameProperties.push(num);
+		ShowDivInProp('startGame')
+	}
+}
+
+function validNumBalls(message){
+	var num = document.getElementById("numBalls").value;
+	if (num.match(/^[0-9]+$/) != null){
+		var x = parseInt(num);
+		if(50 <= x && x <= 90){
+			document.getElementById(message).style.display = "none";
+			return true;
+		}
+	}
+	document.getElementById(message).style.display = "inline";
+	return false;
+}
+
+function ColorPickerDisplay(){
+	document.getElementById("balls1").style.display = "none"
+	document.getElementById("balls2").style.display = "block"
+	var input1 = document.querySelectorAll("input");
+	var input2 = document.querySelectorAll("input");
+	var input3 = document.querySelectorAll("input");
+
+	for(var i = 0; i < input1.length; i++){
+		input1[i].addEventListener("input" , function () {
+			var red = document.getElementById("red1").value,
+				green = document.getElementById("grn1").value,
+				blue = document.getElementById("blu1").value;
+			var display = document.getElementById("color1");
+			display.style.background = "rgb(" + red + ", " + green + ", " + blue + ")"
+
+		})
+
+		input2[i].addEventListener("input" , function () {
+			var red = document.getElementById("red2").value,
+				green = document.getElementById("grn2").value,
+				blue = document.getElementById("blu2").value;
+			var display = document.getElementById("color2");
+			display.style.background = "rgb(" + red + ", " + green + ", " + blue + ")"
+
+		})
+
+		input3[i].addEventListener("input" , function () {
+			var red = document.getElementById("red3").value,
+				green = document.getElementById("grn3").value,
+				blue = document.getElementById("blu3").value;
+			var display = document.getElementById("color3");
+			display.style.background = "rgb(" + red + ", " + green + ", " + blue + ")"
+
+		})
+	}
+}
+
+function submitBalls(message){
+	var color5 = document.getElementById("color1").style.background;
+	var color15 = document.getElementById("color2").style.background;
+	var color25 = document.getElementById("color3").style.background;
+	var colors = [color5 , color15 , color25];
+	if ( color5 === color15 || color5 === color25 || color15 === color25){
+		document.getElementById(message).style.display = "inline"
+	}
+	else{
+		document.getElementById(message).style.display = "none"
+		for(var i=0 ; i < 3 ; i++){
+			gameProperties.push(colors[i]);
+		}
+		ShowDivInProp('GameTime');
+	}
+}
+
+function validTimer(message) {
+	var num = document.getElementById("timer").value;
+	if (num.match(/^[0-9]+$/) != null){
+		var x = parseInt(num);
+		if(x >= 60){
+			document.getElementById(message).style.display = "none";
+			return true;
+		}
+	}
+	document.getElementById(message).style.display = "inline";
+	return false;
+}
+
+function validNumberMonst() {
+	var num = document.getElementById("monst").value;
+	if (num.match(/^[0-9]+$/) != null){
+		var x = parseInt(num);
+		if(x >= 1 && x <= 4){
+			document.getElementById(message).style.display = "none";
+			return true;
+		}
+	}
+	document.getElementById(message).style.display = "inline";
+	return false;
+}
+
+function GetModel() {
+	// Get the modal
+	var modal = document.getElementById('About');
+
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
 }
