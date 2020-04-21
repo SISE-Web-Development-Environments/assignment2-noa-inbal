@@ -179,11 +179,16 @@ function UpdatePosition() {
 		Draw();
 	}
 }
+
 function ShowDiv(show) {
 	var allDives = document.getElementsByClassName('section');
+	var allModals = document.getElementsByClassName('modal')
 	var target = document.getElementById(show);
 	for(var i = 0 ; i < allDives.length ; i++){
 		allDives[i].style.display = 'none';
+	}
+	for(var i = 0 ; i < allModals.length ; i++){
+		allModals[i].style.display = 'none';
 	}
 	target.style.display = 'block';
 	if(show === 'Properties'){
@@ -299,6 +304,7 @@ function validateName(value, message) {
     }
     return isValid;
 }
+
 function saveUser(){
 	if(!checkForm(document.forms["registerform"])){
 		document.forms["registerform"].focus();
@@ -313,8 +319,47 @@ function saveUser(){
 	var info = uName + ',' + uPSW + ',' + uFullName + ',' + uEmail + ',' + uDate
 	console.log(info);
 	localStorage.setItem(uName , info)
+	
 	$("#registerDialog").show();
 }
+
+function showModel(modelName) {
+
+	// Get the modal
+	var modal = document.getElementById(modelName);
+	modal.style.display = "block";
+
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+  		modal.style.display = "none";
+	}
+
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+  		if (event.target == modal) {
+    		modal.style.display = "none";
+  		}
+	}
+}
+
+function showRegModel(modelName){
+	// Get the modal
+	var modal = document.getElementById(modelName);
+	modal.style.display = "block";
+
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+		//   modal.style.display = "none";
+		  CloseRegDialog();
+	}
+}
+
 function checkLoginForm(message){
 	var userName = document.getElementById('LoginUN').value;
 	var PassWord = document.getElementById('LoginPW').value;
@@ -336,16 +381,21 @@ function checkLoginForm(message){
 	divToShow = "Login";
 	console.log(divToShow)
 }
+
 function CloseLogDialog() {
-	divToShow = "GameScreen"
+	divToShow = "GameScreen";
 	document.getElementById("LoginDialog").close();
 	//ShowDiv("GameScreen");
 }
+
 function CloseRegDialog() {
-	divToShow = "Properties"
-	//ShowDiv("Properties")
-	$("#registerDialog").hide();
+	var x = document.getElementById("registerDialog"); 
+	x.close();
+	divToShow = "Properties";
+	ShowDiv("Properties")
+	//$("#registerDialog").hide();
 }
+
 function RandomProperties(){
 
 }
@@ -466,15 +516,40 @@ function validNumberMonst() {
 	document.getElementById(message).style.display = "inline";
 	return false;
 }
-
-function GetModel() {
-	// Get the modal
-	var modal = document.getElementById('About');
-
-	// When the user clicks anywhere outside of the modal, close it
-	window.onclick = function(event) {
-		if (event.target == modal) {
-			modal.style.display = "none";
-		}
-	}
+/************************************* Properties - button ***************************************/
+function showBotton(event , pId) {
+	var x = event.key;
+	document.getElementById(pId).value = "" + x;
 }
+/**
+ * save buttons only afer validation
+ */
+function SaveButtonMoves(){
+	var right = document.getElementById("rightBotton").value;
+	var left = document.getElementById("leftBotton").value;
+	var  up = document.getElementById("upBotton").value;
+	var down = document.getElementById("downBotton").value;
+
+	if(right == "" || left == "" || down == "" || up == "" ||
+	 right == left || right == up || right == down || left == up || left == down || up == down){
+		document.getElementById('key-error').style.display = "inline";
+		window.location.hash = '#MoveButtoms';
+		return false;
+	}
+	else{
+		var next = document.getElementById("next");
+
+		document.getElementById('key-error').style.display = "none";
+		var info = right + ',' + left + ',' + up + ',' + down ;
+		console.log(info);
+		localStorage.setItem("properties" , info)
+		next.style.visibility = "visible";
+		window.location.hash = '#MoveButtoms';
+		return true;
+	}
+	
+}
+// TODO - save the connected user globaly and save his property with his name
+// i make it possible to move to next level only after saving buttons 
+
+/*************************************************************************************************/

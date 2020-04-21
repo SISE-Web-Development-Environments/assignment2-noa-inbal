@@ -75,6 +75,7 @@ body{
 }
 
 .section{
+    display: none;
     padding-top: 0px;
     padding-bottom: 0px;
     text-align: center;
@@ -96,6 +97,19 @@ body{
     border-bottom: 3px solid darksalmon;
 }
 
+#Welcome{
+    display: block;
+}
+
+#Register , #Login , #About , #Properties{
+    display: none;
+}
+
+#MoveButtoms , #Balls , #GameTime , #Monsters , #GameScreen{
+    display: none;
+
+}
+
 .errorMsg {
     display:none;
     color:Red;
@@ -106,6 +120,7 @@ body{
     outline: none;
     text-align: center;
     font-size: 20px;
+
 }
 
 lable{
@@ -113,8 +128,6 @@ lable{
 }
 
 input[type=text], input[type=password], input[type=email] {
-    margin-bottom: 5px;
-    margin-top: 5px;
     width: 450px;
     color: aliceblue;
     background: transparent;
@@ -126,16 +139,8 @@ input[type=text], input[type=password], input[type=email] {
     resize: both;
 }
 
-input[type=range]{
-    margin-top: 5px;
-    width: 25%;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
 button, input[type=submit] {
     background-color: antiquewhite;
-    border: white solid 1px;
     color: black;
     padding: 14px 20px;
     margin: 8px 0;
@@ -149,22 +154,8 @@ button:hover,input[type=submit]:hover {
     opacity: 0.8;
     cursor: pointer;
 }
-
-.displayColor{
-    height: 100px;
-    width: 25%;
-    margin-left: 38%;
-    border: aliceblue solid 1px;
-    transition: background 100ms;
-}
-
-.lablball{
-    font-size: 25px;
-    color: darksalmon;
-}
-
 /***************************************model dialog*********************************************/
-/* Center the image and position the close button */
+/* Center the image and position the close button
 .imgcontainer {
     text-align: center;
     margin: 24px 0 12px 0;
@@ -196,16 +187,23 @@ span.psw {
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(248, 141, 243); /* Fallback color */
-    background-color: rgb(248, 141, 243); /* Black w/ opacity */
-    padding-top: 60px;
+    background-color: rgba(196, 167, 167, 0.575); /* Black w/ opacity */
+    opacity:0.9;
+    /* padding-top: 60px; */
   }
-  
+
   /* Modal Content/Box */
   .modal-content {
     background-color: #fefefe;
     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    position: fixed;
+    top: 30%;
+    padding: 0;
+    width: 100%; /* Could be more or less, depending on screen size */
+  }
+  .modal-body ,.modal-footer, .modal-header {
+      color:rgb(248, 141, 243) ;
   }
   
   /* The Close Button (x) */
@@ -222,6 +220,7 @@ span.psw {
   .close:focus {
     color: red;
     cursor: pointer;
-  }
-  
-
+  } 
+  #next {
+    visibility:hidden;
+}

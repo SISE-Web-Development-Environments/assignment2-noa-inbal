@@ -4,14 +4,12 @@
 		<script src="./jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
 		<link rel="stylesheet" type="text/css" href="Pacman.css" />
-		/*datepicker*/
+		<!--datepicker-->
   		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script src="jquery.js" type="text/javascript"></script>
-		<script>
-			$( function() {
-			  $( "#datepicker" ).datepicker();} );
-		</script>
+	
+		
 	</head>
 
 	<body>
@@ -24,7 +22,9 @@
 			<a onclick="ShowDiv('Register')">Register</a>
 			<a onclick="ShowDiv('Login')">Login</a>
 			<a onclick="ShowDiv('Properties')">Properties</a>
-			<a onclick="document.getElementById('About').style.display='block'" style="width:auto;">About</a>
+			<!--<a id =click >About</a>-->
+		<a onclick="showModel('About')">About</a>
+	
 		</div>
 		<div class="Content">
 			<div class="section" id="GameScreen">
@@ -40,7 +40,6 @@
 					<canvas id="canvas" height="600" width="600"></canvas>
 				</div>
 			</div>
-
 			<div class="section" id="Welcome">
 				<h1 class="PageTitle">Welcome</h1>
 				<img src="pcmn.jpg">
@@ -52,7 +51,6 @@
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<i class='fa fa-edit' onclick="ShowDiv('Register')" style='cursor: pointer;font-size: 100px;'></i>
 			</div>
-
 			<div class="section" id="Register">
 				<h1 class="PageTitle">Register</h1>
 				<form class="MyForm" id="signinform" name="registerform" method="get">
@@ -81,7 +79,7 @@
 							</p>
 							<p>
 								<label for="rdate">Date Of Birth (required)</label>
-								<input id="datepicker" name="rdate" type="text" required></br>
+								<input id="datepicker" name="rdate" type="date" required></br>
 							</p>
 							<p>
 								<button type="submit" onclick="return saveUser();">Submit</button>
@@ -89,7 +87,6 @@
 					</div>
 				</form>
 			</div>
-
 			<div class="section" id="Login">
 				<form class="MyForm" id="LoginModel">
 					<h1 class="PageTitle">Login</h1>
@@ -122,19 +119,44 @@
 					</dialog>
 				</div>
 			</div>
-
-			<div class="section">
-				<div class="model" id="About">
-					<form class="modal-content animate" action="/action_page.php" method="post">
-						<h1 class="PageTitle">About</h1>
-						<div class="imgcontainer">
-							<span onclick="document.getElementById('About').style.display='none'" class="close" title="Close Modal">&times;</span>
-							<button type="button" onclick="document.getElementById('About').style.display='none'" class="cancelbtn">Cancel</button>
-						</div>
-					</form>
-				</div>
+			<div class="modal" id="About">
+  				<div class="modal-content">
+    				<div class="modal-header">
+						  <span onclick="document.getElementById('About').style.display='none'" class="close">&times;</span>
+      					<h2>About Us</h2>
+    				</div>
+    				<div class="modal-body">
+      					<p>hello - we are:</p>
+						  <p>Inbal Bitton</p>
+						  <p>Noa Shabtay</p>
+    				</div>
+    				<div class="modal-footer">
+						  <h3>Modal Footer</h3>
+						  <button type="button" onclick="document.getElementById('About').style.display='none'" class="cancelbtn">OK</button>
+    				</div>
+  				</div>
 			</div>
-
+			<!--<div class="modal" id="registerDialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+						<span onclick="CloseRegDialog();" class="close">&times;</span>
+						<h2>you regsiter Successfully</h2>
+				  </div>
+				  <div class="modal-body">
+						<p>thank you for register</p>
+						<p>please enter your Properties </p>
+						<span style='font-size:100px;'>&#10083;</span>
+				  </div>
+				  <div class="modal-footer">
+						<h3>enjoy!</h3>
+						<button type="button" onclick="CloseRegDialog();" class="cancelbtn">Close</button>
+				  </div>
+				</div>
+		  </div>-->
+			<dialog id="registerDialog">
+			Your Registration Has Been Successful!
+			<button onclick="CloseRegDialog()">Close</button>
+			</dialog>
 			<div class="section" id="Properties">
 				<div class="PropSection" id="introProperties">
 					<p>
@@ -146,11 +168,27 @@
 					<button onclick="RandomProperties()">Random</button>
 				</div>
 				<div class="PropSection" id="MoveButtoms">
-					<p>
-						<label class="lablball"><strong>Choose Moves Buttons:</strong></label>
+					<form class="MyForm" name="MoveButtoms" method="get">
+					
+						<label class="lablball"><strong>Choose Moves Buttons:</strong></label><br>
+						<br><br>
+						<label class="lablball"><strong>please press the button to move right</strong></label>
+						<input id= "rightBotton" type="text" size="40" onkeydown="showBotton(event,'rightBotton')">
+						<br><br>
+						<label class="lablball"><strong>please press the button to move left</strong></label>
+						<input id= "leftBotton" type="text" size="40" onkeydown="showBotton(event,'leftBotton')">
+						<br><br>
+						<label class="lablball"><strong>please press the button to move up</strong></label>
+						<input id= "upBotton" type="text" size="40" onkeydown="showBotton(event,'upBotton')">
+						<br><br>
+						<label class="lablball"><strong>please press the button to move down</strong></label>
+						<input id= "downBotton" type="text" size="40" onkeydown="showBotton(event,'downBotton')">
 						<br>
-						<button onclick="ShowDivInProp('Balls')">Submit</button>
-					</p>
+						<label id="key-error" class="errorMsg">Please enter uniqe key</label><br />
+						<br><br>
+						<button onclick="SaveButtonMoves()">Save My button moves</button><br>
+						<button id="next" onclick="ShowDivInProp('Balls')">move to next step</button>
+					</form>
 				</div>
 				<div class="PropSection" id="Balls">
 					<div id="balls1">
@@ -222,17 +260,12 @@
 					<br>
 					<label class="errorMsg" id="monst-error">Invalid Time!</label>
 				</div>
-
 				<div class="PropSection" id="startGame">
 					<button class="StartBut" onclick="ShowDiv('GameScreen')">Start!</button>
 				</div>
 			</div>
 
 		</div>
-		<dialog id="registerDialog">
-			Your Registration Has Been Successful!
-			<button onclick="CloseRegDialog()">Close</button>
-		</dialog>
 
 		<div class="footer">
 				Inbal &nbsp; &amp; &nbsp; Noa
