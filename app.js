@@ -8,7 +8,9 @@ var time_elapsed;
 var interval;
 var divToShow = "Welcome";
 
+var userName = "";
 var gameProperties = [];
+var userInfo = [];
 
 
 $(document).ready(function() {
@@ -19,6 +21,21 @@ $(document).ready(function() {
 	//Start();
 });
 
+function ShowDiv(show) {
+	var allDives = document.getElementsByClassName('section');
+	var allModals = document.getElementsByClassName('modal')
+	var target = document.getElementById(show);
+	for(var i = 0 ; i < allDives.length ; i++){
+		allDives[i].style.display = 'none';
+	}
+	for(var i = 0 ; i < allModals.length ; i++){
+		allModals[i].style.display = 'none';
+	}
+	target.style.display = 'block';
+	if(show === 'Properties'){
+		ShowDivInProp('introProperties');
+	}
+}
 
 function Start() {
 	ShowDiv("Welcome");
@@ -80,6 +97,7 @@ function Start() {
 	);
 	interval = setInterval(UpdatePosition, 250);
 }
+/********************************************** game ***************************************************/
 
 function findRandomEmptyCell(board) {
 	var i = Math.floor(Math.random() * 9 + 1);
@@ -179,32 +197,7 @@ function UpdatePosition() {
 		Draw();
 	}
 }
-
-function ShowDiv(show) {
-	var allDives = document.getElementsByClassName('section');
-	var allModals = document.getElementsByClassName('modal')
-	var target = document.getElementById(show);
-	for(var i = 0 ; i < allDives.length ; i++){
-		allDives[i].style.display = 'none';
-	}
-	for(var i = 0 ; i < allModals.length ; i++){
-		allModals[i].style.display = 'none';
-	}
-	target.style.display = 'block';
-	if(show === 'Properties'){
-		ShowDivInProp('introProperties');
-	}
-}
-
-function ShowDivInProp(show){
-	var allDives = document.getElementsByClassName('PropSection');
-	var target = document.getElementById(show);
-	for(var i = 0 ; i < allDives.length ; i++){
-		allDives[i].style.display = 'none';
-	}
-	target.style.display = 'block';
-}
-
+ /********************************************** SignIn ***************************************************/
 /*function checkPassword(str) {
 	// at least one number, one lowercase and one uppercase letter
     // at least six characters that are letters, numbers or the underscore
@@ -219,6 +212,7 @@ function checkUserName(str) {
 }
 
  */
+
 function checkPwd(str) {
     if (str.length < 6) {
         return(false);
@@ -304,7 +298,6 @@ function validateName(value, message) {
     }
     return isValid;
 }
-
 function saveUser(){
 	if(!checkForm(document.forms["registerform"])){
 		document.forms["registerform"].focus();
@@ -320,8 +313,58 @@ function saveUser(){
 	console.log(info);
 	localStorage.setItem(uName , info)
 	
-	$("#registerDialog").show();
+	return showRegModel('registerDialog');
+
 }
+function showRegModel(modelName){
+	// Get the modal
+	var modal = document.getElementById(modelName);
+	modal.style.display = "block";
+
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+		//   modal.style.display = "none";
+		  CloseRegDialog();
+	}
+	return false;
+}
+function CloseRegDialog() {
+	var modal = document.getElementById("registerDialog"); 
+	modal.style.display = "none";
+	divToShow = "Properties";
+	ShowDiv("Properties");
+}
+ /********************************************** LogIn ***************************************************/
+ function checkLoginForm(message){
+	var userName = document.getElementById('LoginUN').value;
+	var PassWord = document.getElementById('LoginPW').value;
+	var info = localStorage.getItem(userName);
+	if(info === null){
+		document.getElementById(message).style.display= "inline"
+	}
+	else{
+		var pswToCheck = info.split(',')[1];
+		if ( PassWord === pswToCheck){
+			document.getElementById(message).style.display = "none";
+			document.getElementById("LoginModel").style.display = "none";
+			document.getElementById("LoginDialog").showModal();
+		}
+		else{
+			document.getElementById(message).style.display= "inline";
+		}
+	}
+	divToShow = "Login";
+	console.log(divToShow)
+}
+function CloseLogDialog() {
+	divToShow = "GameScreen";
+	document.getElementById("LoginDialog").close();
+	//ShowDiv("GameScreen");
+}
+ /********************************************** About ***************************************************/
 
 function showModel(modelName) {
 
@@ -344,62 +387,18 @@ function showModel(modelName) {
   		}
 	}
 }
-
-function showRegModel(modelName){
-	// Get the modal
-	var modal = document.getElementById(modelName);
-	modal.style.display = "block";
-
-	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
-
-	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() {
-		//   modal.style.display = "none";
-		  CloseRegDialog();
+/********************************************* Properties ************************************************/
+function ShowDivInProp(show){
+	var allDives = document.getElementsByClassName('PropSection');
+	var target = document.getElementById(show);
+	for(var i = 0 ; i < allDives.length ; i++){
+		allDives[i].style.display = 'none';
 	}
+	target.style.display = 'block';
 }
-
-function checkLoginForm(message){
-	var userName = document.getElementById('LoginUN').value;
-	var PassWord = document.getElementById('LoginPW').value;
-	var info = localStorage.getItem(userName);
-	if(info === null){
-		document.getElementById(message).style.display= "inline"
-	}
-	else{
-		var pswToCheck = info.split(',')[1];
-		if ( PassWord === pswToCheck){
-			document.getElementById(message).style.display = "none";
-			document.getElementById("LoginModel").style.display = "none";
-			document.getElementById("LoginDialog").showModal();
-		}
-		else{
-			document.getElementById(message).style.display= "inline";
-		}
-	}
-	divToShow = "Login";
-	console.log(divToShow)
-}
-
-function CloseLogDialog() {
-	divToShow = "GameScreen";
-	document.getElementById("LoginDialog").close();
-	//ShowDiv("GameScreen");
-}
-
-function CloseRegDialog() {
-	var x = document.getElementById("registerDialog"); 
-	x.close();
-	divToShow = "Properties";
-	ShowDiv("Properties")
-	//$("#registerDialog").hide();
-}
-
 function RandomProperties(){
 
 }
-
 function SaveBalls(){
 	var num = document.getElementById('numBalls').value;
 	if(validNumBalls('balls-error')){
@@ -407,7 +406,6 @@ function SaveBalls(){
 		document.getElementById('cp').style.display = "inline";
 	}
 }
-
 function SaveTime(){
 	var num = document.getElementById('timer').value;
 	if(validTimer('time-error')){
@@ -415,15 +413,14 @@ function SaveTime(){
 		ShowDivInProp('Monsters');
 	}
 }
-
 function SaveMonsters(id , show){
-	var num = document.getElementById(id).value;
-	if(validNumberMonst('monst-error')){
-		gameProperties.push(num);
-		ShowDivInProp('startGame')
-	}
+	//var num = document.getElementById(id).value;
+	//if(validNumberMonst('monst-error')){
+	//	gameProperties.push(num);
+		saveUserAndProp();
+		ShowDivInProp('startGame');
+	//}
 }
-
 function validNumBalls(message){
 	var num = document.getElementById("numBalls").value;
 	if (num.match(/^[0-9]+$/) != null){
@@ -436,7 +433,6 @@ function validNumBalls(message){
 	document.getElementById(message).style.display = "inline";
 	return false;
 }
-
 function ColorPickerDisplay(){
 	document.getElementById("balls1").style.display = "none"
 	document.getElementById("balls2").style.display = "block"
@@ -473,7 +469,6 @@ function ColorPickerDisplay(){
 		})
 	}
 }
-
 function submitBalls(message){
 	var color5 = document.getElementById("color1").style.background;
 	var color15 = document.getElementById("color2").style.background;
@@ -490,7 +485,6 @@ function submitBalls(message){
 		ShowDivInProp('GameTime');
 	}
 }
-
 function validTimer(message) {
 	var num = document.getElementById("timer").value;
 	if (num.match(/^[0-9]+$/) != null){
@@ -503,7 +497,6 @@ function validTimer(message) {
 	document.getElementById(message).style.display = "inline";
 	return false;
 }
-
 function validNumberMonst() {
 	var num = document.getElementById("monst").value;
 	if (num.match(/^[0-9]+$/) != null){
@@ -516,7 +509,13 @@ function validNumberMonst() {
 	document.getElementById(message).style.display = "inline";
 	return false;
 }
+function CloseStarGameModel(){
+	var modal = document.getElementById("GameScreen"); 
+	modal.style.display = "none";
+	ShowDiv("GameScreen");
+}
 /************************************* Properties - button ***************************************/
+
 function showBotton(event , pId) {
 	var x = event.key;
 	document.getElementById(pId).value = "" + x;
@@ -541,15 +540,19 @@ function SaveButtonMoves(){
 
 		document.getElementById('key-error').style.display = "none";
 		var info = right + ',' + left + ',' + up + ',' + down ;
-		console.log(info);
-		localStorage.setItem("properties" , info)
+		gameProperties.push(info);
+		console.log(gameProperties);
 		next.style.visibility = "visible";
 		window.location.hash = '#MoveButtoms';
 		return true;
 	}
 	
 }
-// TODO - save the connected user globaly and save his property with his name
-// i make it possible to move to next level only after saving buttons 
-
+/**
+ * save the connected user globaly and save his property with his name to local storage
+ */
+function saveUserAndProp(){
+	localStorage.setItem(userName, userInfo);
+	localStorage.setItem(userName+" Properties" ,gameProperties );
+}
 /*************************************************************************************************/

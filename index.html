@@ -22,8 +22,7 @@
 			<a onclick="ShowDiv('Register')">Register</a>
 			<a onclick="ShowDiv('Login')">Login</a>
 			<a onclick="ShowDiv('Properties')">Properties</a>
-			<!--<a id =click >About</a>-->
-		<a onclick="showModel('About')">About</a>
+			<a onclick="showModel('About')">About</a>
 	
 		</div>
 		<div class="Content">
@@ -82,7 +81,7 @@
 								<input id="datepicker" name="rdate" type="date" required></br>
 							</p>
 							<p>
-								<button type="submit" onclick="return saveUser();">Submit</button>
+								<button type="button" onclick="return saveUser();">Submit</button>
 							</p>
 					</div>
 				</form>
@@ -106,7 +105,7 @@
 						</p>
 						<br>
 						<p>
-							<button onclick="checkLoginForm('login-error')">Login</button>
+							<button type="button" onclick="checkLoginForm('login-error')">Login</button>
 							<br>
 							<label id="login-error" class="errorMsg">Invalid Details! Try Again!</label>
 						</p>
@@ -115,7 +114,7 @@
 				<div>
 					<dialog id="LoginDialog">
 						<p>You've Logged in Successfully!</p>
-						<button onclick="CloseLogDialog()">Close</button>
+						<button type="button" onclick="CloseLogDialog()">Close</button>
 					</dialog>
 				</div>
 			</div>
@@ -136,7 +135,7 @@
     				</div>
   				</div>
 			</div>
-			<!--<div class="modal" id="registerDialog">
+			<div class="modal" id="registerDialog">
 				<div class="modal-content">
 				  <div class="modal-header">
 						<span onclick="CloseRegDialog();" class="close">&times;</span>
@@ -152,11 +151,11 @@
 						<button type="button" onclick="CloseRegDialog();" class="cancelbtn">Close</button>
 				  </div>
 				</div>
-		  </div>-->
-			<dialog id="registerDialog">
+		  </div>
+			<!--<dialog id="registerDialog">
 			Your Registration Has Been Successful!
 			<button onclick="CloseRegDialog()">Close</button>
-			</dialog>
+			</dialog>-->
 			<div class="section" id="Properties">
 				<div class="PropSection" id="introProperties">
 					<p>
@@ -164,8 +163,8 @@
 						<br>
 						Choose Random To Auto Initialize
 					</p>
-					<button onclick="ShowDivInProp('MoveButtoms')">Start</button>
-					<button onclick="RandomProperties()">Random</button>
+					<button type="button" onclick="ShowDivInProp('MoveButtoms')">Start</button>
+					<button type="button" onclick="RandomProperties()">Random</button>
 				</div>
 				<div class="PropSection" id="MoveButtoms">
 					<form class="MyForm" name="MoveButtoms" method="get">
@@ -186,8 +185,8 @@
 						<br>
 						<label id="key-error" class="errorMsg">Please enter uniqe key</label><br />
 						<br><br>
-						<button onclick="SaveButtonMoves()">Save My button moves</button><br>
-						<button id="next" onclick="ShowDivInProp('Balls')">move to next step</button>
+						<button type="button" onclick="SaveButtonMoves()">Save My button moves</button><br>
+						<button type="button" id="next" onclick="ShowDivInProp('Balls')">move to next step</button>
 					</form>
 				</div>
 				<div class="PropSection" id="Balls">
@@ -199,9 +198,9 @@
 							<br>
 							<label class="errorMsg" id="balls-error">Invalid Number Of Balls</label>
 							<br>
-							<button onclick="SaveBalls()">Choose</button>
+							<button type="button" onclick="SaveBalls()">Choose</button>
 							<br>
-							<button id="cp" onclick="ColorPickerDisplay()" style="display: none;">Choose Colors</button>
+							<button type="button" id="cp" onclick="ColorPickerDisplay()" style="display: none;">Choose Colors</button>
 						</p>
 					</div>
 					<div id="balls2" style="display: none;">
@@ -232,7 +231,7 @@
 						<div class="displayColor" id="color3"></div>
 						</p>
 						<p>
-							<button onclick="submitBalls('color-error')">Submit</button><br>
+							<button type="button" onclick="submitBalls('color-error')">Submit</button><br>
 							<label class="errorMsg" id="color-error">Invalid Colors! 1 Or More are The Same!</label>
 						</p>
 					</div>
@@ -243,7 +242,7 @@
 						<br>
 						<input id="timer" type="text" name="time" required onchange="validTimer('time-error')">
 						<br>
-						<button onclick="SaveTime()">Submit</button>
+						<button type="button" onclick="SaveTime()">Submit</button>
 						<br>
 						<label class="errorMsg" id="time-error">Invalid Time!</label>
 					</p>
@@ -256,13 +255,30 @@
 					<br>
 					<input id="monst" type="text" name="mst" required onchange="validNumberMonst('monst-error')">
 					<br>
-					<button onclick="SaveMonsters()">Submit</button>
+					<button type="button" onclick="SaveMonsters()">Submit</button>
 					<br>
 					<label class="errorMsg" id="monst-error">Invalid Time!</label>
 				</div>
-				<div class="PropSection" id="startGame">
-					<button class="StartBut" onclick="ShowDiv('GameScreen')">Start!</button>
-				</div>
+				<div class="modal" id="startGame">
+					<div class="modal-content">
+					  <div class="modal-header">
+							<span onclick="showDiv('GameScreen');" class="close">&times;</span>
+							<h2>You Enter Your Properties Successfully</h2>
+					  </div>
+					  <div class="modal-body">
+							<p>you can strat the game now</p>
+							<p>click start </p>
+							<span style='font-size:100px;'>&#10083;</span>
+					  </div>
+					  <div class="modal-footer">
+							<h3>enjoy!</h3>
+							<button type="button" onclick="CloseStarGameDialog();" class="cancelbtn">Start!</button>
+					  </div>
+					</div>
+			    </div>
+				<!--<div class="PropSection" id="startGame">
+					<button type="button" class="StartBut" onclick="ShowDiv('GameScreen')">Start!</button>
+				</div>-->
 			</div>
 
 		</div>

@@ -189,18 +189,18 @@ span.psw {
     background-color: rgb(248, 141, 243); /* Fallback color */
     background-color: rgba(196, 167, 167, 0.575); /* Black w/ opacity */
     opacity:0.9;
-    /* padding-top: 60px; */
+    padding-top: 60px; 
   }
 
   /* Modal Content/Box */
   .modal-content {
     background-color: #fefefe;
-    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
-    position: fixed;
-    top: 30%;
     padding: 0;
-    width: 100%; /* Could be more or less, depending on screen size */
+    width: 80%; /* Could be more or less, depending on screen size */
+    position: relative;
+    margin: 0 auto;
+    top: 25%;
   }
   .modal-body ,.modal-footer, .modal-header {
       color:rgb(248, 141, 243) ;
