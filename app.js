@@ -34,6 +34,7 @@ function ShowDiv(show) {
 	target.style.display = 'block';
 	if(show == "GameScreen"){
 		Start();
+		window.location.hash = '#GameScreen';
 	}
 	if(show === 'Properties'){
 		ShowDivInProp('introProperties');
@@ -41,7 +42,7 @@ function ShowDiv(show) {
 }
 
 function Start() {
-	ShowDiv("Welcome");
+	// ShowDiv("Welcome");
 	board = new Array();
 	score = 0;
 	pac_color = "yellow";
