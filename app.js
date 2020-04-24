@@ -32,6 +32,9 @@ function ShowDiv(show) {
 		allModals[i].style.display = 'none';
 	}
 	target.style.display = 'block';
+	if(show == "GameScreen"){
+		Start();
+	}
 	if(show === 'Properties'){
 		ShowDivInProp('introProperties');
 	}
@@ -509,7 +512,7 @@ function validNumberMonst() {
 	document.getElementById(message).style.display = "inline";
 	return false;
 }
-function CloseStartGameModel(){
+function closeStartGameModel(){
 	var modal = document.getElementById("startGame"); 
 	modal.style.display = "none";
 	ShowDiv("GameScreen");
@@ -556,3 +559,5 @@ function saveUserAndProp(){
 	localStorage.setItem(userName+" Properties" ,gameProperties );
 }
 /*************************************************************************************************/
+//todo - saveMonstare or validNumberMonst with errors we need to fix it
+//todo - logIn modal dialog - we need to fix it like RegisterModel 
