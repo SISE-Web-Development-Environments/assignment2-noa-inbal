@@ -172,16 +172,16 @@
 						<label class="lablball"><strong>Choose Moves Buttons:</strong></label><br>
 						<br><br>
 						<label class="lablball"><strong>please press the button to move right</strong></label>
-						<input id= "rightBotton" type="text" size="40" onkeydown="showBotton(event,'rightBotton')">
+						<input id= "rightBotton" type="text" maxlength="1" onkeydown="showBotton(event,'rightBotton')">
 						<br><br>
 						<label class="lablball"><strong>please press the button to move left</strong></label>
-						<input id= "leftBotton" type="text" size="40" onkeydown="showBotton(event,'leftBotton')">
+						<input id= "leftBotton" type="text" maxlength="1" onkeydown="showBotton(event,'leftBotton')">
 						<br><br>
 						<label class="lablball"><strong>please press the button to move up</strong></label>
-						<input id= "upBotton" type="text" size="40" onkeydown="showBotton(event,'upBotton')">
+						<input id= "upBotton" type="text" maxlength="1" onkeydown="showBotton(event,'upBotton')">
 						<br><br>
 						<label class="lablball"><strong>please press the button to move down</strong></label>
-						<input id= "downBotton" type="text" size="40" onkeydown="showBotton(event,'downBotton')">
+						<input id= "downBotton" type="text" maxlength="1" onkeydown="showBotton(event,'downBotton')">
 						<br>
 						<label id="key-error" class="errorMsg">Please enter uniqe key</label><br />
 						<br><br>
@@ -262,7 +262,7 @@
 				<div class="modal" id="startGame">
 					<div class="modal-content">
 					  <div class="modal-header">
-							<span onclick="showDiv('GameScreen');" class="close">&times;</span>
+							<span onclick="CloseStartGameModel();" class="close">&times;</span>
 							<h2>You Enter Your Properties Successfully</h2>
 					  </div>
 					  <div class="modal-body">
@@ -272,7 +272,7 @@
 					  </div>
 					  <div class="modal-footer">
 							<h3>enjoy!</h3>
-							<button type="button" onclick="CloseStarGameDialog();" class="cancelbtn">Start!</button>
+							<button type="button" onclick="CloseStartGameModel();" class="cancelbtn">Start!</button>
 					  </div>
 					</div>
 			    </div>

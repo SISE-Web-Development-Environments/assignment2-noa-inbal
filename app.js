@@ -502,15 +502,15 @@ function validNumberMonst() {
 	if (num.match(/^[0-9]+$/) != null){
 		var x = parseInt(num);
 		if(x >= 1 && x <= 4){
-			document.getElementById(message).style.display = "none";
+			//document.getElementById(message).style.display = "none";
 			return true;
 		}
 	}
 	document.getElementById(message).style.display = "inline";
 	return false;
 }
-function CloseStarGameModel(){
-	var modal = document.getElementById("GameScreen"); 
+function CloseStartGameModel(){
+	var modal = document.getElementById("startGame"); 
 	modal.style.display = "none";
 	ShowDiv("GameScreen");
 }
