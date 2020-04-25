@@ -8,8 +8,15 @@ var time_elapsed;
 var interval; 
 var divToShow = "Welcome";
 
+var keyCodeUp= "";
+var keyCodeDown= "";
+var keyCodeRight= "";
+var keyCodeLeft= "";
+
 var userName = "";
-var gameProperties = [];
+var gameProperties = []; 
+//0:up,1:upCode,2:down,3:downCode:,4:right,5:rightCode,6:left,7:leftCode
+//8:numBalls,9:color5P,10:color15P,11:color25P,12:time,13:monstor
 var userInfo = [];
 
 
@@ -45,7 +52,7 @@ function Start() {
 	score = 0;
 	pac_color = "yellow"; 
 	var cnt = 100; //  מאפשר לנו להגדיר אחוזים מסויימים בהמשך
-	var food_remain = 50; // כמה אוכל רוצים שיהיה בלוח
+	var food_remain = 50; // כמה אוכל רוצים שיהיה בלוח צריך לשנות את זה לפי ההגדרות אחכ
 	var pacman_remain = 1; // כמה פעמים נרצה לאתחל את הפאקמן במהלך המשחק בצורה רנדומית (משמש אותנו בשביל לצייר בפעם הראשונה כרגע)
 	start_time = new Date(); 
 
@@ -75,7 +82,7 @@ function Start() {
 					shape.i = i;
 					shape.j = j;
 					pacman_remain--;
-					board[i][j] = 2;
+					board[i][j] = 2.1;
 				} else {
 					board[i][j] = 0;
 				}
@@ -120,16 +127,16 @@ function findRandomEmptyCell(board) {
 	return [i, j];
 }
 function GetKeyPressed() {
-	if (keysDown[38]) {
+	if (keysDown[keyCodeUp]) {
 		return 1;
 	}
-	if (keysDown[40]) {
+	if (keysDown[keyCodeDown]) {
 		return 2;
 	}
-	if (keysDown[37]) {
+	if (keysDown[keyCodeLeft]) {
 		return 3;
 	}
-	if (keysDown[39]) {
+	if (keysDown[keyCodeRight]) {
 		return 4;
 	}
 }
@@ -142,8 +149,8 @@ function DrawCircleProp(){
 		var R = 10;
 		ctx.beginPath();
 		ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
-		ctx.strokeStyle = gameProperties[5];
-		ctx.fillStyle = gameProperties[5];
+		ctx.strokeStyle = gameProperties[9];
+		ctx.fillStyle = gameProperties[9];
   		ctx.fill();
 		ctx.stroke();
 		ctx.fillText("    5P",canvas.width*3/5,50);
@@ -152,8 +159,8 @@ function DrawCircleProp(){
 		var R = 10;
 		ctx.beginPath();
 		ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
-		ctx.strokeStyle = gameProperties[6];
-		ctx.fillStyle = gameProperties[6];
+		ctx.strokeStyle = gameProperties[10];
+		ctx.fillStyle = gameProperties[10];
   		ctx.fill();
 		ctx.stroke();
 		ctx.fillText("  15P",canvas.width *2/5,50);
@@ -163,8 +170,8 @@ function DrawCircleProp(){
 		var R = 10;
 		ctx.beginPath();
 		ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
-		ctx.strokeStyle = gameProperties[7];
-		ctx.fillStyle = gameProperties[7];
+		ctx.strokeStyle = gameProperties[11];
+		ctx.fillStyle = gameProperties[11];
   		ctx.fill();
 		ctx.stroke();
 		ctx.fillText("25P",canvas.width/5,50);
@@ -177,13 +184,33 @@ function Draw() {
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
 	DrawCircleProp();
+
 	document.getElementById('lblButtonsU').value = "" + gameProperties[0];
-	document.getElementById('lblButtonsD').value = "" + gameProperties[1];
-	document.getElementById('lblButtonsR').value = "" + gameProperties[2];
-	document.getElementById('lblButtonsL').value = "" + gameProperties[3];
+	keyCodeUp = gameProperties[1];
+	document.getElementById('lblButtonsD').value = "" + gameProperties[2];
+	keyCodeDown = gameProperties[3];
+	document.getElementById('lblButtonsR').value = "" + gameProperties[4];
+	keyCodeRight = gameProperties[5];
+	document.getElementById('lblButtonsL').value = "" + gameProperties[6];
+	keyCodeLeft = gameProperties[7];
+
 	document.getElementById('lblTimeT').value = "" + gameProperties[8];
-	document.getElementById('lblBalls').value = "" + gameProperties[4];
-	document.getElementById('lblMonsters').value = "" + gameProperties[8];
+	document.getElementById('lblBalls').value = "" + gameProperties[12];
+	document.getElementById('lblMonsters').value = "" + gameProperties[12];
+
+	var imageup=document.createElement("img");	
+	var imagedown=document.createElement("img");	
+	var imageright=document.createElement("img");	
+	var imageleft=document.createElement("img");	
+
+	imageup.onload=function(){
+		context.drawImage(imageup,center.x,center.x,50,50);
+    	// context.drawImage(image,canvas.width/2-image.width/2,canvas.height/2-image.width/2);
+	}
+	imageup.src="upPac.png";
+	imagedown.src="downPac.png";
+	imageright.src="rightPac.png";
+	imageleft.src="leftPac.png";
 
 	/************* Show Game Part *************/
 	for (var i = 0; i < 10; i++) {
@@ -191,35 +218,44 @@ function Draw() {
 			var center = new Object();
 			center.x = i * 60 + 30;
 			center.y = j * 60 + 30;
-			
-			if (board[i][j] == 2) {
 			/************* Drow Pacman *************/
-				context.beginPath();
-				context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
-				context.lineTo(center.x, center.y);
-				context.fillStyle = pac_color; //color
-				context.fill();
-				context.beginPath();
-				context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
-				context.fillStyle = "black"; //color
-				context.fill();
-			} else if (board[i][j] == 1.1) {
+			if (board[i][j] == 2.1) {
+				// context.beginPath();
+				// context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+				// context.lineTo(center.x, center.y);
+				// context.fillStyle = pac_color; //color
+				// context.fill();
+				// context.beginPath();
+				// context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
+				// context.fillStyle = "black"; //color
+				// context.fill();
+
+				context.drawImage(imageup,center.x,center.y,30,50); //UP
+			}else if(board[i][j] == 2.2){
+				context.drawImage(imagedown,center.x,center.y,30,50); //DOWN
+			} else if(board[i][j] == 2.3){
+				context.drawImage(imageleft,center.x,center.y,30,50); //LEFT
+			} else if(board[i][j] == 2.4){
+				context.drawImage(imageright,center.x,center.y,30,50); //RIGHT
+			} 
+
+			else if (board[i][j] == 1.1) {
 			/************* Drow Food 5P *************/
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-				context.fillStyle = gameProperties[5]; //color
+				context.fillStyle = gameProperties[9]; //color 5P
 				context.fill();
 			} else if(board[i][j]==1.2){
 			/************* Drow Food 15P *************/
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-				context.fillStyle = gameProperties[6]; //color
+				context.fillStyle = gameProperties[10]; //color 15P
 				context.fill();	
 			}else if(board[i][j]==1.3){
 			/************* Drow Food 25P *************/
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-				context.fillStyle = gameProperties[7]; //color
+				context.fillStyle = gameProperties[11]; //color 25P
 				context.fill();	
 			}else if (board[i][j] == 4) {
 			/************* Drow Wall *************/
@@ -232,26 +268,31 @@ function Draw() {
 	}
 }
 function UpdatePosition() {
+	let pacManDirection = board[shape.i][shape.j];
 	board[shape.i][shape.j] = 0; //clean pacman
 	var x = GetKeyPressed(); //get pressed key
-	if (x == 1) {
+	if (x == 1) { //up
 		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
 			shape.j--;
+			pacManDirection=2.1;
 		}
 	}
-	if (x == 2) {
+	if (x == 2) { //down
 		if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
 			shape.j++;
+			pacManDirection=2.2;
 		}
 	}
-	if (x == 3) {
+	if (x == 3) { //right
 		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
 			shape.i--;
+			pacManDirection=2.3;
 		}
 	}
-	if (x == 4) {
+	if (x == 4) { //left
 		if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
 			shape.i++;
+			pacManDirection=2.4;
 		}
 	}
 
@@ -263,7 +304,7 @@ function UpdatePosition() {
 		score+=25; // אם זה אוכל תעלה את הניקוד
 	}
 
-	board[shape.i][shape.j] = 2; // נרצה לצבוע מחדש את הקאנבס, גם אם הצלחתי להתקדם וגם אם לא
+	board[shape.i][shape.j] = pacManDirection; // נרצה לצבוע מחדש את הקאנבס, גם אם הצלחתי להתקדם וגם אם לא
 	var currentTime = new Date(); 
 	time_elapsed = (currentTime - start_time) / 1000; // מעדכן את הזמן שעבר
 	if (score >= 20 && time_elapsed <= 10) {
@@ -462,8 +503,7 @@ function CloseLogDialog() {
 	divToShow = "GameScreen";
 	ShowDiv("GameScreen");
 }
- /********************************************** About ***************************************************/
-
+/********************************************** About ***************************************************/
 function showModel(modelName) {
 
 	// Get the modal
@@ -613,9 +653,23 @@ function closeStartGameModel(){
 	ShowDiv("GameScreen");
 }
 /************************************* Properties - button ***************************************/
-
 function showBotton(event , pId) {
 	var x = event.key;
+	if(pId=="rightBotton"){
+		keyCodeRight = event.keyCode;
+		console.log(keyCodeRight);
+	}
+	else if(pId=="leftBotton"){
+		keyCodeLeft = event.keyCode;
+		console.log(keyCodeLeft);
+	}else if(pId=="upBotton"){
+		keyCodeUp = event.keyCode;
+		console.log(keyCodeUp);
+	}else if(pId=="downBotton"){
+		keyCodeDown = event.keyCode;
+		console.log(keyCodeDown);
+	}
+	console.log(event.keyCode);
 	document.getElementById(pId).value = "" + x;
 }
 /**
@@ -639,10 +693,14 @@ function SaveButtonMoves(){
 		document.getElementById('key-error').style.display = "none";
 		gameProperties=[];
 		gameProperties.push(up);
+		gameProperties.push(keyCodeUp);
 		gameProperties.push(down);
+		gameProperties.push(keyCodeDown);
 		gameProperties.push(right);
+		gameProperties.push(keyCodeRight);
 		gameProperties.push(left);
-	
+		gameProperties.push(keyCodeLeft);
+
 		console.log(gameProperties);
 		console.log(gameProperties[0]);
 		console.log(gameProperties[1]);
@@ -665,17 +723,17 @@ function saveUserAndProp(){
 	localStorage.setItem(userAndPr ,JSON.stringify(gameProperties) );
 }
 /******************************************* game Prop ********************************************/
-
-
-
 //done  - logIn modal dialog - we fix it like RegisterModel
 //done -  להציג את הגדרות בדף של המשחק
+//done - להוסיף שהכפתורים שנבחרו הם אלה שזזים 
+//done - להוסיף את הכדורים עם הצבעים שנבחרו כשהם נאכלים, הניקוד משתנה בהתאם לניקוד של הכדור
+
 
 //todo - כפתור ראנדום הוא אמר בסוף השעות קבלה משהו לא ברור על הכפתור
 //todo - לצייר את המבוך של הפאקמן
 //todo - להקטין את הפיקסלים במשחק כי הם גדולים מידי
-//todo - להוסיף שהכפתורים שנבחרו הם אלה שזזים 
-//todo - להוסיף את הכדורים עם הצבעים שנבחרו
+
+
 //todo - מפלצות שנעות בצורה רנדומלית במשחק - עינצצצ
 //todo - saveMonstare or validNumberMonst with errors we need to fix it - עינצצצצ
 
