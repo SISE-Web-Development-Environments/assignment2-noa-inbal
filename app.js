@@ -1,11 +1,11 @@
 var context;
-var shape = new Object();
-var board;
-var score;
-var pac_color;
+var shape = new Object(); // pacman location
+var board; // game matrix
+var score; 
+var pac_color; 
 var start_time;
 var time_elapsed;
-var interval;
+var interval; 
 var divToShow = "Welcome";
 
 var userName = "";
@@ -41,15 +41,17 @@ function ShowDiv(show) {
 }
 function Start() {
 	// ShowDiv("Welcome");
-	board = new Array();
+	board = new Array(); // init game
 	score = 0;
-	pac_color = "yellow";
-	var cnt = 100;
-	var food_remain = 50;
-	var pacman_remain = 1;
-	start_time = new Date();
+	pac_color = "yellow"; 
+	var cnt = 100; //  מאפשר לנו להגדיר אחוזים מסויימים בהמשך
+	var food_remain = 50; // כמה אוכל רוצים שיהיה בלוח
+	var pacman_remain = 1; // כמה פעמים נרצה לאתחל את הפאקמן במהלך המשחק בצורה רנדומית (משמש אותנו בשביל לצייר בפעם הראשונה כרגע)
+	start_time = new Date(); 
+
+	/************* Put walls In Game Board************/
 	for (var i = 0; i < 10; i++) {
-		board[i] = new Array();
+		board[i] = new Array(); // יוצרים את המערך הדו מימדי 
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
 		for (var j = 0; j < 10; j++) {
 			if (
@@ -61,11 +63,15 @@ function Start() {
 			) {
 				board[i][j] = 4;
 			} else {
+				/************* Put food randomly *************/
 				var randomNum = Math.random();
 				if (randomNum <= (1.0 * food_remain) / cnt) {
 					food_remain--;
-					board[i][j] = 1;
+					let randomFood = Math.floor(Math.random() * 3) + 1; // random integer from 1 to 3 
+					let foodNum = 1 + randomFood/10; //1.1 or 1.2 or 1.3
+					board[i][j] = foodNum;
 				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
+				/************* Put Pacman randomly *************/
 					shape.i = i;
 					shape.j = j;
 					pacman_remain--;
@@ -77,12 +83,15 @@ function Start() {
 			}
 		}
 	}
+	
 	while (food_remain > 0) {
 		var emptyCell = findRandomEmptyCell(board);
-		board[emptyCell[0]][emptyCell[1]] = 1;
+		let randomNum = Math.floor(Math.random() * 3) + 1; // random integer from 1 to 3 
+		let foodNum = 1 + randomNum/10; //1.1 or 1.2 or 1.3
+		board[emptyCell[0]][emptyCell[1]] = foodNum;
 		food_remain--;
 	}
-	keysDown = {};
+	keysDown = {}; // הגדרת מילון עם שני איבנט ליסנר
 	addEventListener(
 		"keydown",
 		function(e) {
@@ -182,7 +191,9 @@ function Draw() {
 			var center = new Object();
 			center.x = i * 60 + 30;
 			center.y = j * 60 + 30;
+			
 			if (board[i][j] == 2) {
+			/************* Drow Pacman *************/
 				context.beginPath();
 				context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
 				context.lineTo(center.x, center.y);
@@ -192,12 +203,26 @@ function Draw() {
 				context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
 				context.fill();
-			} else if (board[i][j] == 1) {
+			} else if (board[i][j] == 1.1) {
+			/************* Drow Food 5P *************/
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-				context.fillStyle = "black"; //color
+				context.fillStyle = gameProperties[5]; //color
 				context.fill();
-			} else if (board[i][j] == 4) {
+			} else if(board[i][j]==1.2){
+			/************* Drow Food 15P *************/
+				context.beginPath();
+				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
+				context.fillStyle = gameProperties[6]; //color
+				context.fill();	
+			}else if(board[i][j]==1.3){
+			/************* Drow Food 25P *************/
+				context.beginPath();
+				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
+				context.fillStyle = gameProperties[7]; //color
+				context.fill();	
+			}else if (board[i][j] == 4) {
+			/************* Drow Wall *************/
 				context.beginPath();
 				context.rect(center.x - 30, center.y - 30, 60, 60);
 				context.fillStyle = "grey"; //color
@@ -207,8 +232,8 @@ function Draw() {
 	}
 }
 function UpdatePosition() {
-	board[shape.i][shape.j] = 0;
-	var x = GetKeyPressed();
+	board[shape.i][shape.j] = 0; //clean pacman
+	var x = GetKeyPressed(); //get pressed key
 	if (x == 1) {
 		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
 			shape.j--;
@@ -229,12 +254,18 @@ function UpdatePosition() {
 			shape.i++;
 		}
 	}
-	if (board[shape.i][shape.j] == 1) {
-		score++;
+
+	if (board[shape.i][shape.j] == 1.1) {
+		score+=5; // אם זה אוכל תעלה את הניקוד
+	}else if (board[shape.i][shape.j] == 1.2) {
+		score+=15; // אם זה אוכל תעלה את הניקוד
+	}else if (board[shape.i][shape.j] == 1.3) {
+		score+=25; // אם זה אוכל תעלה את הניקוד
 	}
-	board[shape.i][shape.j] = 2;
-	var currentTime = new Date();
-	time_elapsed = (currentTime - start_time) / 1000;
+
+	board[shape.i][shape.j] = 2; // נרצה לצבוע מחדש את הקאנבס, גם אם הצלחתי להתקדם וגם אם לא
+	var currentTime = new Date(); 
+	time_elapsed = (currentTime - start_time) / 1000; // מעדכן את הזמן שעבר
 	if (score >= 20 && time_elapsed <= 10) {
 		pac_color = "green";
 	}
@@ -640,7 +671,7 @@ function saveUserAndProp(){
 //done  - logIn modal dialog - we fix it like RegisterModel
 //done -  להציג את הגדרות בדף של המשחק
 
-//todo - כפתור ראנדום
+//todo - כפתור ראנדום הוא אמר בסוף השעות קבלה משהו לא ברור על הכפתור
 //todo - לצייר את המבוך של הפאקמן
 //todo - להקטין את הפיקסלים במשחק כי הם גדולים מידי
 //todo - להוסיף שהכפתורים שנבחרו הם אלה שזזים 
