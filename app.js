@@ -15,10 +15,10 @@ var userInfo = [];
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
-	//divToShow = "Welcome";
-	ShowDiv(divToShow)
+	context.fillStyle = "blue";
+
+	ShowDiv('GameScreen')
 	console.log(divToShow)
-	//Start();
 });
 
 function ShowDiv(show) {
@@ -132,6 +132,19 @@ function Draw() {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
+	var arrow  =  gameProperties[0];
+	console.log(arrow);
+	document.getElementById('lblButtonsU').value = "" + gameProperties[0];
+	document.getElementById('lblButtonsD').value = "" + gameProperties[1];
+	document.getElementById('lblButtonsR').value = "" + gameProperties[2];
+	document.getElementById('lblButtonsL').value = "" + gameProperties[3];
+	document.getElementById('lblTimeT').value = "" + gameProperties[8];
+	document.getElementById('lblBalls').value = "" + gameProperties[4];
+
+
+	document.getElementById('lblMonsters').value = "" + gameProperties[8];
+
+
 	for (var i = 0; i < 10; i++) {
 		for (var j = 0; j < 10; j++) {
 			var center = new Object();
@@ -343,7 +356,10 @@ function CloseRegDialog() {
 }
  /********************************************** LogIn ***************************************************/
  function checkLoginForm(message){
-	var userName = document.getElementById('LoginUN').value;
+	userName = document.getElementById('LoginUN').value;
+	console.log("in login");
+	console.log(userName);
+	let userP = userName+" Properties";
 	var PassWord = document.getElementById('LoginPW').value;
 	var info = localStorage.getItem(userName);
 	if(info === null){
@@ -353,8 +369,8 @@ function CloseRegDialog() {
 		var pswToCheck = info.split(',')[1];
 		if ( PassWord === pswToCheck){
 			document.getElementById(message).style.display = "none";
-			document.getElementById("LoginModel").style.display = "none";
-			document.getElementById("LoginDialog").showModal();
+			gameProperties = localStorage.getItem(userP) ? JSON.parse(localStorage.getItem(userP)) : []
+			return showLogModel("loginDialog")			
 		}
 		else{
 			document.getElementById(message).style.display= "inline";
@@ -363,10 +379,26 @@ function CloseRegDialog() {
 	divToShow = "Login";
 	console.log(divToShow)
 }
+function showLogModel(modelName){
+	// Get the modal
+	var modal = document.getElementById(modelName);
+	modal.style.display = "block";
+
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[0];
+
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+		//   modal.style.display = "none";
+		  CloseLogDialog();
+	}
+	return false;
+}
 function CloseLogDialog() {
+	var modal = document.getElementById("loginDialog"); 
+	modal.style.display = "none";
 	divToShow = "GameScreen";
-	document.getElementById("LoginDialog").close();
-	//ShowDiv("GameScreen");
+	ShowDiv("GameScreen");
 }
  /********************************************** About ***************************************************/
 
@@ -543,9 +575,17 @@ function SaveButtonMoves(){
 		var next = document.getElementById("next");
 
 		document.getElementById('key-error').style.display = "none";
-		var info = right + ',' + left + ',' + up + ',' + down ;
-		gameProperties.push(info);
+		gameProperties=[];
+		gameProperties.push(up);
+		gameProperties.push(down);
+		gameProperties.push(right);
+		gameProperties.push(left);
+	
 		console.log(gameProperties);
+		console.log(gameProperties[0]);
+		console.log(gameProperties[1]);
+		console.log(gameProperties[3]);
+
 		next.style.visibility = "visible";
 		window.location.hash = '#MoveButtoms';
 		return true;
@@ -556,9 +596,23 @@ function SaveButtonMoves(){
  * save the connected user globaly and save his property with his name to local storage
  */
 function saveUserAndProp(){
+	var userAndPr = userName+" Properties";
+	console.log(userName);
+	console.log(userAndPr);
 	localStorage.setItem(userName, userInfo);
-	localStorage.setItem(userName+" Properties" ,gameProperties );
+	localStorage.setItem(userAndPr ,JSON.stringify(gameProperties) );
 }
-/*************************************************************************************************/
-//todo - saveMonstare or validNumberMonst with errors we need to fix it
-//todo - logIn modal dialog - we need to fix it like RegisterModel 
+/******************************************* game Prop ********************************************/
+
+
+
+//todo - saveMonstare or validNumberMonst with errors we need to fix it - עינצצצצ
+//done  - logIn modal dialog - we fix it like RegisterModel
+/// להציג את הגדרות בדף של המשחק
+// כפתור ראנדום
+// לצייר את המבוך של הפאקמן
+// להקטין את הפיקסלים במשחק כי הם גדולים מידי
+// להוסיף שהכפתורים שנבחרו הם אלה שזזים 
+// להוסיף את הכדורים עם הצבעים שנבחרו
+// מפלצות שנעות בצורה רנדומלית במשחק - עינצצצ
+

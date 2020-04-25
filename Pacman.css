@@ -1,3 +1,34 @@
+#GameScreen{
+    overflow: auto;
+}
+#game{
+    height: 490px;
+    width: 79%;
+    float: right; 
+    background:rgb(167, 167, 167);
+}
+#canvas{
+    background-color: darksalmon;
+}
+#showProp{
+    width: 20%;
+    height: 490px;
+    border: darkturquoise solid 1px;
+    float: left;
+    background:rgb(167, 167, 167);
+
+}
+#lblScore,#lblTime,#lblButtonsU,#lblButtonsD,#lblButtonsR,#lblButtonsL,#lblMonsters,#lblBalls,#lblTimeT{
+    width: 180px;
+    color: aliceblue;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid darkred;
+    resize: both;
+}
 body{
     background-image: url('gs.jpg');
     color: aliceblue;
@@ -28,6 +59,7 @@ body{
 
 .topnav {
     width: 100%;
+    height: 60px;
     background: black;
     overflow: hidden;
     border: 4px solid black;
@@ -55,8 +87,9 @@ body{
 .Content{
     font-family: "Century Gothic", CenturyGothic;
     color: aliceblue;
-    margin-top: 150px;
+    margin-top: 120px;
     margin-bottom: 45px;
+    padding-top: 0px;
     text-align: center;
 }
 
@@ -93,8 +126,9 @@ body{
     font-size: 30px;
 }
 
-.PageTitle:before, .PageTitle:after {
-    border-bottom: 3px solid darksalmon;
+.errorMsg {
+    display:none;
+    color:Red;
 }
 
 #Welcome{
@@ -110,10 +144,7 @@ body{
 
 }
 
-.errorMsg {
-    display:none;
-    color:Red;
-}
+
 
 .MyForm {
     border: none;
@@ -155,27 +186,6 @@ button:hover,input[type=submit]:hover {
     cursor: pointer;
 }
 /***************************************model dialog*********************************************/
-/* Center the image and position the close button
-.imgcontainer {
-    text-align: center;
-    margin: 24px 0 12px 0;
-    position: relative;
-  }
-  
-  img.avatar {
-    width: 40%;
-    border-radius: 50%;
-  }
-  
-  .container {
-    padding: 16px;
-  }
-  
-span.psw {
-    float: right;
-    padding-top: 0px;
-  }
-  
   /* The Modal (background) */
   .modal {
     display: none; /* Hidden by default */
@@ -223,4 +233,21 @@ span.psw {
   } 
   #next {
     visibility:hidden;
+}
+/***************************************Color picker*********************************************/
+input[type=range]{
+    margin-top: 5px;
+    width: 25%;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.displayColor{
+    height: 100px;
+    width: 25%;
+    margin-left: 38%;
+    border: aliceblue solid 1px;
+}
+.lablball{
+    font-size: 25px;
+    color: darksalmon;
 }
