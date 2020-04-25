@@ -9,6 +9,7 @@
 }
 #canvas{
     background-color: darksalmon;
+    border: darkturquoise solid 2px;
 }
 #showProp{
     width: 20%;

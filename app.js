@@ -51,16 +51,16 @@ function Start() {
 	board = new Array(); // init game
 	score = 0;
 	pac_color = "yellow"; 
-	var cnt = 100; //  מאפשר לנו להגדיר אחוזים מסויימים בהמשך
+	var cnt = 112; //  מאפשר לנו להגדיר אחוזים מסויימים בהמשך
 	var food_remain = 50; // כמה אוכל רוצים שיהיה בלוח צריך לשנות את זה לפי ההגדרות אחכ
 	var pacman_remain = 1; // כמה פעמים נרצה לאתחל את הפאקמן במהלך המשחק בצורה רנדומית (משמש אותנו בשביל לצייר בפעם הראשונה כרגע)
 	start_time = new Date(); 
 
 	/************* Put walls In Game Board************/
-	for (var i = 0; i < 10; i++) {
+	for (var i = 0; i < 14; i++) {
 		board[i] = new Array(); // יוצרים את המערך הדו מימדי 
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-		for (var j = 0; j < 10; j++) {
+		for (var j = 0; j < 8; j++) {
 			if (
 				(i == 3 && j == 3) ||
 				(i == 3 && j == 4) ||
@@ -118,11 +118,11 @@ function Start() {
 /********************************************** game ***************************************************/
 
 function findRandomEmptyCell(board) {
-	var i = Math.floor(Math.random() * 9 + 1);
-	var j = Math.floor(Math.random() * 9 + 1);
+	var i = Math.floor(Math.random() * 13 + 1);
+	var j = Math.floor(Math.random() * 7 + 1);
 	while (board[i][j] != 0) {
-		i = Math.floor(Math.random() * 9 + 1);
-		j = Math.floor(Math.random() * 9 + 1);
+		i = Math.floor(Math.random() * 13 + 1);
+		j = Math.floor(Math.random() * 7 + 1);
 	}
 	return [i, j];
 }
@@ -205,7 +205,6 @@ function Draw() {
 
 	imageup.onload=function(){
 		context.drawImage(imageup,center.x,center.x,50,50);
-    	// context.drawImage(image,canvas.width/2-image.width/2,canvas.height/2-image.width/2);
 	}
 	imageup.src="upPac.png";
 	imagedown.src="downPac.png";
@@ -213,23 +212,13 @@ function Draw() {
 	imageleft.src="leftPac.png";
 
 	/************* Show Game Part *************/
-	for (var i = 0; i < 10; i++) {
-		for (var j = 0; j < 10; j++) {
+	for (var i = 0; i < 14; i++) {
+		for (var j = 0; j < 8; j++) {
 			var center = new Object();
-			center.x = i * 60 + 30;
-			center.y = j * 60 + 30;
+			center.x = i * 60 + 20;
+			center.y = j * 60 + 20;
 			/************* Drow Pacman *************/
 			if (board[i][j] == 2.1) {
-				// context.beginPath();
-				// context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
-				// context.lineTo(center.x, center.y);
-				// context.fillStyle = pac_color; //color
-				// context.fill();
-				// context.beginPath();
-				// context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
-				// context.fillStyle = "black"; //color
-				// context.fill();
-
 				context.drawImage(imageup,center.x,center.y,30,50); //UP
 			}else if(board[i][j] == 2.2){
 				context.drawImage(imagedown,center.x,center.y,30,50); //DOWN
@@ -278,19 +267,19 @@ function UpdatePosition() {
 		}
 	}
 	if (x == 2) { //down
-		if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
+		if (shape.j < 7 && board[shape.i][shape.j + 1] != 4) {
 			shape.j++;
 			pacManDirection=2.2;
 		}
 	}
-	if (x == 3) { //right
+	if (x == 3) { //left
 		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
 			shape.i--;
 			pacManDirection=2.3;
 		}
 	}
-	if (x == 4) { //left
-		if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
+	if (x == 4) { //right
+		if (shape.i < 13 && board[shape.i + 1][shape.j] != 4) {
 			shape.i++;
 			pacManDirection=2.4;
 		}
@@ -303,19 +292,19 @@ function UpdatePosition() {
 	}else if (board[shape.i][shape.j] == 1.3) {
 		score+=25; // אם זה אוכל תעלה את הניקוד
 	}
-
-	board[shape.i][shape.j] = pacManDirection; // נרצה לצבוע מחדש את הקאנבס, גם אם הצלחתי להתקדם וגם אם לא
+	if(!(shape.i<0 || shape.j<0 || shape.i>13 ||shape.j>7))
+		board[shape.i][shape.j] = pacManDirection; // נרצה לצבוע מחדש את הקאנבס, גם אם הצלחתי להתקדם וגם אם לא
 	var currentTime = new Date(); 
 	time_elapsed = (currentTime - start_time) / 1000; // מעדכן את הזמן שעבר
 	if (score >= 20 && time_elapsed <= 10) {
 		pac_color = "green";
 	}
-	if (score == 50) {
-		window.clearInterval(interval);
-		window.alert("Game completed");
-	} else {
+	// if (score == 50) {
+	// 	window.clearInterval(interval);
+	// 	window.alert("Game completed");
+	// } else {
 		Draw();
-	}
+	// }
 }
  /********************************************** SignIn ***************************************************/
 /*function checkPassword(str) {
@@ -657,19 +646,14 @@ function showBotton(event , pId) {
 	var x = event.key;
 	if(pId=="rightBotton"){
 		keyCodeRight = event.keyCode;
-		console.log(keyCodeRight);
 	}
 	else if(pId=="leftBotton"){
 		keyCodeLeft = event.keyCode;
-		console.log(keyCodeLeft);
 	}else if(pId=="upBotton"){
 		keyCodeUp = event.keyCode;
-		console.log(keyCodeUp);
 	}else if(pId=="downBotton"){
 		keyCodeDown = event.keyCode;
-		console.log(keyCodeDown);
 	}
-	console.log(event.keyCode);
 	document.getElementById(pId).value = "" + x;
 }
 /**
@@ -731,7 +715,6 @@ function saveUserAndProp(){
 
 //todo - כפתור ראנדום הוא אמר בסוף השעות קבלה משהו לא ברור על הכפתור
 //todo - לצייר את המבוך של הפאקמן
-//todo - להקטין את הפיקסלים במשחק כי הם גדולים מידי
 
 
 //todo - מפלצות שנעות בצורה רנדומלית במשחק - עינצצצ
