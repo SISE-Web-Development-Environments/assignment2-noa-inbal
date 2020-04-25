@@ -20,7 +20,6 @@ $(document).ready(function() {
 	ShowDiv('GameScreen')
 	console.log(divToShow)
 });
-
 function ShowDiv(show) {
 	var allDives = document.getElementsByClassName('section');
 	var allModals = document.getElementsByClassName('modal')
@@ -40,7 +39,6 @@ function ShowDiv(show) {
 		ShowDivInProp('introProperties');
 	}
 }
-
 function Start() {
 	// ShowDiv("Welcome");
 	board = new Array();
@@ -112,7 +110,6 @@ function findRandomEmptyCell(board) {
 	}
 	return [i, j];
 }
-
 function GetKeyPressed() {
 	if (keysDown[38]) {
 		return 1;
@@ -167,6 +164,7 @@ function DrawCircleProp(){
 }
 function Draw() {
 	canvas.width = canvas.width; //clean board
+	/************ Show Property Part ************/
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
 	DrawCircleProp();
@@ -176,11 +174,9 @@ function Draw() {
 	document.getElementById('lblButtonsL').value = "" + gameProperties[3];
 	document.getElementById('lblTimeT').value = "" + gameProperties[8];
 	document.getElementById('lblBalls').value = "" + gameProperties[4];
-
-
 	document.getElementById('lblMonsters').value = "" + gameProperties[8];
 
-
+	/************* Show Game Part *************/
 	for (var i = 0; i < 10; i++) {
 		for (var j = 0; j < 10; j++) {
 			var center = new Object();
@@ -210,7 +206,6 @@ function Draw() {
 		}
 	}
 }
-
 function UpdatePosition() {
 	board[shape.i][shape.j] = 0;
 	var x = GetKeyPressed();
@@ -642,13 +637,14 @@ function saveUserAndProp(){
 
 
 
-//todo - saveMonstare or validNumberMonst with errors we need to fix it - עינצצצצ
 //done  - logIn modal dialog - we fix it like RegisterModel
-/// להציג את הגדרות בדף של המשחק
-// כפתור ראנדום
-// לצייר את המבוך של הפאקמן
-// להקטין את הפיקסלים במשחק כי הם גדולים מידי
-// להוסיף שהכפתורים שנבחרו הם אלה שזזים 
-// להוסיף את הכדורים עם הצבעים שנבחרו
-// מפלצות שנעות בצורה רנדומלית במשחק - עינצצצ
+//done -  להציג את הגדרות בדף של המשחק
+
+//todo - כפתור ראנדום
+//todo - לצייר את המבוך של הפאקמן
+//todo - להקטין את הפיקסלים במשחק כי הם גדולים מידי
+//todo - להוסיף שהכפתורים שנבחרו הם אלה שזזים 
+//todo - להוסיף את הכדורים עם הצבעים שנבחרו
+//todo - מפלצות שנעות בצורה רנדומלית במשחק - עינצצצ
+//todo - saveMonstare or validNumberMonst with errors we need to fix it - עינצצצצ
 
