@@ -127,13 +127,49 @@ function GetKeyPressed() {
 		return 4;
 	}
 }
+function DrawCircleProp(){
+	var canvas = document.getElementById('circle');
+	if (canvas.getContext){
+		var ctx = canvas.getContext('2d'); 
+		var X = canvas.width*3/4;
+		var Y = canvas.height/3;
+		var R = 10;
+		ctx.beginPath();
+		ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
+		ctx.strokeStyle = gameProperties[5];
+		ctx.fillStyle = gameProperties[5];
+  		ctx.fill();
+		ctx.stroke();
+		ctx.fillText("    5P",canvas.width*3/5,50);
+		var X = canvas.width*2/4;
+		var Y = canvas.height/3;
+		var R = 10;
+		ctx.beginPath();
+		ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
+		ctx.strokeStyle = gameProperties[6];
+		ctx.fillStyle = gameProperties[6];
+  		ctx.fill();
+		ctx.stroke();
+		ctx.fillText("  15P",canvas.width *2/5,50);
 
+		var X = canvas.width/4;
+		var Y = canvas.height/3;
+		var R = 10;
+		ctx.beginPath();
+		ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
+		ctx.strokeStyle = gameProperties[7];
+		ctx.fillStyle = gameProperties[7];
+  		ctx.fill();
+		ctx.stroke();
+		ctx.fillText("25P",canvas.width/5,50);
+
+	}
+}
 function Draw() {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_elapsed;
-	var arrow  =  gameProperties[0];
-	console.log(arrow);
+	DrawCircleProp();
 	document.getElementById('lblButtonsU').value = "" + gameProperties[0];
 	document.getElementById('lblButtonsD').value = "" + gameProperties[1];
 	document.getElementById('lblButtonsR').value = "" + gameProperties[2];
