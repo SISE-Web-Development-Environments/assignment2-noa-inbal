@@ -14,8 +14,7 @@
 
 	<body>
 		<div class="Header">
-				Gossip PacGirl
-				<img class="imoji" src="imoji.png">
+				Rick &amp; Morty Pacman &nbsp; <img id="headerImg" src="logo.jpg">
 		</div>
 		<div class="topnav">
 			<a onclick="ShowDiv('Welcome')">Welcome</a>
@@ -190,16 +189,6 @@
 				  </div>
 				</div>
 			</div>
-<!--			<div>
-				<dialog id="LoginDialog">
-					<p>You've Logged in Successfully!</p>
-					<button type="button" onclick="CloseLogDialog()">Close</button>
-				</dialog>>
-			</div>  -->
-			<!--<dialog id="registerDialog">
-			Your Registration Has Been Successful!
-			<button onclick="CloseRegDialog()">Close</button>
-			</dialog>-->
 			<div class="section" id="Properties">
 				<div class="PropSection" id="introProperties">
 					<p>
@@ -299,9 +288,9 @@
 					<br>
 					<input id="monst" type="text" name="mst" required onchange="validNumberMonst('monst-error')">
 					<br>
-					<button type="button" onclick="SaveMonsters()">Submit</button>
+					<button type="button" onclick="SaveMonsters('monst')">Submit</button>
 					<br>
-					<label class="errorMsg" id="monst-error">Invalid Time!</label>
+					<label class="errorMsg" id="monst-error">Invalid Number Of Monsters!</label>
 				</div>
 				<div class="modal" id="startGame">
 					<div class="modal-content">

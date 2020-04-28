@@ -7,6 +7,7 @@ var start_time;
 var time_elapsed;
 var interval; 
 var divToShow = "Welcome";
+var Monsters = [new Object() , new Object() , new Object() , new Object()]
 
 var keyCodeUp= "";
 var keyCodeDown= "";
@@ -16,7 +17,7 @@ var keyCodeLeft= "";
 var userName = "";
 var gameProperties = []; 
 //0:up,1:upCode,2:down,3:downCode:,4:right,5:rightCode,6:left,7:leftCode
-//8:numBalls,9:color5P,10:color15P,11:color25P,12:time,13:monstor
+//8:numBalls,9:color5P,10:color15P,11:color25P,12:time,13:monstor,14:Lives
 var userInfo = [];
 
 
@@ -50,10 +51,12 @@ function Start() {
 	// ShowDiv("Welcome");
 	board = new Array(); // init game
 	score = 0;
-	pac_color = "yellow"; 
+	pac_color = "yellow";
+	var monsIndex = 0;
 	var cnt = 112; //  מאפשר לנו להגדיר אחוזים מסויימים בהמשך
 	var food_remain = 50; // כמה אוכל רוצים שיהיה בלוח צריך לשנות את זה לפי ההגדרות אחכ
 	var pacman_remain = 1; // כמה פעמים נרצה לאתחל את הפאקמן במהלך המשחק בצורה רנדומית (משמש אותנו בשביל לצייר בפעם הראשונה כרגע)
+	var monst_remain = 3; // צריך לשנות לפי ההגדרות למספר המפלצות שהמשתמש הכניס
 	start_time = new Date(); 
 
 	/************* Put walls In Game Board************/
@@ -70,6 +73,8 @@ function Start() {
 			) {
 				board[i][j] = 4;
 			} else {
+
+
 				/************* Put food randomly *************/
 				var randomNum = Math.random();
 				if (randomNum <= (1.0 * food_remain) / cnt) {
@@ -83,7 +88,14 @@ function Start() {
 					shape.j = j;
 					pacman_remain--;
 					board[i][j] = 2.1;
-				} else {
+				} else if(randomNum <= (1.0 * (monst_remain + pacman_remain + food_remain)) / cnt){
+					/************* Put Monster randomly *************/
+					Monsters[monsIndex].i = i;
+					Monsters[monsIndex].j = j;
+					monst_remain--;
+					monsIndex++;
+					board[i][j] = 3.1;
+				}else{
 					board[i][j] = 0;
 				}
 				cnt--;
@@ -98,6 +110,16 @@ function Start() {
 		board[emptyCell[0]][emptyCell[1]] = foodNum;
 		food_remain--;
 	}
+
+	while (monst_remain > 0) {
+		var emptyCell = findRandomEmptyCell(board);
+		Monsters[monsIndex].i = emptyCell[0];
+		Monsters[monsIndex].j = emptyCell[1];
+		monsIndex++;
+		board[emptyCell[0]][emptyCell[1]] = 3.1;
+		monst_remain--;
+	}
+
 	keysDown = {}; // הגדרת מילון עם שני איבנט ליסנר
 	addEventListener(
 		"keydown",
@@ -194,96 +216,161 @@ function Draw() {
 	document.getElementById('lblButtonsL').value = "" + gameProperties[6];
 	keyCodeLeft = gameProperties[7];
 
-	document.getElementById('lblTimeT').value = "" + gameProperties[8];
-	document.getElementById('lblBalls').value = "" + gameProperties[12];
-	document.getElementById('lblMonsters').value = "" + gameProperties[12];
+	document.getElementById('lblTimeT').value = "" + gameProperties[12];
+	document.getElementById('lblBalls').value = "" + gameProperties[8];
+	document.getElementById('lblMonsters').value = "" + gameProperties[3];
 
 	var imageup=document.createElement("img");	
 	var imagedown=document.createElement("img");	
 	var imageright=document.createElement("img");	
-	var imageleft=document.createElement("img");	
+	var imageleft=document.createElement("img");
+	var imageGhost=document.createElement('img');
+	var imageWall = document.createElement('img');
 
 	imageup.onload=function(){
 		context.drawImage(imageup,center.x,center.x,50,50);
 	}
-	imageup.src="upPac.png";
-	imagedown.src="downPac.png";
-	imageright.src="rightPac.png";
-	imageleft.src="leftPac.png";
+	imageup.src="mortiU.png";
+	imagedown.src="mortiD.png";
+	imageright.src="mortiR.png";
+	imageleft.src="mortiL.png";
+	imageGhost.src="mons1.png";
+	imageWall.src="potal.png";
+
 
 	/************* Show Game Part *************/
 	for (var i = 0; i < 14; i++) {
 		for (var j = 0; j < 8; j++) {
 			var center = new Object();
-			center.x = i * 60 + 20;
-			center.y = j * 60 + 20;
+			center.x = i*60;
+			center.y = j*60;
 			/************* Drow Pacman *************/
 			if (board[i][j] == 2.1) {
-				context.drawImage(imageup,center.x,center.y,30,50); //UP
+				context.drawImage(imageup,center.x,center.y,50,50); //UP
 			}else if(board[i][j] == 2.2){
-				context.drawImage(imagedown,center.x,center.y,30,50); //DOWN
+				context.drawImage(imagedown,center.x,center.y,50,50); //DOWN
 			} else if(board[i][j] == 2.3){
-				context.drawImage(imageleft,center.x,center.y,30,50); //LEFT
+				context.drawImage(imageleft,center.x,center.y,50,50); //LEFT
 			} else if(board[i][j] == 2.4){
-				context.drawImage(imageright,center.x,center.y,30,50); //RIGHT
-			} 
-
+				context.drawImage(imageright,center.x,center.y,50,50); //RIGHT
+			/*************Drow Monsters***************/
+			} else if(board[i][j] == 3.1){
+				context.drawImage(imageGhost,center.x,center.y,50,50); //Monst
+			}
 			else if (board[i][j] == 1.1) {
 			/************* Drow Food 5P *************/
 				context.beginPath();
-				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
+				context.arc(center.x+15, center.y+15, 20, 0, 2 * Math.PI); // circle
 				context.fillStyle = gameProperties[9]; //color 5P
 				context.fill();
 			} else if(board[i][j]==1.2){
 			/************* Drow Food 15P *************/
 				context.beginPath();
-				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
+				context.arc(center.x+15, center.y+15, 20, 0, 2 * Math.PI); // circle
 				context.fillStyle = gameProperties[10]; //color 15P
 				context.fill();	
 			}else if(board[i][j]==1.3){
 			/************* Drow Food 25P *************/
 				context.beginPath();
-				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
+				context.arc(center.x+15, center.y+15, 20, 0, 2 * Math.PI); // circle
 				context.fillStyle = gameProperties[11]; //color 25P
 				context.fill();	
 			}else if (board[i][j] == 4) {
 			/************* Drow Wall *************/
+			/*
 				context.beginPath();
 				context.rect(center.x - 30, center.y - 30, 60, 60);
 				context.fillStyle = "grey"; //color
 				context.fill();
+			 */
+				context.drawImage(imageWall,center.x,center.y,50,50); //Wall
 			}
 		}
 	}
 }
 function UpdatePosition() {
+
 	let pacManDirection = board[shape.i][shape.j];
 	board[shape.i][shape.j] = 0; //clean pacman
 	var x = GetKeyPressed(); //get pressed key
 	if (x == 1) { //up
-		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
+		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4 && board[shape.i][shape.j - 1] != 3.1) {
 			shape.j--;
 			pacManDirection=2.1;
 		}
 	}
 	if (x == 2) { //down
-		if (shape.j < 7 && board[shape.i][shape.j + 1] != 4) {
+		if (shape.j < 7 && board[shape.i][shape.j + 1] != 4 && board[shape.i][shape.j + 1] != 3.1) {
 			shape.j++;
 			pacManDirection=2.2;
 		}
 	}
 	if (x == 3) { //left
-		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
+		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4 && board[shape.i - 1][shape.j] != 3.1) {
 			shape.i--;
 			pacManDirection=2.3;
 		}
 	}
 	if (x == 4) { //right
-		if (shape.i < 13 && board[shape.i + 1][shape.j] != 4) {
+		if (shape.i < 13 && board[shape.i + 1][shape.j] != 4 && board[shape.i + 1][shape.j] != 3.1) {
 			shape.i++;
 			pacManDirection=2.4;
 		}
 	}
+
+	/********************************************Draw Monsters*************************************************/
+	for(let k = 0 ; k < 3 ; k++){ // instead of 3 we need to put the number of monster the user choose
+		let monstPoss = board[Monsters[k].i][Monsters[k].j];
+		let prevPoss = 0;
+		let prevVal = 0;
+		board[Monsters[k].i][Monsters[k].j] = 0;
+		let p =Math.floor( Math.random() * 4 +1 );
+		if (p == 1) { //up
+			if (Monsters[k].j > 0 && board[Monsters[k].i][Monsters[k].j - 1] != 4) {
+				prevPoss = board[Monsters[k].i][Monsters[k].j - 1];
+				Monsters[k].j--;
+				prevVal = board[Monsters[k].i][Monsters[k].j];
+				board[Monsters[k].i][Monsters[k].j]=3.1;
+			}
+		}
+		if (p == 2) { //down
+			if (Monsters[k].j < 7 && board[Monsters[k].i][Monsters[k].j + 1] != 4) {
+				prevPoss = board[Monsters[k].i][Monsters[k].j + 1];
+				Monsters[k].j++;
+				prevVal = board[Monsters[k].i][Monsters[k].j];
+				board[Monsters[k].i][Monsters[k].j]=3.1;
+			}
+		}
+		if (p == 3) { //left
+			if (Monsters[k].i > 0 && board[Monsters[k].i - 1][Monsters[k].j] != 4) {
+				prevPoss = board[Monsters[k].i - 1][Monsters[k].j];
+				Monsters[k].i--;
+				prevVal = board[Monsters[k].i][Monsters[k].j];
+				board[Monsters[k].i][Monsters[k].j]=3.1;
+			}
+		}
+		if (p == 4) { //right
+			if (Monsters[k].i < 13 && board[Monsters[k].i + 1][Monsters[k].j] != 4) {
+				prevPoss = board[Monsters[k].i + 1][Monsters[k].j];
+				Monsters[k].i++;
+				prevVal = board[Monsters[k].i][Monsters[k].j];
+				board[Monsters[k].i][Monsters[k].j]=3.1;
+			}
+		}
+/*
+		if(prevPoss == 1.1){
+			prev
+		}
+		if(prevPoss == 1.1){
+
+		}
+		if(prevPoss == 1.1){
+
+		}
+
+ */
+	}
+	/**********************************************Finish*****************************************************/
 
 	if (board[shape.i][shape.j] == 1.1) {
 		score+=5; // אם זה אוכל תעלה את הניקוד
@@ -292,8 +379,10 @@ function UpdatePosition() {
 	}else if (board[shape.i][shape.j] == 1.3) {
 		score+=25; // אם זה אוכל תעלה את הניקוד
 	}
-	if(!(shape.i<0 || shape.j<0 || shape.i>13 ||shape.j>7))
+	if(!(shape.i<0 || shape.j<0 || shape.i>13 ||shape.j>7)){
 		board[shape.i][shape.j] = pacManDirection; // נרצה לצבוע מחדש את הקאנבס, גם אם הצלחתי להתקדם וגם אם לא
+	}
+
 	var currentTime = new Date(); 
 	time_elapsed = (currentTime - start_time) / 1000; // מעדכן את הזמן שעבר
 	if (score >= 20 && time_elapsed <= 10) {
@@ -303,7 +392,7 @@ function UpdatePosition() {
 	// 	window.clearInterval(interval);
 	// 	window.alert("Game completed");
 	// } else {
-		Draw();
+	Draw();
 	// }
 }
  /********************************************** SignIn ***************************************************/
@@ -524,6 +613,45 @@ function ShowDivInProp(show){
 	target.style.display = 'block';
 }
 function RandomProperties(){
+	var x = Math.random();
+	var y= Math.random();
+	var balls =  Math.floor(x*40 + 50);
+	var monsters =  Math.floor(x*3 + 1);
+	var time =  Math.floor((x*120) + (y*240) + 60);
+	var colors = ["" , "" , ""];
+	for( i = 0 ; i < 3 ; i++){
+		var create = true;
+		var color = "";
+		while(create){
+			x = Math.floor(Math.random()*255);
+			y= Math.floor(Math.random()*255);
+			var z = Math.floor(Math.random()*255);
+			color = "rgb(" + x + "," + y + "," + z + ")"
+			create = false;
+			for(j = 0 ; j <= i ; j++){
+				if(color == colors[i]){
+					create = true;
+				}
+			}
+		}
+		colors[i] = color;
+	}
+	gameProperties.push("ArrowUp");
+	gameProperties.push(38);
+	gameProperties.push("ArrowDown");
+	gameProperties.push(40);
+	gameProperties.push("ArrowRight");
+	gameProperties.push(39);
+	gameProperties.push("ArrowLeft");
+	gameProperties.push(37);
+	gameProperties.push(balls);
+	gameProperties.push(colors[0]);
+	gameProperties.push(colors[1]);
+	gameProperties.push(colors[2]);
+	gameProperties.push(time);
+	gameProperties.push(monsters);
+	saveUserAndProp();
+	ShowDivInProp('startGame');
 
 }
 function SaveBalls(){
@@ -540,13 +668,13 @@ function SaveTime(){
 		ShowDivInProp('Monsters');
 	}
 }
-function SaveMonsters(id , show){
-	//var num = document.getElementById(id).value;
-	//if(validNumberMonst('monst-error')){
-	//	gameProperties.push(num);
+function SaveMonsters(id){
+	var num = document.getElementById(id).value;
+	if(validNumberMonst('monst-error')){
+		gameProperties.push(num);
 		saveUserAndProp();
 		ShowDivInProp('startGame');
-	//}
+	}
 }
 function validNumBalls(message){
 	var num = document.getElementById("numBalls").value;
@@ -624,7 +752,7 @@ function validTimer(message) {
 	document.getElementById(message).style.display = "inline";
 	return false;
 }
-function validNumberMonst() {
+function validNumberMonst(message) {
 	var num = document.getElementById("monst").value;
 	if (num.match(/^[0-9]+$/) != null){
 		var x = parseInt(num);
@@ -700,6 +828,7 @@ function SaveButtonMoves(){
  * save the connected user globaly and save his property with his name to local storage
  */
 function saveUserAndProp(){
+	gameProperties.push(3); //Lives
 	var userAndPr = userName+" Properties";
 	console.log(userName);
 	console.log(userAndPr);
@@ -718,5 +847,4 @@ function saveUserAndProp(){
 
 
 //todo - מפלצות שנעות בצורה רנדומלית במשחק - עינצצצ
-//todo - saveMonstare or validNumberMonst with errors we need to fix it - עינצצצצ
 
