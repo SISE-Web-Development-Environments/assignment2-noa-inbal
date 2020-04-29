@@ -72,36 +72,41 @@ function Start() {
 				(i == 6 && j == 2)
 			) {
 				board[i][j] = 4;
-			} else {
-
-
-				/************* Put food randomly *************/
-				var randomNum = Math.random();
-				if (randomNum <= (1.0 * food_remain) / cnt) {
-					food_remain--;
-					let randomFood = Math.floor(Math.random() * 3) + 1; // random integer from 1 to 3 
-					let foodNum = 1 + randomFood/10; //1.1 or 1.2 or 1.3
-					board[i][j] = foodNum;
-				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
-				/************* Put Pacman randomly *************/
-					shape.i = i;
-					shape.j = j;
-					pacman_remain--;
-					board[i][j] = 2.1;
-				} else if(randomNum <= (1.0 * (monst_remain + pacman_remain + food_remain)) / cnt){
-					/************* Put Monster randomly *************/
+				/************* Put Monster in Corners *************/
+			} else if( (i==0 && j==0) ||
+						(i==13 && j==0) ||
+						(i==0 && j==7) ||
+						(i==13 && j==7) ) {
+				if (monst_remain > 0) {
 					Monsters[monsIndex].i = i;
 					Monsters[monsIndex].j = j;
 					monst_remain--;
 					monsIndex++;
 					board[i][j] = 3.1;
+				}
+			}
+			else{
+				/************* Put food randomly *************/
+				var randomNum = Math.random();
+				if (randomNum <= (1.0 * food_remain) / cnt) {
+					food_remain--;
+					let randomFood = Math.floor((Math.random() * 3) + 1); // random integer from 1 to 3
+					let foodNum = 1.0 + randomFood/10; //1.1 or 1.2 or 1.3
+					board[i][j] = foodNum;
+				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
+					/************* Put Pacman randomly *************/
+					shape.i = i;
+					shape.j = j;
+					pacman_remain--;
+					board[i][j] = 2.1;
 				}else{
 					board[i][j] = 0;
 				}
-				cnt--;
 			}
+			cnt--;
 		}
 	}
+
 	
 	while (food_remain > 0) {
 		var emptyCell = findRandomEmptyCell(board);
@@ -109,15 +114,6 @@ function Start() {
 		let foodNum = 1 + randomNum/10; //1.1 or 1.2 or 1.3
 		board[emptyCell[0]][emptyCell[1]] = foodNum;
 		food_remain--;
-	}
-
-	while (monst_remain > 0) {
-		var emptyCell = findRandomEmptyCell(board);
-		Monsters[monsIndex].i = emptyCell[0];
-		Monsters[monsIndex].j = emptyCell[1];
-		monsIndex++;
-		board[emptyCell[0]][emptyCell[1]] = 3.1;
-		monst_remain--;
 	}
 
 	keysDown = {}; // הגדרת מילון עם שני איבנט ליסנר
@@ -274,7 +270,17 @@ function Draw() {
 				context.beginPath();
 				context.arc(center.x+15, center.y+15, 20, 0, 2 * Math.PI); // circle
 				context.fillStyle = gameProperties[11]; //color 25P
-				context.fill();	
+				context.fill();
+			}
+			else if (board[i][j] == 4.2) {
+				/************* Drow Food 5P & Monstar *************/
+				context.drawImage(imageGhost,center.x,center.y,50,50); //Monst
+			} else if(board[i][j]== 4.3){
+				/************* Drow Food 15P & Monstar *************/
+				context.drawImage(imageGhost,center.x,center.y,50,50); //Monst
+			}else if(board[i][j]== 4.4) {
+				/************* Drow Food 25P & Monstar *************/
+				context.drawImage(imageGhost,center.x,center.y,50,50); //Monst
 			}else if (board[i][j] == 4) {
 			/************* Drow Wall *************/
 			/*
@@ -294,25 +300,41 @@ function UpdatePosition() {
 	board[shape.i][shape.j] = 0; //clean pacman
 	var x = GetKeyPressed(); //get pressed key
 	if (x == 1) { //up
-		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4 && board[shape.i][shape.j - 1] != 3.1) {
+		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
+			if(board[shape.i][shape.j - 1] != 3.1){
+				//Start();
+				//return;
+			}
 			shape.j--;
 			pacManDirection=2.1;
 		}
 	}
 	if (x == 2) { //down
-		if (shape.j < 7 && board[shape.i][shape.j + 1] != 4 && board[shape.i][shape.j + 1] != 3.1) {
+		if (shape.j < 7 && board[shape.i][shape.j + 1] != 4 ) {
+			if(board[shape.i][shape.j + 1] != 3.1){
+				//Start();
+				//return;
+			}
 			shape.j++;
 			pacManDirection=2.2;
 		}
 	}
 	if (x == 3) { //left
-		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4 && board[shape.i - 1][shape.j] != 3.1) {
+		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
+			if(board[shape.i - 1][shape.j] != 3.1){
+				//Start();
+				//return;
+			}
 			shape.i--;
 			pacManDirection=2.3;
 		}
 	}
 	if (x == 4) { //right
-		if (shape.i < 13 && board[shape.i + 1][shape.j] != 4 && board[shape.i + 1][shape.j] != 3.1) {
+		if (shape.i < 13 && board[shape.i + 1][shape.j] != 4) {
+			if(board[shape.i + 1][shape.j] != 3.1){
+				//Start();
+				//return;
+			}
 			shape.i++;
 			pacManDirection=2.4;
 		}
@@ -320,55 +342,61 @@ function UpdatePosition() {
 
 	/********************************************Draw Monsters*************************************************/
 	for(let k = 0 ; k < 3 ; k++){ // instead of 3 we need to put the number of monster the user choose
-		let monstPoss = board[Monsters[k].i][Monsters[k].j];
-		let prevPoss = 0;
-		let prevVal = 0;
-		board[Monsters[k].i][Monsters[k].j] = 0;
+		board[Monsters[k].i][Monsters[k].j] -= 3.1;
 		let p =Math.floor( Math.random() * 4 +1 );
 		if (p == 1) { //up
 			if (Monsters[k].j > 0 && board[Monsters[k].i][Monsters[k].j - 1] != 4) {
-				prevPoss = board[Monsters[k].i][Monsters[k].j - 1];
-				Monsters[k].j--;
-				prevVal = board[Monsters[k].i][Monsters[k].j];
-				board[Monsters[k].i][Monsters[k].j]=3.1;
+				if(board[Monsters[k].i][Monsters[k].j - 1] == 2.1 || board[Monsters[k].i][Monsters[k].j - 1] == 2.2 ||
+					board[Monsters[k].i][Monsters[k].j - 1] == 2.3 || board[Monsters[k].i][Monsters[k].j - 1] == 2.4){
+					//Start();
+					//return;
+				}
+				else{
+					Monsters[k].j--;
+					board[Monsters[k].i][Monsters[k].j] += 3.1;
+				}
+
 			}
 		}
 		if (p == 2) { //down
 			if (Monsters[k].j < 7 && board[Monsters[k].i][Monsters[k].j + 1] != 4) {
-				prevPoss = board[Monsters[k].i][Monsters[k].j + 1];
-				Monsters[k].j++;
-				prevVal = board[Monsters[k].i][Monsters[k].j];
-				board[Monsters[k].i][Monsters[k].j]=3.1;
+				if(board[Monsters[k].i][Monsters[k].j + 1]== 2.1 || board[Monsters[k].i][Monsters[k].j + 1] == 2.2 ||
+					board[Monsters[k].i][Monsters[k].j + 1] == 2.3 || board[Monsters[k].i][Monsters[k].j + 1] == 2.4){
+					//Start();
+					//return;
+				}
+				else{
+					Monsters[k].j++;
+					board[Monsters[k].i][Monsters[k].j] += 3.1;
+				}
 			}
 		}
 		if (p == 3) { //left
 			if (Monsters[k].i > 0 && board[Monsters[k].i - 1][Monsters[k].j] != 4) {
-				prevPoss = board[Monsters[k].i - 1][Monsters[k].j];
-				Monsters[k].i--;
-				prevVal = board[Monsters[k].i][Monsters[k].j];
-				board[Monsters[k].i][Monsters[k].j]=3.1;
+				if(board[Monsters[k].i - 1][Monsters[k].j] == 2.1 || board[Monsters[k].i - 1][Monsters[k].j] == 2.2 ||
+					board[Monsters[k].i - 1][Monsters[k].j] == 2.3 || board[Monsters[k].i - 1][Monsters[k].j] == 2.4){
+					//Start();
+					//return;
+				}
+				else{
+					Monsters[k].i--;
+					board[Monsters[k].i][Monsters[k].j] += 3.1;
+				}
 			}
 		}
 		if (p == 4) { //right
 			if (Monsters[k].i < 13 && board[Monsters[k].i + 1][Monsters[k].j] != 4) {
-				prevPoss = board[Monsters[k].i + 1][Monsters[k].j];
-				Monsters[k].i++;
-				prevVal = board[Monsters[k].i][Monsters[k].j];
-				board[Monsters[k].i][Monsters[k].j]=3.1;
+				if(board[Monsters[k].i + 1][Monsters[k].j] == 2.1 || board[Monsters[k].i + 1][Monsters[k].j] == 2.2 ||
+					board[Monsters[k].i + 1][Monsters[k].j] == 2.3 || board[Monsters[k].i + 1][Monsters[k].j] == 2.4){
+					//Start();
+					//return;
+				}
+				else{
+					Monsters[k].i++;
+					board[Monsters[k].i][Monsters[k].j] += 3.1;
+				}
 			}
 		}
-/*
-		if(prevPoss == 1.1){
-			prev
-		}
-		if(prevPoss == 1.1){
-
-		}
-		if(prevPoss == 1.1){
-
-		}
-
- */
 	}
 	/**********************************************Finish*****************************************************/
 

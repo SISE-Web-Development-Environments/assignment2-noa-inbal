@@ -2,7 +2,7 @@
     overflow: auto;
 }
 #game{
-    height: 490px;
+    height: 750px;
     width: 79%;
     float: right; 
     /*background:rgb(167, 167, 167);*/
@@ -22,6 +22,15 @@
     background: inherit;
 
 
+}
+
+.welcomePacman{
+    background: inherit;
+    font-family: "Century Gothic", CenturyGothic;
+    color: deepskyblue;
+    font-size: 75px;
+    font-weight: bold;
+    text-shadow: 3px 3px #00FFFF;
 }
 
 #lblScore,#lblTime,#lblButtonsU,#lblButtonsD,#lblButtonsR,#lblButtonsL,#lblMonsters,#lblBalls,#lblTimeT{
