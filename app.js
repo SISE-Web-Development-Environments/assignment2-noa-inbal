@@ -492,6 +492,27 @@ function CloseGOWDialog(type , modelName){
 	}
 }
  /********************************************** LogIn ***************************************************/
+function validatePass(value, message) {
+	var isValid;
+	if (value.length < 6) {
+        isValid = false;
+    }else if (value.search(/[\!\@\#\$\%\^\&\*\(\)\_\+\,\.\?\\\'\`\~\{\}\[\]\|\-]/) != -1) {
+        isValid = false;
+	}
+	else if(value.search(/[^a-zA-Z0-9]/) != -1){
+        isValid = false;
+	}
+    else{
+		isValid = true;
+	}
+
+    if (isValid) {
+        document.getElementById(message).style.display = "none";
+    }else {
+        document.getElementById(message).style.display= "inline";
+    }
+    return isValid;
+}
  function checkLoginForm(message){
 	userName = document.getElementById('LoginUN').value;
 	console.log("in login");
