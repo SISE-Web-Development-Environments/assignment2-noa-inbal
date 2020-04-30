@@ -8,24 +8,23 @@ var time_elapsed;
 var interval; 
 var divToShow = "Welcome";
 var Monsters = [new Object() , new Object() , new Object() , new Object()]
-
+var Lives;
 var keyCodeUp= "";
 var keyCodeDown= "";
 var keyCodeRight= "";
 var keyCodeLeft= "";
-
+var TotalScore;
 var userName = "";
 var gameProperties = []; 
 //0:up,1:upCode,2:down,3:downCode:,4:right,5:rightCode,6:left,7:leftCode
-//8:numBalls,9:color5P,10:color15P,11:color25P,12:time,13:monstor,14:Lives
+//8:numBalls,9:color5P,10:color15P,11:color25P,12:time,13:monsters,14:Lives
 var userInfo = [];
 
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
 	context.fillStyle = "blue";
-
-	ShowDiv('GameScreen')
+	ShowDiv('Welcome')
 	console.log(divToShow)
 });
 function ShowDiv(show) {
@@ -53,30 +52,62 @@ function Start() {
 	score = 0;
 	pac_color = "yellow";
 	var monsIndex = 0;
-	var cnt = 112; //  מאפשר לנו להגדיר אחוזים מסויימים בהמשך
+	var cnt = 300; //  מאפשר לנו להגדיר אחוזים מסויימים בהמשך
 	var food_remain = 50; // כמה אוכל רוצים שיהיה בלוח צריך לשנות את זה לפי ההגדרות אחכ
 	var pacman_remain = 1; // כמה פעמים נרצה לאתחל את הפאקמן במהלך המשחק בצורה רנדומית (משמש אותנו בשביל לצייר בפעם הראשונה כרגע)
 	var monst_remain = 3; // צריך לשנות לפי ההגדרות למספר המפלצות שהמשתמש הכניס
 	start_time = new Date(); 
-
-	/************* Put walls In Game Board************/
-	for (var i = 0; i < 14; i++) {
+	if(userName != ""){
+		food_remain = parseInt(gameProperties[8]);
+		monst_remain = parseInt(gameProperties[13]);
+	}
+	TotalScore = (Math.floor(food_remain*0.6)*5) + (Math.floor(food_remain*0.3)*15) + (Math.floor(food_remain*0.1)*25);
+	for (var i = 0; i < 21; i++) {
 		board[i] = new Array(); // יוצרים את המערך הדו מימדי 
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-		for (var j = 0; j < 8; j++) {
+		for (var j = 0; j < 12; j++) {
+			/************* Put walls In Game Board************/
 			if (
+				(i == 3 && j == 0) ||
+				(i == 3 && j == 1) ||
+				(i == 3 && j == 2) ||
 				(i == 3 && j == 3) ||
 				(i == 3 && j == 4) ||
 				(i == 3 && j == 5) ||
-				(i == 6 && j == 1) ||
-				(i == 6 && j == 2)
+				(i == 3 && j == 6) ||
+				(i == 3 && j == 7) ||
+				(i == 3 && j == 8) ||
+				(i == 3 && j == 9) ||
+				(i == 3 && j == 10) ||
+				(i == 3 && j == 11) ||
+				(i == 0 && j == 3) ||
+				(i == 1 && j == 3) ||
+				(i == 2 && j == 3) ||
+				(i == 3 && j == 3) ||
+				(i == 4 && j == 3) ||
+				(i == 5 && j == 3) ||
+				(i == 6 && j == 3) ||
+				(i == 7 && j == 3) ||
+				(i == 8 && j == 3) ||
+				(i == 9 && j == 3) ||
+				(i == 10 && j == 3) ||
+				(i == 11 && j == 3) ||
+				(i == 12 && j == 3) ||
+				(i == 13 && j == 3) ||
+				(i == 14 && j == 3) ||
+				(i == 15 && j == 3) ||
+				(i == 16 && j == 3) ||
+				(i == 17 && j == 3) ||
+				(i == 18 && j == 3) ||
+				(i == 19 && j == 3) ||
+				(i == 20 && j == 3)
 			) {
 				board[i][j] = 4;
 				/************* Put Monster in Corners *************/
 			} else if( (i==0 && j==0) ||
-						(i==13 && j==0) ||
-						(i==0 && j==7) ||
-						(i==13 && j==7) ) {
+						(i==20 && j==0) ||
+						(i==0 && j==11) ||
+						(i==20 && j==11) ) {
 				if (monst_remain > 0) {
 					Monsters[monsIndex].i = i;
 					Monsters[monsIndex].j = j;
@@ -136,11 +167,11 @@ function Start() {
 /********************************************** game ***************************************************/
 
 function findRandomEmptyCell(board) {
-	var i = Math.floor(Math.random() * 13 + 1);
-	var j = Math.floor(Math.random() * 7 + 1);
+	var i = Math.floor(Math.random() * 20 + 1);
+	var j = Math.floor(Math.random() * 11 + 1);
 	while (board[i][j] != 0) {
-		i = Math.floor(Math.random() * 13 + 1);
-		j = Math.floor(Math.random() * 7 + 1);
+		i = Math.floor(Math.random() * 20 + 1);
+		j = Math.floor(Math.random() * 11 + 1);
 	}
 	return [i, j];
 }
@@ -226,17 +257,17 @@ function Draw() {
 	imageup.onload=function(){
 		context.drawImage(imageup,center.x,center.x,50,50);
 	}
-	imageup.src="mortiU.png";
-	imagedown.src="mortiD.png";
-	imageright.src="mortiR.png";
-	imageleft.src="mortiL.png";
-	imageGhost.src="mons1.png";
-	imageWall.src="potal.png";
+	imageup.src="PacmanImages\\mortiU.png";
+	imagedown.src="PacmanImages\\mortiD.png";
+	imageright.src="PacmanImages\\mortiR.png";
+	imageleft.src="PacmanImages\\mortiL.png";
+	imageGhost.src="MonstersAndWall\\mons1.png";
+	imageWall.src="MonstersAndWall\\potal.png";
 
 
 	/************* Show Game Part *************/
-	for (var i = 0; i < 14; i++) {
-		for (var j = 0; j < 8; j++) {
+	for (var i = 0; i < 21; i++) {
+		for (var j = 0; j < 12; j++) {
 			var center = new Object();
 			center.x = i*60;
 			center.y = j*60;
@@ -283,12 +314,6 @@ function Draw() {
 				context.drawImage(imageGhost,center.x,center.y,50,50); //Monst
 			}else if (board[i][j] == 4) {
 			/************* Drow Wall *************/
-			/*
-				context.beginPath();
-				context.rect(center.x - 30, center.y - 30, 60, 60);
-				context.fillStyle = "grey"; //color
-				context.fill();
-			 */
 				context.drawImage(imageWall,center.x,center.y,50,50); //Wall
 			}
 		}
@@ -301,7 +326,10 @@ function UpdatePosition() {
 	var x = GetKeyPressed(); //get pressed key
 	if (x == 1) { //up
 		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
-			if(board[shape.i][shape.j - 1] != 3.1){
+			if(board[shape.i][shape.j - 1] == 3.1 || board[shape.i][shape.j - 1] == 4.2 ||
+				board[shape.i][shape.j - 1] == 4.3 || board[shape.i][shape.j - 1] == 4.4){
+				score -= 10;
+				Lives--;
 				//Start();
 				//return;
 			}
@@ -310,8 +338,11 @@ function UpdatePosition() {
 		}
 	}
 	if (x == 2) { //down
-		if (shape.j < 7 && board[shape.i][shape.j + 1] != 4 ) {
-			if(board[shape.i][shape.j + 1] != 3.1){
+		if (shape.j < 11 && board[shape.i][shape.j + 1] != 4 ) {
+			if(board[shape.i][shape.j + 1] == 3.1 ||board[shape.i][shape.j + 1] == 4.2 ||
+				board[shape.i][shape.j + 1] == 4.3 ||board[shape.i][shape.j + 1] == 4.4 ){
+				score -= 10;
+				Lives--;
 				//Start();
 				//return;
 			}
@@ -321,7 +352,10 @@ function UpdatePosition() {
 	}
 	if (x == 3) { //left
 		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
-			if(board[shape.i - 1][shape.j] != 3.1){
+			if(board[shape.i - 1][shape.j] == 3.1 || board[shape.i - 1][shape.j] == 4.2 ||
+				board[shape.i - 1][shape.j] == 4.3 || board[shape.i - 1][shape.j] == 4.4){
+				score -= 10;
+				Lives--;
 				//Start();
 				//return;
 			}
@@ -330,8 +364,11 @@ function UpdatePosition() {
 		}
 	}
 	if (x == 4) { //right
-		if (shape.i < 13 && board[shape.i + 1][shape.j] != 4) {
-			if(board[shape.i + 1][shape.j] != 3.1){
+		if (shape.i < 20 && board[shape.i + 1][shape.j] != 4) {
+			if(board[shape.i + 1][shape.j] == 3.1 || board[shape.i + 1][shape.j] == 4.2 ||
+				board[shape.i + 1][shape.j] == 4.3 || board[shape.i + 1][shape.j] == 4.4){
+				score -= 10;
+				Lives--;
 				//Start();
 				//return;
 			}
@@ -341,13 +378,16 @@ function UpdatePosition() {
 	}
 
 	/********************************************Draw Monsters*************************************************/
-	for(let k = 0 ; k < 3 ; k++){ // instead of 3 we need to put the number of monster the user choose
+	let numOfMonsters = parseInt(gameProperties[13]);
+	for(let k = 0 ; k < numOfMonsters ; k++){
 		board[Monsters[k].i][Monsters[k].j] -= 3.1;
 		let p =Math.floor( Math.random() * 4 +1 );
 		if (p == 1) { //up
 			if (Monsters[k].j > 0 && board[Monsters[k].i][Monsters[k].j - 1] != 4) {
 				if(board[Monsters[k].i][Monsters[k].j - 1] == 2.1 || board[Monsters[k].i][Monsters[k].j - 1] == 2.2 ||
 					board[Monsters[k].i][Monsters[k].j - 1] == 2.3 || board[Monsters[k].i][Monsters[k].j - 1] == 2.4){
+					score -= 10;
+					Lives--;
 					//Start();
 					//return;
 				}
@@ -359,9 +399,11 @@ function UpdatePosition() {
 			}
 		}
 		if (p == 2) { //down
-			if (Monsters[k].j < 7 && board[Monsters[k].i][Monsters[k].j + 1] != 4) {
+			if (Monsters[k].j < 11 && board[Monsters[k].i][Monsters[k].j + 1] != 4) {
 				if(board[Monsters[k].i][Monsters[k].j + 1]== 2.1 || board[Monsters[k].i][Monsters[k].j + 1] == 2.2 ||
 					board[Monsters[k].i][Monsters[k].j + 1] == 2.3 || board[Monsters[k].i][Monsters[k].j + 1] == 2.4){
+					score -= 10;
+					Lives--;
 					//Start();
 					//return;
 				}
@@ -375,6 +417,8 @@ function UpdatePosition() {
 			if (Monsters[k].i > 0 && board[Monsters[k].i - 1][Monsters[k].j] != 4) {
 				if(board[Monsters[k].i - 1][Monsters[k].j] == 2.1 || board[Monsters[k].i - 1][Monsters[k].j] == 2.2 ||
 					board[Monsters[k].i - 1][Monsters[k].j] == 2.3 || board[Monsters[k].i - 1][Monsters[k].j] == 2.4){
+					score -= 10;
+					Lives--;
 					//Start();
 					//return;
 				}
@@ -385,9 +429,11 @@ function UpdatePosition() {
 			}
 		}
 		if (p == 4) { //right
-			if (Monsters[k].i < 13 && board[Monsters[k].i + 1][Monsters[k].j] != 4) {
+			if (Monsters[k].i < 20 && board[Monsters[k].i + 1][Monsters[k].j] != 4) {
 				if(board[Monsters[k].i + 1][Monsters[k].j] == 2.1 || board[Monsters[k].i + 1][Monsters[k].j] == 2.2 ||
 					board[Monsters[k].i + 1][Monsters[k].j] == 2.3 || board[Monsters[k].i + 1][Monsters[k].j] == 2.4){
+					score -= 10;
+					Lives--;
 					//Start();
 					//return;
 				}
@@ -407,15 +453,22 @@ function UpdatePosition() {
 	}else if (board[shape.i][shape.j] == 1.3) {
 		score+=25; // אם זה אוכל תעלה את הניקוד
 	}
-	if(!(shape.i<0 || shape.j<0 || shape.i>13 ||shape.j>7)){
+	if(!(shape.i<0 || shape.j<0 || shape.i>20 ||shape.j>11)){
 		board[shape.i][shape.j] = pacManDirection; // נרצה לצבוע מחדש את הקאנבס, גם אם הצלחתי להתקדם וגם אם לא
 	}
 
 	var currentTime = new Date(); 
 	time_elapsed = (currentTime - start_time) / 1000; // מעדכן את הזמן שעבר
-	if (score >= 20 && time_elapsed <= 10) {
-		pac_color = "green";
+	var timer = parseInt(gameProperties[12]);
+	if(time_elapsed >= timer || Lives == 0){
+		return showRegModel('gameOverDialog');
 	}
+	if(score == TotalScore){
+		return showRegModel('"winnerDialog"');
+	}
+	//if (score >= 20 && time_elapsed <= 10) {
+	//	pac_color = "green";
+	//}
 	// if (score == 50) {
 	// 	window.clearInterval(interval);
 	// 	window.alert("Game completed");
@@ -423,6 +476,23 @@ function UpdatePosition() {
 	Draw();
 	// }
 }
+
+function CloseGOWDialog(type , modelName){
+	if(type == '1'){
+		var modal = document.getElementById(modelName);
+		modal.style.display = "none";
+		divToShow = "GameScreen";
+		ShowDiv("GameScreen");
+	}
+	if(type == '2'){
+		var modal = document.getElementById(modelName);
+		modal.style.display = "none";
+		divToShow = "Welcome";
+		ShowDiv("Welcome");
+	}
+}
+
+
  /********************************************** SignIn ***************************************************/
 /*function checkPassword(str) {
 	// at least one number, one lowercase and one uppercase letter
@@ -538,7 +608,7 @@ function saveUser(){
 	var info = uName + ',' + uPSW + ',' + uFullName + ',' + uEmail + ',' + uDate
 	console.log(info);
 	localStorage.setItem(uName , info)
-	
+	userName = uName;
 	return showRegModel('registerDialog');
 
 }
@@ -578,7 +648,8 @@ function CloseRegDialog() {
 		var pswToCheck = info.split(',')[1];
 		if ( PassWord === pswToCheck){
 			document.getElementById(message).style.display = "none";
-			gameProperties = localStorage.getItem(userP) ? JSON.parse(localStorage.getItem(userP)) : []
+			gameProperties = localStorage.getItem(userP).split(';');
+			//gameProperties = localStorage.getItem(userP) ? JSON.parse(localStorage.getItem(userP)) : []
 			return showLogModel("loginDialog")			
 		}
 		else{
@@ -856,12 +927,15 @@ function SaveButtonMoves(){
  * save the connected user globaly and save his property with his name to local storage
  */
 function saveUserAndProp(){
-	gameProperties.push(3); //Lives
+	//gameProperties.push(3); //Lives
+	Lives = 3;
 	var userAndPr = userName+" Properties";
 	console.log(userName);
 	console.log(userAndPr);
-	localStorage.setItem(userName, userInfo);
-	localStorage.setItem(userAndPr ,JSON.stringify(gameProperties) );
+	//localStorage.setItem(userName, userInfo);
+	var result = gameProperties.join(';');
+	//console.log(result);
+	localStorage.setItem(userAndPr ,result );
 }
 /******************************************* game Prop ********************************************/
 //done  - logIn modal dialog - we fix it like RegisterModel

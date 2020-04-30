@@ -5,12 +5,12 @@
     height: 750px;
     width: 79%;
     float: right; 
-    /*background:rgb(167, 167, 167);*/
-    background: inherit;
+    background:rgb(167, 167, 167);
+    /*background: inherit;*/
 }
 #canvas{
-    /*background-color: darksalmon;*/
-    background: inherit;
+    background-color: darksalmon;
+    /*background: inherit;*/
     border: darkturquoise solid 2px;
 }
 #showProp{
@@ -45,7 +45,7 @@
     resize: both;
 }
 body{
-    background-image: url('space.jpg');
+    background-image: url("BackGround/space.jpg");
     background-size: cover;
 
     color: #00FF7F;
@@ -161,8 +161,6 @@ body{
     display: none;
 
 }
-
-
 
 .MyForm {
     border: none;

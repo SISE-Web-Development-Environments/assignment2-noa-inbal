@@ -4,7 +4,6 @@
 		<script src="./jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
 		<link rel="stylesheet" type="text/css" href="Pacman.css" />
-		<!--datepicker-->
   		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script src="jquery.js" type="text/javascript"></script>
@@ -14,7 +13,7 @@
 
 	<body>
 		<div class="Header">
-				Rick &amp; Morty Pacman &nbsp; <img id="headerImg" src="logo.jpg">
+				Rick &amp; Morty Pacman &nbsp; <img id="headerImg" src="WelcomePage\logo.jpg">
 		</div>
 		<div class="topnav">
 			<a onclick="ShowDiv('Welcome')">Welcome</a>
@@ -27,7 +26,7 @@
 		<div class="Content">
 			<div class="section" id="GameScreen">
 				<div id="game">
-					<canvas id="canvas" height="700" width="999"></canvas>
+					<canvas id="canvas" height="700" width="1300"></canvas>
 				</div>
 				<div id="showProp">
 					<div id="score">
@@ -68,7 +67,7 @@
 			</div>
 			<div class="section" id="Welcome">
 				<h1 class='welcomePacman'>Welcome</h1>
-				<img src="welcome.png">
+				<img src="WelcomePage\welcome.png">
 				<br>
 				<div class='welcomePacman'>Packman Game!</div>
 				<h2 class='welcomePacman'>&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Register</h2>
@@ -172,6 +171,40 @@
 						<h3>enjoy!</h3>
 						<button type="button" onclick="CloseRegDialog();" class="cancelbtn">Close</button>
 				  </div>
+				</div>
+			</div>
+			<div class="modal" id="gameOverDialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h2>Game Over!!!</h2>
+					</div>
+					<div class="modal-body">
+						<p>Sorry But You Lose In The Game</p>
+						<p>Try Next Time! </p>
+						<span style='font-size:100px;'>&#10083;</span>
+					</div>
+					<div class="modal-footer">
+						<h3>enjoy!</h3>
+						<button type="button" onclick="CloseGOWDialog('1' , 'gameOverDialog');" class="cancelbtn">New Game</button>
+						<button type="button" onclick="CloseGOWDialog('2' , 'gameOverDialog');" class="cancelbtn">Go To Welcome</button>
+					</div>
+				</div>
+			</div>
+			<div class="modal" id="winnerDialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h2>Congratulations!!!!</h2>
+					</div>
+					<div class="modal-body">
+						<p>Well Done Buddy!</p>
+						<p>You Are Such A Winner! </p>
+						<span style='font-size:100px;'>&#10083;</span>
+					</div>
+					<div class="modal-footer">
+						<h3>enjoy!</h3>
+						<button type="button" onclick="CloseGOWDialog('1' , 'winnerDialog');" class="cancelbtn">New Game</button>
+						<button type="button" onclick="CloseGOWDialog('2' , 'winnerDialog');" class="cancelbtn">Go To Welcome</button>
+					</div>
 				</div>
 			</div>
 			<div class="modal" id="loginDialog">
@@ -310,9 +343,6 @@
 					  </div>
 					</div>
 			    </div>
-				<!--<div class="PropSection" id="startGame">
-					<button type="button" class="StartBut" onclick="ShowDiv('GameScreen')">Start!</button>
-				</div>-->
 			</div>
 		</div>
 
