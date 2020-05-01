@@ -495,66 +495,7 @@ function CloseGOWDialog(type , modelName){
 		ShowDiv("Welcome");
 	}
 }
-
-
- /********************************************** SignIn ***************************************************/
-/*function checkPassword(str) {
-	// at least one number, one lowercase and one uppercase letter
-    // at least six characters that are letters, numbers or the underscore
-  var passwordValid = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-  return passwordValid.test(str);
-}
-function checkUserName(str) {
-	if (localStorage.getItem(str)===null){
-		return (true);
-	}
-	return (false);
-}
-
- */
-
-function checkPwd(str) {
-    if (str.length < 6) {
-        return(false);
-    }else if (str.search(/[\!\@\#\$\%\^\&\*\(\)\_\+\,\.\?\\\'\`\~\{\}\[\]\|\-]/) != -1) {
-        return(false);
-	}
-	else if(str.search(/[^a-zA-Z0-9]/) != -1){
-		return(false);
-	}
-    return(true);
-}
-function checkForm(form){
-	if(form.rusername.value == ""){
-		form.rusername.focus();
-		return false;
-	}
-
-  fullNameValid = /^[a-zA-Z]+ [a-zA-Z]+$/;
-  if(form.rfullname.value == "" || !fullNameValid.test(form.rfullname.value)) {
-	//alert("Error: full name must contain only letters and white space"+form.rfullname.value);
-	//document.getElementsById("rfullname-error").style.display = "inline";
-	form.rfullname.focus();
-	return false;
-  }
-  if(form.rpassword.value == "" || !checkPwd(form.rpassword.value)) {
-	// alert("Error pass");
-	form.rpassword.focus();
-	return false;
-  }
-
-  emailValid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  if(form.remail.value == "" || !emailValid.test(form.remail.value)){
-	//alert("Error email");
-	form.remail.focus();
-	return false;
-  }
-  if(form.rdate.value == ""){
-	form.rdate.focus();
-	return false;
-	}
-  return true;
-}
+ /********************************************** LogIn ***************************************************/
 function validatePass(value, message) {
 	var isValid;
 	if (value.length < 6) {
@@ -576,68 +517,6 @@ function validatePass(value, message) {
     }
     return isValid;
 }
-function validateMail(value, message) {
-	emailValid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    var isValid = emailValid.test(value)
-    
-    if (isValid) {
-        document.getElementById(message).style.display = "none";
-    }else {
-        document.getElementById(message).style.display= "inline";
-    }
-    return isValid;
-}
-function validateName(value, message) {
-	fullNameValid = /^[a-zA-Z]+ [a-zA-Z]+$/;
-	var isValid = fullNameValid.test(value)
-    
-    if (isValid) {
-        document.getElementById(message).style.display = "none";
-    }else {
-        document.getElementById(message).style.display= "inline";
-    }
-    return isValid;
-}
-function saveUser(){
-	if(!checkForm(document.forms["registerform"])){
-		document.forms["registerform"].focus();
-		return false;
-	}
-	var uName = document.forms["registerform"]["rusername"].value;//.getElementById('#rusername').value;
-	console.log(uName);
-	var uPSW = document.forms["registerform"]["rpassword"].value;//getElementById("#rpassword").value;
-	var uFullName = document.forms["registerform"]["rfullname"].value;//getElementById("#rfullname").value;
-	var uEmail = document.forms["registerform"]["remail"].value;//getElementById("#remail").value;
-	var uDate = document.forms["registerform"]["datepicker"].value;//getElementById("#datepicker").value;
-	var info = uName + ',' + uPSW + ',' + uFullName + ',' + uEmail + ',' + uDate
-	console.log(info);
-	localStorage.setItem(uName , info)
-	userName = uName;
-	return showRegModel('registerDialog');
-
-}
-function showRegModel(modelName){
-	// Get the modal
-	var modal = document.getElementById(modelName);
-	modal.style.display = "block";
-
-	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
-
-	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() {
-		//   modal.style.display = "none";
-		  CloseRegDialog();
-	}
-	return false;
-}
-function CloseRegDialog() {
-	var modal = document.getElementById("registerDialog"); 
-	modal.style.display = "none";
-	divToShow = "Properties";
-	ShowDiv("Properties");
-}
- /********************************************** LogIn ***************************************************/
  function checkLoginForm(message){
 	userName = document.getElementById('LoginUN').value;
 	console.log("in login");
