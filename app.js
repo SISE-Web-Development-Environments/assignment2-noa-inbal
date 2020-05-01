@@ -13,7 +13,7 @@ var keyCodeUp= "";
 var keyCodeDown= "";
 var keyCodeRight= "";
 var keyCodeLeft= "";
-var TotalScore;
+var numOfBalls;
 var userName = "";
 var gameProperties = []; 
 //0:up,1:upCode,2:down,3:downCode:,4:right,5:rightCode,6:left,7:leftCode
@@ -61,7 +61,7 @@ function Start() {
 		food_remain = parseInt(gameProperties[8]);
 		monst_remain = parseInt(gameProperties[13]);
 	}
-	TotalScore = (Math.floor(food_remain*0.6)*5) + (Math.floor(food_remain*0.3)*15) + (Math.floor(food_remain*0.1)*25);
+	numOfBalls = food_remain;
 	for (var i = 0; i < 21; i++) {
 		board[i] = new Array(); // יוצרים את המערך הדו מימדי 
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
@@ -251,7 +251,10 @@ function Draw() {
 	var imagedown=document.createElement("img");	
 	var imageright=document.createElement("img");	
 	var imageleft=document.createElement("img");
-	var imageGhost=document.createElement('img');
+	var imageMons1=document.createElement('img');
+	var imageMons2=document.createElement('img');
+	var imageMons3=document.createElement('img');
+	var imageMons4=document.createElement('img');
 	var imageWall = document.createElement('img');
 
 	imageup.onload=function(){
@@ -261,8 +264,14 @@ function Draw() {
 	imagedown.src="PacmanImages\\mortiD.png";
 	imageright.src="PacmanImages\\mortiR.png";
 	imageleft.src="PacmanImages\\mortiL.png";
-	imageGhost.src="MonstersAndWall\\mons1.png";
+	imageMons1.src="MonstersAndWall\\mons1.png";
+	imageMons2.src="MonstersAndWall\\mons2.png";
+	imageMons3.src="MonstersAndWall\\mons3.png";
+	imageMons4.src="MonstersAndWall\\mons4.png";
 	imageWall.src="MonstersAndWall\\potal.png";
+
+	var monsters = [imageMons1 , imageMons2 , imageMons3 , imageMons4];
+	let ind = 0;
 
 
 	/************* Show Game Part *************/
@@ -281,8 +290,10 @@ function Draw() {
 			} else if(board[i][j] == 2.4){
 				context.drawImage(imageright,center.x,center.y,50,50); //RIGHT
 			/*************Drow Monsters***************/
-			} else if(board[i][j] == 3.1){
-				context.drawImage(imageGhost,center.x,center.y,50,50); //Monst
+			} else if(board[i][j] == 3.1 || board[i][j] == 4.2 ||
+				board[i][j]== 4.3 || board[i][j]== 4.4){
+				context.drawImage(monsters[ind],center.x,center.y,50,50); //Monst
+				ind++;
 			}
 			else if (board[i][j] == 1.1) {
 			/************* Drow Food 5P *************/
@@ -302,16 +313,6 @@ function Draw() {
 				context.arc(center.x+15, center.y+15, 20, 0, 2 * Math.PI); // circle
 				context.fillStyle = gameProperties[11]; //color 25P
 				context.fill();
-			}
-			else if (board[i][j] == 4.2) {
-				/************* Drow Food 5P & Monstar *************/
-				context.drawImage(imageGhost,center.x,center.y,50,50); //Monst
-			} else if(board[i][j]== 4.3){
-				/************* Drow Food 15P & Monstar *************/
-				context.drawImage(imageGhost,center.x,center.y,50,50); //Monst
-			}else if(board[i][j]== 4.4) {
-				/************* Drow Food 25P & Monstar *************/
-				context.drawImage(imageGhost,center.x,center.y,50,50); //Monst
 			}else if (board[i][j] == 4) {
 			/************* Drow Wall *************/
 				context.drawImage(imageWall,center.x,center.y,50,50); //Wall
@@ -330,8 +331,8 @@ function UpdatePosition() {
 				board[shape.i][shape.j - 1] == 4.3 || board[shape.i][shape.j - 1] == 4.4){
 				score -= 10;
 				Lives--;
-				//Start();
-				//return;
+				Start();
+				return;
 			}
 			shape.j--;
 			pacManDirection=2.1;
@@ -343,8 +344,8 @@ function UpdatePosition() {
 				board[shape.i][shape.j + 1] == 4.3 ||board[shape.i][shape.j + 1] == 4.4 ){
 				score -= 10;
 				Lives--;
-				//Start();
-				//return;
+				Start();
+				return;
 			}
 			shape.j++;
 			pacManDirection=2.2;
@@ -356,8 +357,8 @@ function UpdatePosition() {
 				board[shape.i - 1][shape.j] == 4.3 || board[shape.i - 1][shape.j] == 4.4){
 				score -= 10;
 				Lives--;
-				//Start();
-				//return;
+				Start();
+				return;
 			}
 			shape.i--;
 			pacManDirection=2.3;
@@ -369,8 +370,8 @@ function UpdatePosition() {
 				board[shape.i + 1][shape.j] == 4.3 || board[shape.i + 1][shape.j] == 4.4){
 				score -= 10;
 				Lives--;
-				//Start();
-				//return;
+				Start();
+				return;
 			}
 			shape.i++;
 			pacManDirection=2.4;
@@ -388,8 +389,8 @@ function UpdatePosition() {
 					board[Monsters[k].i][Monsters[k].j - 1] == 2.3 || board[Monsters[k].i][Monsters[k].j - 1] == 2.4){
 					score -= 10;
 					Lives--;
-					//Start();
-					//return;
+					Start();
+					return;
 				}
 				else{
 					Monsters[k].j--;
@@ -404,8 +405,8 @@ function UpdatePosition() {
 					board[Monsters[k].i][Monsters[k].j + 1] == 2.3 || board[Monsters[k].i][Monsters[k].j + 1] == 2.4){
 					score -= 10;
 					Lives--;
-					//Start();
-					//return;
+					Start();
+					return;
 				}
 				else{
 					Monsters[k].j++;
@@ -419,8 +420,8 @@ function UpdatePosition() {
 					board[Monsters[k].i - 1][Monsters[k].j] == 2.3 || board[Monsters[k].i - 1][Monsters[k].j] == 2.4){
 					score -= 10;
 					Lives--;
-					//Start();
-					//return;
+					Start();
+					return;
 				}
 				else{
 					Monsters[k].i--;
@@ -434,8 +435,8 @@ function UpdatePosition() {
 					board[Monsters[k].i + 1][Monsters[k].j] == 2.3 || board[Monsters[k].i + 1][Monsters[k].j] == 2.4){
 					score -= 10;
 					Lives--;
-					//Start();
-					//return;
+					Start();
+					return;
 				}
 				else{
 					Monsters[k].i++;
@@ -448,10 +449,13 @@ function UpdatePosition() {
 
 	if (board[shape.i][shape.j] == 1.1) {
 		score+=5; // אם זה אוכל תעלה את הניקוד
+		numOfBalls--;
 	}else if (board[shape.i][shape.j] == 1.2) {
 		score+=15; // אם זה אוכל תעלה את הניקוד
+		numOfBalls--;
 	}else if (board[shape.i][shape.j] == 1.3) {
 		score+=25; // אם זה אוכל תעלה את הניקוד
+		numOfBalls--;
 	}
 	if(!(shape.i<0 || shape.j<0 || shape.i>20 ||shape.j>11)){
 		board[shape.i][shape.j] = pacManDirection; // נרצה לצבוע מחדש את הקאנבס, גם אם הצלחתי להתקדם וגם אם לא
