@@ -2,7 +2,6 @@ var context;
 var shape = new Object(); // pacman location
 var board; // game matrix
 var score; 
-var pac_color; 
 var start_time;
 var time_elapsed;
 var interval;
@@ -10,16 +9,19 @@ var interval2;
 var divToShow = "Welcome";
 var Monsters = [new Object() , new Object() , new Object() , new Object()]
 var LastMoves = [0,0,0,0]
-var Lives;
+var Lives = 5;
 var keyCodeUp= "";
 var keyCodeDown= "";
 var keyCodeRight= "";
 var keyCodeLeft= "";
 var numOfBalls;
 var userName = "";
+var timeForMonsters = 500;
 var gameProperties = [];
 //0:up,1:upCode,2:down,3:downCode:,4:right,5:rightCode,6:left,7:leftCode
-//8:numBalls,9:color5P,10:color15P,11:color25P,12:time,13:monsters,14:Lives
+//8:numBalls,9:color5P,10:color15P,11:color25P,12:time,13:monsters
+var Features = [new Object() , new Object() , new Object() , new Object() ,  new Object()]
+//0:Clock ; 1:Candy1 ; 2:Candy2 ; 3:Candy3 ; 4:Slow
 var userInfo = [];
 
 
@@ -48,59 +50,34 @@ function ShowDiv(show) {
 		ShowDivInProp('introProperties');
 	}
 }
+// Fill The Board With the Relevent Values for the game : 2.1 , 2.2 , 2.3 , 2.4 - The Possition of the Packman - Morti (left,right,up,down
+//														  11 , 12 ,13 - Different color of Ball
+//                                                        3 - monster
+//                                                        4 - Walls
 function Start() {
-	// ShowDiv("Welcome");
+	if(interval != null && interval2 != null){
+		clearInterval(interval);
+		clearInterval(interval2);
+	}
+	if(Lives == 5){
+		numOfBalls = parseInt(gameProperties[8]);
+		score = 0;
+		start_time = new Date();
+	}
 	board = new Array(); // init game
-	score = 0;
-	pac_color = "yellow";
 	var monsIndex = 0;
 	var cnt = 300; //  מאפשר לנו להגדיר אחוזים מסויימים בהמשך
-	var food_remain = 50; // כמה אוכל רוצים שיהיה בלוח צריך לשנות את זה לפי ההגדרות אחכ
+	var food_remain = numOfBalls; // כמה אוכל רוצים שיהיה בלוח צריך לשנות את זה לפי ההגדרות אחכ
 	var pacman_remain = 1; // כמה פעמים נרצה לאתחל את הפאקמן במהלך המשחק בצורה רנדומית (משמש אותנו בשביל לצייר בפעם הראשונה כרגע)
-	var monst_remain = 3; // צריך לשנות לפי ההגדרות למספר המפלצות שהמשתמש הכניס
-	start_time = new Date(); 
-	if(userName != ""){
-		food_remain = parseInt(gameProperties[8]);
-		monst_remain = parseInt(gameProperties[13]);
-	}
-	numOfBalls = food_remain;
+	var monst_remain = parseInt(gameProperties[13]); // צריך לשנות לפי ההגדרות למספר המפלצות שהמשתמש הכניס
 	for (var i = 0; i < 22; i++) {
 		board[i] = new Array(); // יוצרים את המערך הדו מימדי 
-		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
 		for (var j = 0; j < 12; j++) {
 			/************* Put walls In Game Board************/
 			if (
 				(i == 3 && j == 0) ||
 				(i == 3 && j == 1) ||
-				(i == 3 && j == 2) ||
-				(i == 3 && j == 3) ||
-				(i == 3 && j == 4) ||
-				(i == 3 && j == 5) ||
 				(i == 3 && j == 6) ||
-				(i == 3 && j == 7) ||
-				(i == 3 && j == 8) ||
-				(i == 3 && j == 9) ||
-				(i == 3 && j == 10) ||
-				(i == 3 && j == 11) ||
-				(i == 0 && j == 3) ||
-				(i == 1 && j == 3) ||
-				(i == 2 && j == 3) ||
-				(i == 3 && j == 3) ||
-				(i == 4 && j == 3) ||
-				(i == 5 && j == 3) ||
-				(i == 6 && j == 3) ||
-				(i == 7 && j == 3) ||
-				(i == 8 && j == 3) ||
-				(i == 9 && j == 3) ||
-				(i == 10 && j == 3) ||
-				(i == 11 && j == 3) ||
-				(i == 12 && j == 3) ||
-				(i == 13 && j == 3) ||
-				(i == 14 && j == 3) ||
-				(i == 15 && j == 3) ||
-				(i == 16 && j == 3) ||
-				(i == 17 && j == 3) ||
-				(i == 18 && j == 3) ||
 				(i == 19 && j == 3) ||
 				(i == 20 && j == 3)
 			) {
@@ -115,7 +92,7 @@ function Start() {
 					Monsters[monsIndex].j = j;
 					monst_remain--;
 					monsIndex++;
-					board[i][j] = 3.1;
+					board[i][j] = 3;
 				}
 			}
 			else{
@@ -123,19 +100,8 @@ function Start() {
 				var randomNum = Math.random();
 				if (randomNum <= (1.0 * food_remain) / cnt) {
 					food_remain--;
-					let randomFood = Math.floor((Math.random() * 3) + 1); // random integer from 1 to 3
-					let foodNum = 0;
-					if(randomFood == 1){
-						foodNum = 1.1
-					}
-					if(randomFood == 2){
-						foodNum = 1.2
-					}
-					if(randomFood == 3){
-						foodNum = 1.3
-					}
-					//let foodNum = 1.0 + randomFood/10; //1.1 or 1.2 or 1.3
-					board[i][j] = foodNum;
+					let randomFood = Math.floor((Math.random() * 3) + 11); // random integer from 11 to 13
+					board[i][j] = randomFood;
 				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
 					/************* Put Pacman randomly *************/
 					shape.i = i;
@@ -150,15 +116,17 @@ function Start() {
 		}
 	}
 
-	
 	while (food_remain > 0) {
 		var emptyCell = findRandomEmptyCell(board);
-		let randomNum = Math.floor(Math.random() * 3) + 1; // random integer from 1 to 3 
-		let foodNum = 1 + randomNum/10; //1.1 or 1.2 or 1.3
-		board[emptyCell[0]][emptyCell[1]] = foodNum;
+		let randomFood = Math.floor((Math.random() * 3) + 11); // random integer from 1 to 3
+		board[emptyCell[0]][emptyCell[1]] = randomFood;
 		food_remain--;
 	}
-
+	for(let i = 0 ; i < Features.length ; i++){
+		Features[i].i = 999;
+		Features[i].j = 999;
+		Features[i].eat = false;
+	}
 	keysDown = {}; // הגדרת מילון עם שני איבנט ליסנר
 	addEventListener(
 		"keydown",
@@ -175,7 +143,9 @@ function Start() {
 		false
 	);
 	interval = setInterval(UpdatePosition, 250);
+	interval2 = setInterval(UpdateMonsters , timeForMonsters);
 }
+
 /********************************************** game ***************************************************/
 
 function findRandomEmptyCell(board) {
@@ -201,6 +171,7 @@ function GetKeyPressed() {
 		return 4;
 	}
 }
+// Display balls Properties in the game Properties Display
 function DrawCircleProp(){
 	var canvas = document.getElementById('circle');
 	if (canvas.getContext){
@@ -239,7 +210,13 @@ function DrawCircleProp(){
 
 	}
 }
-function Draw(clock , candy) {
+
+//Funstion that Draw The Canvas by The Values in the Board - 2.1 , 2.2 , 2.3 , 2.4 - Packman Morty (Left , Right < Down , Up)
+//														   - 3 , 14 , 15 , 16 , 203 , 204 , 205 - Monsters - to save the cell value before the monster came to draw the previous value of the cell
+//                                                         - 11 , 12 , 13  - Food - Different color of Ball
+//                                                         - 4 - Walls
+//                                                         - 200 , 201 , 202 - Clock Feature To get More time , Candy to get more score , slowMotion emoji to slow the monsters
+function Draw(clock , candy , slow) {
 	canvas.width = canvas.width; //clean board
 	/************ Show Property Part ************/
 	lblScore.value = score;
@@ -257,7 +234,7 @@ function Draw(clock , candy) {
 
 	document.getElementById('lblTimeT').value = "" + gameProperties[12];
 	document.getElementById('lblBalls').value = "" + gameProperties[8];
-	document.getElementById('lblMonsters').value = "" + gameProperties[3];
+	document.getElementById('lblMonsters').value = "" + gameProperties[13];
 
 	var imageup=document.createElement("img");	
 	var imagedown=document.createElement("img");	
@@ -268,9 +245,9 @@ function Draw(clock , candy) {
 	var imageMons3=document.createElement('img');
 	var imageMons4=document.createElement('img');
 	var imageWall=document.createElement('img');
-
 	var imageCandy=document.createElement('img');
 	var imageClock=document.createElement('img');
+	var imageSlow=document.createElement('img');
 
 	imageup.onload=function(){
 		context.drawImage(imageup,center.x,center.x,50,50);
@@ -287,6 +264,7 @@ function Draw(clock , candy) {
 
 	imageCandy.src='CandyandClock\\candy.png';
 	imageClock.src='CandyandClock\\clock1.png';
+	imageSlow.src='CandyandClock\\slow.png';
 
 	var monsters = [imageMons1 , imageMons2 , imageMons3 , imageMons4];
 	let ind = 0;
@@ -308,23 +286,24 @@ function Draw(clock , candy) {
 			} else if (board[i][j] == 2.4) {
 				context.drawImage(imageright, center.x, center.y, 50, 50); //RIGHT
 				/*************Drow Monsters***************/
-			} else if (board[i][j] == 3.1 || board[i][j] == 4.2 ||
-				board[i][j] == 4.3 || board[i][j] == 4.4) {
+			} else if (board[i][j] == 3 || board[i][j] == 14 ||
+				board[i][j] == 15 || board[i][j] == 16 || board[i][j] == 203
+				|| board[i][j] == 204 || board[i][j] == 205) {
 				context.drawImage(monsters[ind], center.x, center.y, 50, 50); //Monst
 				ind++;
-			} else if (board[i][j] == 1.1) {
+			} else if (board[i][j] == 11) {
 				/************* Drow Food 5P *************/
 				context.beginPath();
 				context.arc(center.x + 15, center.y + 15, 20, 0, 2 * Math.PI); // circle
 				context.fillStyle = gameProperties[9]; //color 5P
 				context.fill();
-			} else if (board[i][j] == 1.2) {
+			} else if (board[i][j] == 12) {
 				/************* Drow Food 15P *************/
 				context.beginPath();
 				context.arc(center.x + 15, center.y + 15, 20, 0, 2 * Math.PI); // circle
 				context.fillStyle = gameProperties[10]; //color 15P
 				context.fill();
-			} else if (board[i][j] == 1.3) {
+			} else if (board[i][j] == 13) {
 				/************* Drow Food 25P *************/
 				context.beginPath();
 				context.arc(center.x + 15, center.y + 15, 20, 0, 2 * Math.PI); // circle
@@ -333,91 +312,24 @@ function Draw(clock , candy) {
 			} else if (board[i][j] == 4) {
 				/************* Drow Wall *************/
 				context.drawImage(imageWall, center.x, center.y, 50, 50); //Wall
+			} else if (board[i][j] == 200) {
+				/************* Drow Wall *************/
+				context.drawImage(imageClock, center.x, center.y, 50, 50); //Wall
+			} else if (board[i][j] == 201) {
+				/************* Drow Wall *************/
+				context.drawImage(imageCandy, center.x, center.y, 50, 50); //Wall
+			} else if (board[i][j] == 202) {
+				/************* Drow Wall *************/
+				context.drawImage(imageSlow, center.x, center.y, 50, 50); //Wall
 			}
-		}
-	}
-	if(clock){
-		var emptyCell = findRandomEmptyCell(board);
-		var center = new Object();
-		center.x = emptyCell[0] * 60;
-		center.y = emptyCell[1] * 60;
-		board[emptyCell[0]][emptyCell[1]] = 8;
-		context.drawImage(imageClock, center.x, center.y, 50, 50); //Clock
-	}
-	if(candy){
-		for(let i = 0 ; i < 2 ; i++){
-			var emptyCell = findRandomEmptyCell(board);
-			var center = new Object();
-			center.x = emptyCell[0] * 60;
-			center.y = emptyCell[1] * 60;
-			board[emptyCell[0]][emptyCell[1]] = 6;
-			context.drawImage(imageClock, center.x, center.y, 50, 50); //Clock
 		}
 	}
 }
-function UpdatePosition() {
 
-	let pacManDirection = board[shape.i][shape.j];
-	board[shape.i][shape.j] = 0; //clean pacman
-	var x = GetKeyPressed(); //get pressed key
-	if (x == 1) { //up
-		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
-			if(board[shape.i][shape.j - 1] == 3.1 || board[shape.i][shape.j - 1] == 4.2 ||
-				board[shape.i][shape.j - 1] == 4.3 || board[shape.i][shape.j - 1] == 4.4){
-				score -= 10;
-				Lives--;
-				Start();
-				return;
-			}
-			shape.j--;
-			pacManDirection=2.1;
-		}
-	}
-	if (x == 2) { //down
-		if (shape.j < 11 && board[shape.i][shape.j + 1] != 4 ) {
-			if(board[shape.i][shape.j + 1] == 3.1 ||board[shape.i][shape.j + 1] == 4.2 ||
-				board[shape.i][shape.j + 1] == 4.3 ||board[shape.i][shape.j + 1] == 4.4 ){
-				score -= 10;
-				Lives--;
-				Start();
-				return;
-			}
-			shape.j++;
-			pacManDirection=2.2;
-		}
-	}
-	if (x == 3) { //left
-		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
-			if(board[shape.i - 1][shape.j] == 3.1 || board[shape.i - 1][shape.j] == 4.2 ||
-				board[shape.i - 1][shape.j] == 4.3 || board[shape.i - 1][shape.j] == 4.4){
-				score -= 10;
-				Lives--;
-				Start();
-				return;
-			}
-			shape.i--;
-			pacManDirection=2.3;
-		}
-	}
-	if (x == 4) { //right
-		if (shape.i < 21 && board[shape.i + 1][shape.j] != 4) {
-			if(board[shape.i + 1][shape.j] == 3.1 || board[shape.i + 1][shape.j] == 4.2 ||
-				board[shape.i + 1][shape.j] == 4.3 || board[shape.i + 1][shape.j] == 4.4){
-				score -= 10;
-				Lives--;
-				Start();
-				return;
-			}
-			shape.i++;
-			pacManDirection=2.4;
-		}
-	}
-
+function UpdateMonsters() {
 	/********************************************Draw Monsters*************************************************/
 	let numOfMonsters = parseInt(gameProperties[13]);
 	for(let k = 0 ; k < numOfMonsters ; k++){
-		let prevVal = board[Monsters[k].i][Monsters[k].j];
-		board[Monsters[k].i][Monsters[k].j] -= 3.1;
 		let p =Math.floor( Math.random() * 4 +1 );
 		while(p == LastMoves[k]){
 			p = Math.floor( Math.random() * 4 +1 );
@@ -432,13 +344,14 @@ function UpdatePosition() {
 					return;
 				}
 				else{
+					board[Monsters[k].i][Monsters[k].j] -= 3;
 					LastMoves[k] = 2;
 					Monsters[k].j--;
-					board[Monsters[k].i][Monsters[k].j] += 3.1;
+					board[Monsters[k].i][Monsters[k].j] += 3;
 				}
 			}
 		}
-		if (p == 2) { //down
+		else if (p == 2) { //down
 			if (Monsters[k].j < 11 && board[Monsters[k].i][Monsters[k].j + 1] != 4) {
 				if(board[Monsters[k].i][Monsters[k].j + 1]== 2.1 || board[Monsters[k].i][Monsters[k].j + 1] == 2.2 ||
 					board[Monsters[k].i][Monsters[k].j + 1] == 2.3 || board[Monsters[k].i][Monsters[k].j + 1] == 2.4){
@@ -448,13 +361,14 @@ function UpdatePosition() {
 					return;
 				}
 				else{
+					board[Monsters[k].i][Monsters[k].j] -= 3;
 					LastMoves[k] = 1;
 					Monsters[k].j++;
-					board[Monsters[k].i][Monsters[k].j] += 3.1;
+					board[Monsters[k].i][Monsters[k].j] += 3;
 				}
 			}
 		}
-		if (p == 3) { //left
+		else if (p == 3) { //left
 			if (Monsters[k].i > 0 && board[Monsters[k].i - 1][Monsters[k].j] != 4) {
 				if(board[Monsters[k].i - 1][Monsters[k].j] == 2.1 || board[Monsters[k].i - 1][Monsters[k].j] == 2.2 ||
 					board[Monsters[k].i - 1][Monsters[k].j] == 2.3 || board[Monsters[k].i - 1][Monsters[k].j] == 2.4){
@@ -464,13 +378,14 @@ function UpdatePosition() {
 					return;
 				}
 				else{
+					board[Monsters[k].i][Monsters[k].j] -= 3;
 					LastMoves[k] = 4;
 					Monsters[k].i--;
-					board[Monsters[k].i][Monsters[k].j] += 3.1;
+					board[Monsters[k].i][Monsters[k].j] += 3;
 				}
 			}
 		}
-		if (p == 4) { //right
+		else if (p == 4) { //right
 			if (Monsters[k].i < 21 && board[Monsters[k].i + 1][Monsters[k].j] != 4) {
 				if(board[Monsters[k].i + 1][Monsters[k].j] == 2.1 || board[Monsters[k].i + 1][Monsters[k].j] == 2.2 ||
 					board[Monsters[k].i + 1][Monsters[k].j] == 2.3 || board[Monsters[k].i + 1][Monsters[k].j] == 2.4){
@@ -480,48 +395,164 @@ function UpdatePosition() {
 					return;
 				}
 				else{
+					board[Monsters[k].i][Monsters[k].j] -= 3;
 					LastMoves[k] = 3;
 					Monsters[k].i++;
-					board[Monsters[k].i][Monsters[k].j] += 3.1;
+					board[Monsters[k].i][Monsters[k].j] += 3;
 				}
 			}
 		}
-		if(!(Monsters[k].i<0 || Monsters[k].j<0 || Monsters[k].i>21 ||Monsters[k].j>11)){
-			board[Monsters[k].i][Monsters[k].j] = prevVal;
+	}
+	Draw();
+}
+function UpdatePosition() {
+	let pacManDirection = board[shape.i][shape.j];
+	board[shape.i][shape.j] = 0; //clean pacman
+	var x = GetKeyPressed(); //get pressed key
+	if (x == 1) { //up
+		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
+			if(board[shape.i][shape.j - 1] == 3 || board[shape.i][shape.j - 1] == 14 ||
+				board[shape.i][shape.j - 1] == 15 || board[shape.i][shape.j - 1] == 16){
+				score -= 10;
+				Lives--;
+				Start();
+				return;
+			}
+			shape.j--;
+			pacManDirection=2.1;
 		}
 	}
-	/**********************************************Finish*****************************************************/
+	if (x == 2) { //down
+		if (shape.j < 11 && board[shape.i][shape.j + 1] != 4 ) {
+			if(board[shape.i][shape.j + 1] == 3 ||board[shape.i][shape.j + 1] == 14 ||
+				board[shape.i][shape.j + 1] == 15 ||board[shape.i][shape.j + 1] == 16 ){
+				score -= 10;
+				Lives--;
+				Start();
+				return;
+			}
+			shape.j++;
+			pacManDirection=2.2;
+		}
+	}
+	if (x == 3) { //left
+		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
+			if(board[shape.i - 1][shape.j] == 3 || board[shape.i - 1][shape.j] == 14 ||
+				board[shape.i - 1][shape.j] == 15 || board[shape.i - 1][shape.j] == 16){
+				score -= 10;
+				Lives--;
+				Start();
+				return;
+			}
+			shape.i--;
+			pacManDirection=2.3;
+		}
+	}
+	if (x == 4) { //right
+		if (shape.i < 21 && board[shape.i + 1][shape.j] != 4) {
+			if(board[shape.i + 1][shape.j] == 3 || board[shape.i + 1][shape.j] == 14 ||
+				board[shape.i + 1][shape.j] == 15 || board[shape.i + 1][shape.j] == 16){
+				score -= 10;
+				Lives--;
+				Start();
+				return;
+			}
+			shape.i++;
+			pacManDirection=2.4;
+		}
+	}
+
+	for(let i = 0 ; i < Features.length ; i++){
+		if(Features[i].i == shape.i && Features[i].j == shape.j){
+			Features[i].eat = true;
+		}
+	}
 	var timer = parseInt(gameProperties[12]);
-	if (board[shape.i][shape.j] == 1.1) {
-		score+=5; // אם זה אוכל תעלה את הניקוד
-		numOfBalls--;
-	}else if (board[shape.i][shape.j] == 1.2) {
-		score+=15; // אם זה אוכל תעלה את הניקוד
-		numOfBalls--;
-	}else if (board[shape.i][shape.j] == 1.3) {
-		score+=25; // אם זה אוכל תעלה את הניקוד
-		numOfBalls--;
-	}
-	else if (board[shape.i][shape.j] == 6){
-		//Eat Candy
-		score+=50;
-	}
-	else if (board[shape.i][shape.j] == 8){
-		timer = timer*2;
-		gameProperties[12] = timer.toString();
-	}
+	UpdateValuesAfterMove(timer);
+	DisplayFeatures(timer)
 	if(!(shape.i<0 || shape.j<0 || shape.i>21 ||shape.j>11)){
 		board[shape.i][shape.j] = pacManDirection; // נרצה לצבוע מחדש את הקאנבס, גם אם הצלחתי להתקדם וגם אם לא
 	}
-	var currentTime = new Date(); 
+	Draw();
+}
+function UpdateValuesAfterMove(timer){
+	timeForMonsters = 500;
+	if (board[shape.i][shape.j] == 11) {
+		score+=5; // אם זה אוכל תעלה את הניקוד
+		numOfBalls--;
+	}
+	else if (board[shape.i][shape.j] == 12) {
+		score+=15; // אם זה אוכל תעלה את הניקוד
+		numOfBalls--;
+	}
+	else if (board[shape.i][shape.j] == 13) {
+		score+=25; // אם זה אוכל תעלה את הניקוד
+		numOfBalls--;
+	}
+	else if (board[shape.i][shape.j] == 200){
+		//Eat clock
+		timer = timer*2;
+		gameProperties[12] = timer.toString();
+	}
+	else if (board[shape.i][shape.j] == 201){
+		//Eat Candy
+		score += 100;
+	}
+	else if (board[shape.i][shape.j] == 202){
+		//Eat Slow Motion
+		timeForMonsters = 1500;
+	}
+
+	var currentTime = new Date();
 	time_elapsed = (currentTime - start_time) / 1000; // מעדכן את הזמן שעבר
-	if(time_elapsed >= timer || Lives == 0){
+
+	if(time_elapsed >= timer){
+		return showRegModel('TimeOverDialog');
+	}
+	if(Lives == 0){
 		return showRegModel('gameOverDialog');
 	}
 	if(numOfBalls == 0){
 		return showRegModel('"winnerDialog"');
 	}
-	Draw();
+}
+function DisplayFeatures(timer){
+	let quarterTime = Math.floor(timer/4);
+	if( time_elapsed < quarterTime*4 && time_elapsed >= quarterTime * 3){ //ברבע האחרון של הזמן
+		//Clock
+		if(!Features[0].eat){
+			if(Features[0].i == 999 && Features[0].j == 999){
+				let emptyCell = findRandomEmptyCell(board);
+				Features[0].i = emptyCell[0];
+				Features[0].j = emptyCell[1];
+			}
+			board[Features[0].i][Features[0].j] = 200;
+		}
+	}
+	if( time_elapsed <= quarterTime*3 && time_elapsed >= quarterTime){ //ברבע השני והשלישי של הזמן
+		//Candy
+		for(let k = 1 ; k < 4 ; k++){
+			if(!Features[k].eat){
+				if(Features[k].i == 999 && Features[k].j == 999){
+					let emptyCell = findRandomEmptyCell(board);
+					Features[k].i = emptyCell[0];
+					Features[k].j = emptyCell[1];
+				}
+				board[Features[k].i][Features[k].j] = 201;
+			}
+		}
+	}
+	if( time_elapsed <= quarterTime*2 && time_elapsed >= quarterTime){ // ברבע השני של הזמן
+		//Slow Motion
+		if(!Features[4].eat){
+			if(Features[4].i == 999 && Features[4].j == 999){
+				let emptyCell = findRandomEmptyCell(board);
+				Features[4].i = emptyCell[0];
+				Features[4].j = emptyCell[1];
+			}
+			board[Features[4].i][Features[4].j] = 202;
+		}
+	}
 }
 
 function CloseGOWDialog(type , modelName){
@@ -538,6 +569,7 @@ function CloseGOWDialog(type , modelName){
 		ShowDiv("Welcome");
 	}
 }
+
  /********************************************** LogIn ***************************************************/
 function validatePass(value, message) {
 	var isValid;
@@ -853,20 +885,15 @@ function SaveButtonMoves(){
  * save the connected user globaly and save his property with his name to local storage
  */
 function saveUserAndProp(){
-	Lives = 5;
-	var userAndPr = userName+" Properties";
-	console.log(userName);
-	console.log(userAndPr);
-	var result = gameProperties.join(';');
+	let userAndPr = userName+" Properties";
+	let result = gameProperties.join(';');
 	localStorage.setItem(userAndPr ,result );
 }
 /******************************************* game Prop ********************************************/
 //done  - logIn modal dialog - we fix it like RegisterModel
-//done -  להציג את הגדרות בדף של המשחק
-//done - להוסיף שהכפתורים שנבחרו הם אלה שזזים 
 //done - להוסיף את הכדורים עם הצבעים שנבחרו כשהם נאכלים, הניקוד משתנה בהתאם לניקוד של הכדור
 
-
+//להוסיף לייבל שמראה כמה חיים נשארו לנו
 
 
 

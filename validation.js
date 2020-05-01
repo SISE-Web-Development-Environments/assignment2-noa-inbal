@@ -116,7 +116,12 @@ function showRegModel(modelName){
 	// Get the modal
 	var modal = document.getElementById(modelName);
 	modal.style.display = "block";
+    if(modelName == 'TimeOverDialog'){
+        if(score < 100){
+            $( '#inputScore').append( "<strong>You are better than " + score.toString() + " points!</strong>" );
+        }
 
+    }
 	// Get the <span> element that closes the modal
 	var span = document.getElementsByClassName("close")[0];
 

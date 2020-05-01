@@ -31,7 +31,7 @@
 		</div>
 		<div class="Content">
 			<div class="section" id="GameScreen">
-				<embed height="60" width="144" src="songs\GameSong.mp3" volume="60" loop="true" autostart="true" />
+				<embed height="60" width="144" src="songs\GameSong.mp3" volume="30" loop="true" autostart="true" />
 				<div id="game">
 					<canvas id="canvas" height="700" width="1300"></canvas>
 				</div>
@@ -40,11 +40,11 @@
 						<label for="lblScore">SCORE:</label>
 						<input class="gamePropInput" id="lblScore" type="text" />
 					</div>
-					<div id="time">
+					<div id="time1">
 						<label for="lblTime">TIME:</label>
 						<input id="lblTime" type="text" /><br><br>
 					</div> 
-					<label for="lblButtons">Properties:</label><br>
+					<label id="lblButtons">Properties:</label><br>
 					<div id="button">
 						<label>To move Up press :</label>
 						<input id="lblButtonsU" type="text" /><br>
@@ -55,18 +55,18 @@
 						<label>To move left press :</label>
 						<input id="lblButtonsL" type="text" /><br><br>
 					</div>
-					<div id="balls">
+					<div id="propBalls">
 						<label>TotalBalls :</label>
 						<input id="lblBalls" type="text" /><br>
 					</div>
 					<div id="color">
 						<canvas id="circle" width="150" height="50"></canvas>
 					</div>
-					<div id="time">
+					<div id="time2">
 						<label>TotalTime :</label>
 						<input id="lblTimeT" type="text" /><br>
 					</div>
-					<div id="monsters">
+					<div id="propMonsters">
 						<label>Monsters :</label>
 						<input id="lblMonsters" type="text" /><br>
 					</div>
@@ -106,7 +106,7 @@
 								<input id="remail" name="remail" type="email"></br>
 							</p>
 							<p>
-								<label for="rdate">Date Of Birth (required)</label>
+								<label id="rdate">Date Of Birth (required)</label>
 								<input id="datepicker" name="rdate" type="date" required></br>
 							</p>
 							<p>
@@ -176,13 +176,31 @@
 				  </div>
 				</div>
 			</div>
+			<div class="modal" id="TimeOverDialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h2>Loser!!!</h2>
+					</div>
+					<div class="modal-body">
+						<p>Sorry You'r Time is Over</p>
+						<p id="inputScore"></p>
+						<p>Try Next Time! </p>
+						<span style='font-size:100px;'>&#10083;</span>
+					</div>
+					<div class="modal-footer">
+						<h3>enjoy!</h3>
+						<button type="button" onclick="CloseGOWDialog('1' , 'gameOverDialog');" class="cancelbtn">New Game</button>
+						<button type="button" onclick="CloseGOWDialog('2' , 'gameOverDialog');" class="cancelbtn">Go To Welcome</button>
+					</div>
+				</div>
+			</div>
 			<div class="modal" id="gameOverDialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h2>Game Over!!!</h2>
+						<h2>Loser!!!</h2>
 					</div>
 					<div class="modal-body">
-						<p>Sorry But You Lose In The Game</p>
+						<p>Sorry But You Don't Have More Lives</p>
 						<p>Try Next Time! </p>
 						<span style='font-size:100px;'>&#10083;</span>
 					</div>
@@ -196,11 +214,11 @@
 			<div class="modal" id="winnerDialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h2>Congratulations!!!!</h2>
+						<h2>WINNER!!!!</h2>
 					</div>
 					<div class="modal-body">
 						<p>Well Done Buddy!</p>
-						<p>You Are Such A Winner! </p>
+						<p>Congratulations! </p>
 						<span style='font-size:100px;'>&#10083;</span>
 					</div>
 					<div class="modal-footer">
