@@ -6,6 +6,27 @@ var start_time;
 var time_elapsed;
 var interval;
 var interval2;
+
+var food_remain; // כמה אוכל רוצים שיהיה בלוח צריך לשנות את זה לפי ההגדרות אחכ
+var food5point;
+var food15point;
+var food25point;
+
+var imageup=document.createElement("img");	
+var imagedown=document.createElement("img");	
+var imageright=document.createElement("img");	
+var imageleft=document.createElement("img");
+var imageMons1=document.createElement('img');
+var imageMons2=document.createElement('img');
+var imageMons3=document.createElement('img');
+var imageMons4=document.createElement('img');
+var imageWall=document.createElement('img');
+var imageCandy=document.createElement('img');
+var imageClock=document.createElement('img');
+var imageSlow=document.createElement('img');
+
+
+
 var divToShow = "Welcome";
 var Monsters = [new Object() , new Object() , new Object() , new Object()]
 var LastMoves = [0,0,0,0]
@@ -24,13 +45,6 @@ var Features = [new Object() , new Object() , new Object() , new Object() ,  new
 //0:Clock ; 1:Candy1 ; 2:Candy2 ; 3:Candy3 ; 4:Slow
 var userInfo = [];
 
-
-$(document).ready(function() {
-	context = canvas.getContext("2d");
-	context.fillStyle = "blue";
-	ShowDiv('Welcome')
-	console.log(divToShow)
-});
 function ShowDiv(show) {
 	var allDives = document.getElementsByClassName('section');
 	var allModals = document.getElementsByClassName('modal')
@@ -50,35 +64,46 @@ function ShowDiv(show) {
 		ShowDivInProp('introProperties');
 	}
 }
+/******************************************* start game ************************************************/
+$(document).ready(function() {
+	var info = "p" + ',' + "p" ;
+	localStorage.setItem("p" , info);
+	context = canvas.getContext("2d");
+	context.width  = window.innerWidth*0.75;
+	context.height = window.innerHeight;
+	context.fillStyle = "blue";
+	ShowDiv('Welcome')
+	console.log(divToShow)
+});
 // Fill The Board With the Relevent Values for the game : 2.1 , 2.2 , 2.3 , 2.4 - The Possition of the Packman - Morti (left,right,up,down
 //														  11 , 12 ,13 - Different color of Ball
 //                                                        3 - monster
 //                                                        4 - Walls
 function Start() {
-	if(interval != null && interval2 != null){
-		clearInterval(interval);
-		clearInterval(interval2);
-	}
-	if(Lives == 5){
-		numOfBalls = parseInt(gameProperties[8]);
-		score = 0;
-		start_time = new Date();
-	}
+
+	Lives = 5;
+	numOfBalls = parseInt(gameProperties[8]);
+	score = 0;
+	start_time = new Date();
 	board = new Array(); // init game
 	var monsIndex = 0;
 	var cnt = 300; //  מאפשר לנו להגדיר אחוזים מסויימים בהמשך
-	var food_remain = numOfBalls; // כמה אוכל רוצים שיהיה בלוח צריך לשנות את זה לפי ההגדרות אחכ
-	var pacman_remain = 1; // כמה פעמים נרצה לאתחל את הפאקמן במהלך המשחק בצורה רנדומית (משמש אותנו בשביל לצייר בפעם הראשונה כרגע)
+	
+	food_remain = numOfBalls; // כמה אוכל רוצים שיהיה בלוח צריך לשנות את זה לפי ההגדרות אחכ
+	food5point= Math.floor(numOfBalls*0.6);
+	food15point= Math.floor(numOfBalls*0.3);
+	food25point= numOfBalls-food5point-food15point;
+
 	var monst_remain = parseInt(gameProperties[13]); // צריך לשנות לפי ההגדרות למספר המפלצות שהמשתמש הכניס
 	for (var i = 0; i < 22; i++) {
 		board[i] = new Array(); // יוצרים את המערך הדו מימדי 
 		for (var j = 0; j < 12; j++) {
 			/************* Put walls In Game Board************/
 			if (
-				(i == 3 && j == 0) ||
-				(i == 3 && j == 1) ||
-				(i == 3 && j == 6) ||
-				(i == 19 && j == 3) ||
+				(i == 1 && (j==0 || j == 1 || j == 2) ) ||
+				(j == 1 && (i == 2 || i == 3 || i == 4 ||i == 5) ) ||
+				(i == 3 && (j == 2 || j == 3 || j == 4 || j == 5) ) ||
+				(j == 3 && (i == 4 || i == 5 || i == 6 || i == 7) ) ||
 				(i == 20 && j == 3)
 			) {
 				board[i][j] = 4;
@@ -99,16 +124,8 @@ function Start() {
 				/************* Put food randomly *************/
 				var randomNum = Math.random();
 				if (randomNum <= (1.0 * food_remain) / cnt) {
-					food_remain--;
-					let randomFood = Math.floor((Math.random() * 3) + 11); // random integer from 11 to 13
-					board[i][j] = randomFood;
-				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
-					/************* Put Pacman randomly *************/
-					shape.i = i;
-					shape.j = j;
-					pacman_remain--;
-					board[i][j] = 2.1;
-				}else{
+					enterRandomFood(i,j);
+				} else{
 					board[i][j] = 0;
 				}
 			}
@@ -118,10 +135,15 @@ function Start() {
 
 	while (food_remain > 0) {
 		var emptyCell = findRandomEmptyCell(board);
-		let randomFood = Math.floor((Math.random() * 3) + 11); // random integer from 1 to 3
-		board[emptyCell[0]][emptyCell[1]] = randomFood;
-		food_remain--;
+		enterRandomFood(emptyCell[0],emptyCell[1]);
 	}
+	/************* Put Pacman randomly *************/
+	var emptyCell = findRandomEmptyCell(board);
+	shape.i = emptyCell[0];
+	shape.j = emptyCell[1];
+	board[shape.i][shape.j] = 2.1;
+
+
 	for(let i = 0 ; i < Features.length ; i++){
 		Features[i].i = 999;
 		Features[i].j = 999;
@@ -145,9 +167,39 @@ function Start() {
 	interval = setInterval(UpdatePosition, 250);
 	interval2 = setInterval(UpdateMonsters , timeForMonsters);
 }
+function enterRandomFood (i,j){
+	let stop = false;
+	while(!stop && food_remain > 0){
+		let randomFood = Math.floor((Math.random() * 3) + 11); // random integer from 11 to 13
+		if(randomFood == 11 && food5point > 0 ){
+			food5point--;
+			board[i][j] = randomFood;
+			stop=true;
+		}
+		if(randomFood == 12 && food15point > 0 ){
+			food15point--;
+			board[i][j] = randomFood;
+			stop = true;
+		}
+		if(randomFood == 13 && food25point > 0 ){
+			food25point--;
+			board[i][j] = randomFood;
+			stop = true;
+		}
+	}
+	if(stop)
+		food_remain--;
+	else{
+		board[i][j] = 0;
+	}
 
-/********************************************** game ***************************************************/
-
+}
+function isPacman(i,j){
+	return board[i][j] == 2.1 || board[i][j] == 2.2 || board[i][j] == 2.3 || board[i][j] == 2.4 ;
+}
+function isMonster(i,j){
+	return board[i][j] == 3 || board[i][j] == 14 || board[i][j] == 15 || board[i][j] == 16 || board[i][j] == 204 || board[i][j] == 205 || board[i][j] == 206 ;
+}
 function findRandomEmptyCell(board) {
 	var i = Math.floor(Math.random() * 21 + 1);
 	var j = Math.floor(Math.random() * 11 + 1);
@@ -157,115 +209,21 @@ function findRandomEmptyCell(board) {
 	}
 	return [i, j];
 }
-function GetKeyPressed() {
-	if (keysDown[keyCodeUp]) {
-		return 1;
-	}
-	if (keysDown[keyCodeDown]) {
-		return 2;
-	}
-	if (keysDown[keyCodeLeft]) {
-		return 3;
-	}
-	if (keysDown[keyCodeRight]) {
-		return 4;
-	}
-}
-// Display balls Properties in the game Properties Display
-function DrawCircleProp(){
-	var canvas = document.getElementById('circle');
-	if (canvas.getContext){
-		var ctx = canvas.getContext('2d'); 
-		var X = canvas.width*3/4;
-		var Y = canvas.height/3;
-		var R = 10;
-		ctx.beginPath();
-		ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
-		ctx.strokeStyle = gameProperties[9];
-		ctx.fillStyle = gameProperties[9];
-  		ctx.fill();
-		ctx.stroke();
-		ctx.fillText("    5P",canvas.width*3/5,50);
-		var X = canvas.width*2/4;
-		var Y = canvas.height/3;
-		var R = 10;
-		ctx.beginPath();
-		ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
-		ctx.strokeStyle = gameProperties[10];
-		ctx.fillStyle = gameProperties[10];
-  		ctx.fill();
-		ctx.stroke();
-		ctx.fillText("  15P",canvas.width *2/5,50);
-
-		var X = canvas.width/4;
-		var Y = canvas.height/3;
-		var R = 10;
-		ctx.beginPath();
-		ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
-		ctx.strokeStyle = gameProperties[11];
-		ctx.fillStyle = gameProperties[11];
-  		ctx.fill();
-		ctx.stroke();
-		ctx.fillText("25P",canvas.width/5,50);
-
-	}
-}
-
 //Funstion that Draw The Canvas by The Values in the Board - 2.1 , 2.2 , 2.3 , 2.4 - Packman Morty (Left , Right < Down , Up)
 //														   - 3 , 14 , 15 , 16 , 203 , 204 , 205 - Monsters - to save the cell value before the monster came to draw the previous value of the cell
 //                                                         - 11 , 12 , 13  - Food - Different color of Ball
 //                                                         - 4 - Walls
 //                                                         - 200 , 201 , 202 - Clock Feature To get More time , Candy to get more score , slowMotion emoji to slow the monsters
-function Draw(clock , candy , slow) {
+function Draw() {
 	canvas.width = canvas.width; //clean board
+
 	/************ Show Property Part ************/
-	lblScore.value = score;
-	lblTime.value = time_elapsed;
 	DrawCircleProp();
-
-	document.getElementById('lblButtonsU').value = "" + gameProperties[0];
-	keyCodeUp = gameProperties[1];
-	document.getElementById('lblButtonsD').value = "" + gameProperties[2];
-	keyCodeDown = gameProperties[3];
-	document.getElementById('lblButtonsR').value = "" + gameProperties[4];
-	keyCodeRight = gameProperties[5];
-	document.getElementById('lblButtonsL').value = "" + gameProperties[6];
-	keyCodeLeft = gameProperties[7];
-
-	document.getElementById('lblTimeT').value = "" + gameProperties[12];
-	document.getElementById('lblBalls').value = "" + gameProperties[8];
-	document.getElementById('lblMonsters').value = "" + gameProperties[13];
-
-	var imageup=document.createElement("img");	
-	var imagedown=document.createElement("img");	
-	var imageright=document.createElement("img");	
-	var imageleft=document.createElement("img");
-	var imageMons1=document.createElement('img');
-	var imageMons2=document.createElement('img');
-	var imageMons3=document.createElement('img');
-	var imageMons4=document.createElement('img');
-	var imageWall=document.createElement('img');
-	var imageCandy=document.createElement('img');
-	var imageClock=document.createElement('img');
-	var imageSlow=document.createElement('img');
-
+	getPropertiesVariables();
+	getImages();
 	imageup.onload=function(){
 		context.drawImage(imageup,center.x,center.x,50,50);
 	}
-	imageup.src="PacmanImages\\mortiU.png";
-	imagedown.src="PacmanImages\\mortiD.png";
-	imageright.src="PacmanImages\\mortiR.png";
-	imageleft.src="PacmanImages\\mortiL.png";
-	imageMons1.src="MonstersAndWall\\mons1.png";
-	imageMons2.src="MonstersAndWall\\mons2.png";
-	imageMons3.src="MonstersAndWall\\mons3.png";
-	imageMons4.src="MonstersAndWall\\mons4.png";
-	imageWall.src="MonstersAndWall\\potal.png";
-
-	imageCandy.src='CandyandClock\\candy.png';
-	imageClock.src='CandyandClock\\clock1.png';
-	imageSlow.src='CandyandClock\\slow.png';
-
 	var monsters = [imageMons1 , imageMons2 , imageMons3 , imageMons4];
 	let ind = 0;
 
@@ -313,19 +271,85 @@ function Draw(clock , candy , slow) {
 				/************* Drow Wall *************/
 				context.drawImage(imageWall, center.x, center.y, 50, 50); //Wall
 			} else if (board[i][j] == 200) {
-				/************* Drow Wall *************/
-				context.drawImage(imageClock, center.x, center.y, 50, 50); //Wall
+				/************* Drow Clock *************/
+				context.drawImage(imageClock, center.x, center.y, 50, 50); //clock
 			} else if (board[i][j] == 201) {
-				/************* Drow Wall *************/
-				context.drawImage(imageCandy, center.x, center.y, 50, 50); //Wall
+				/************* Drow Candy *************/
+				context.drawImage(imageCandy, center.x, center.y, 50, 50); //candy
 			} else if (board[i][j] == 202) {
-				/************* Drow Wall *************/
-				context.drawImage(imageSlow, center.x, center.y, 50, 50); //Wall
+				/************* Drow SlowMotion *************/
+				context.drawImage(imageSlow, center.x, center.y, 50, 50); //slow
 			}
 		}
 	}
 }
+function getImages(){
+	imageup.src="PacmanImages\\mortiU.png";
+	imagedown.src="PacmanImages\\mortiD.png";
+	imageright.src="PacmanImages\\mortiR.png";
+	imageleft.src="PacmanImages\\mortiL.png";
+	imageMons1.src="MonstersAndWall\\mons1.png";
+	imageMons2.src="MonstersAndWall\\mons2.png";
+	imageMons3.src="MonstersAndWall\\mons3.png";
+	imageMons4.src="MonstersAndWall\\mons4.png";
+	imageWall.src="MonstersAndWall\\potal.png";
+	imageCandy.src='CandyandClock\\candy.png';
+	imageClock.src='CandyandClock\\clock1.png';
+	imageSlow.src='CandyandClock\\slow.png';
+}
+/******************************************* during game ********************************************/
+function GetKeyPressed() {
+	if (keysDown[keyCodeUp]) {
+		return 1;
+	}
+	if (keysDown[keyCodeDown]) {
+		return 2;
+	}
+	if (keysDown[keyCodeLeft]) {
+		return 3;
+	}
+	if (keysDown[keyCodeRight]) {
+		return 4;
+	}
+}
+function reorderBoard(){
+	clearInterval(interval);
+	clearInterval(interval2);
+	let monsIndex = 0;
+	var monst_remain = parseInt(gameProperties[13]); // צריך לשנות לפי ההגדרות למספר המפלצות שהמשתמש הכניס
 
+	/************* Put Monster in Corners *************/
+	for (var i = 0; i < 22; i++) {
+		for (var j = 0; j < 12; j++) {
+			if(isPacman(i,j)){
+				board[i][j] = 0;
+			}
+			if(isMonster(i,j)){
+				board[i][j] -= 3;
+			} 
+			if( (i==0 && j==0) ||
+				(i==21 && j==0) ||
+				(i==0 && j==11) ||
+				(i==21 && j==11) ) {
+				if (monst_remain > 0) {
+					Monsters[monsIndex].i = i;
+					Monsters[monsIndex].j = j;
+					monst_remain--;
+					monsIndex++;
+					board[i][j] = 3;
+				}
+			}
+		}
+	}
+	/************* Put Pacman randomly *************/
+	var emptyCell = findRandomEmptyCell(board);
+	shape.i = emptyCell[0];
+	shape.j = emptyCell[1];
+	board[shape.i][shape.j] = 2.1;
+
+	interval = setInterval(UpdatePosition, 250);
+	interval2 = setInterval(UpdateMonsters , timeForMonsters);
+}
 function UpdateMonsters() {
 	/********************************************Draw Monsters*************************************************/
 	let numOfMonsters = parseInt(gameProperties[13]);
@@ -340,7 +364,7 @@ function UpdateMonsters() {
 					board[Monsters[k].i][Monsters[k].j - 1] == 2.3 || board[Monsters[k].i][Monsters[k].j - 1] == 2.4){
 					score -= 10;
 					Lives--;
-					Start();
+					reorderBoard();
 					return;
 				}
 				else{
@@ -357,7 +381,7 @@ function UpdateMonsters() {
 					board[Monsters[k].i][Monsters[k].j + 1] == 2.3 || board[Monsters[k].i][Monsters[k].j + 1] == 2.4){
 					score -= 10;
 					Lives--;
-					Start();
+					reorderBoard();
 					return;
 				}
 				else{
@@ -374,7 +398,7 @@ function UpdateMonsters() {
 					board[Monsters[k].i - 1][Monsters[k].j] == 2.3 || board[Monsters[k].i - 1][Monsters[k].j] == 2.4){
 					score -= 10;
 					Lives--;
-					Start();
+					reorderBoard();
 					return;
 				}
 				else{
@@ -391,7 +415,7 @@ function UpdateMonsters() {
 					board[Monsters[k].i + 1][Monsters[k].j] == 2.3 || board[Monsters[k].i + 1][Monsters[k].j] == 2.4){
 					score -= 10;
 					Lives--;
-					Start();
+					SreorderBoard();
 					return;
 				}
 				else{
@@ -415,7 +439,7 @@ function UpdatePosition() {
 				board[shape.i][shape.j - 1] == 15 || board[shape.i][shape.j - 1] == 16){
 				score -= 10;
 				Lives--;
-				Start();
+				reorderBoard();
 				return;
 			}
 			shape.j--;
@@ -428,7 +452,7 @@ function UpdatePosition() {
 				board[shape.i][shape.j + 1] == 15 ||board[shape.i][shape.j + 1] == 16 ){
 				score -= 10;
 				Lives--;
-				Start();
+				reorderBoard();
 				return;
 			}
 			shape.j++;
@@ -441,7 +465,7 @@ function UpdatePosition() {
 				board[shape.i - 1][shape.j] == 15 || board[shape.i - 1][shape.j] == 16){
 				score -= 10;
 				Lives--;
-				Start();
+				reorderBoard();
 				return;
 			}
 			shape.i--;
@@ -454,7 +478,7 @@ function UpdatePosition() {
 				board[shape.i + 1][shape.j] == 15 || board[shape.i + 1][shape.j] == 16){
 				score -= 10;
 				Lives--;
-				Start();
+				reorderBoard();
 				return;
 			}
 			shape.i++;
@@ -476,7 +500,6 @@ function UpdatePosition() {
 	Draw();
 }
 function UpdateValuesAfterMove(timer){
-	timeForMonsters = 500;
 	if (board[shape.i][shape.j] == 11) {
 		score+=5; // אם זה אוכל תעלה את הניקוד
 		numOfBalls--;
@@ -507,13 +530,19 @@ function UpdateValuesAfterMove(timer){
 	time_elapsed = (currentTime - start_time) / 1000; // מעדכן את הזמן שעבר
 
 	if(time_elapsed >= timer){
+		clearInterval(interval);
+		clearInterval(interval2);
 		return showRegModel('TimeOverDialog');
 	}
 	if(Lives == 0){
+		clearInterval(interval);
+		clearInterval(interval2);
 		return showRegModel('gameOverDialog');
 	}
 	if(numOfBalls == 0){
-		return showRegModel('"winnerDialog"');
+		clearInterval(interval);
+		clearInterval(interval2);
+		return showRegModel('winnerDialog');
 	}
 }
 function DisplayFeatures(timer){
@@ -553,347 +582,77 @@ function DisplayFeatures(timer){
 			board[Features[4].i][Features[4].j] = 202;
 		}
 	}
-}
-
-function CloseGOWDialog(type , modelName){
-	if(type == '1'){
-		var modal = document.getElementById(modelName);
-		modal.style.display = "none";
-		divToShow = "GameScreen";
-		ShowDiv("GameScreen");
-	}
-	if(type == '2'){
-		var modal = document.getElementById(modelName);
-		modal.style.display = "none";
-		divToShow = "Welcome";
-		ShowDiv("Welcome");
+	if(time_elapsed > quarterTime*2 ){
+		timeForMonsters = 500;
 	}
 }
 
- /********************************************** LogIn ***************************************************/
-function validatePass(value, message) {
-	var isValid;
-	if (value.length < 6) {
-        isValid = false;
-    }else if (value.search(/[\!\@\#\$\%\^\&\*\(\)\_\+\,\.\?\\\'\`\~\{\}\[\]\|\-]/) != -1) {
-        isValid = false;
-	}
-	else if(value.search(/[^a-zA-Z0-9]/) != -1){
-        isValid = false;
-	}
-    else{
-		isValid = true;
-	}
-
-    if (isValid) {
-        document.getElementById(message).style.display = "none";
-    }else {
-        document.getElementById(message).style.display= "inline";
-    }
-    return isValid;
-}
- function checkLoginForm(message){
-	userName = document.getElementById('LoginUN').value;
-	console.log("in login");
-	console.log(userName);
-	let userP = userName+" Properties";
-	var PassWord = document.getElementById('LoginPW').value;
-	var info = localStorage.getItem(userName);
-	if(info === null){
-		document.getElementById(message).style.display= "inline"
-	}
-	else{
-		var pswToCheck = info.split(',')[1];
-		if ( PassWord === pswToCheck){
-			document.getElementById(message).style.display = "none";
-			gameProperties = localStorage.getItem(userP).split(';');
-			//gameProperties = localStorage.getItem(userP) ? JSON.parse(localStorage.getItem(userP)) : []
-			return showLogModel("loginDialog")			
-		}
-		else{
-			document.getElementById(message).style.display= "inline";
-		}
-	}
-	divToShow = "Login";
-	console.log(divToShow)
-}
-function showLogModel(modelName){
-	// Get the modal
-	var modal = document.getElementById(modelName);
-	modal.style.display = "block";
-
-	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
-
-	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() {
-		//   modal.style.display = "none";
-		  CloseLogDialog();
-	}
-	return false;
-}
-function CloseLogDialog() {
-	var modal = document.getElementById("loginDialog"); 
-	modal.style.display = "none";
-	divToShow = "GameScreen";
-	ShowDiv("GameScreen");
-}
-/********************************************** About ***************************************************/
-function showModel(modelName) {
-
-	// Get the modal
-	var modal = document.getElementById(modelName);
-	modal.style.display = "block";
-
-	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
-
-	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() {
-  		modal.style.display = "none";
-	}
-
-	// When the user clicks anywhere outside of the modal, close it
-	window.onclick = function(event) {
-  		if (event.target == modal) {
-    		modal.style.display = "none";
-  		}
-	}
-}
-/********************************************* Properties ************************************************/
-function ShowDivInProp(show){
-	var allDives = document.getElementsByClassName('PropSection');
-	var target = document.getElementById(show);
-	for(var i = 0 ; i < allDives.length ; i++){
-		allDives[i].style.display = 'none';
-	}
-	target.style.display = 'block';
-}
-function RandomProperties(){
-	var x = Math.random();
-	var y= Math.random();
-	var balls =  Math.floor(x*40 + 50);
-	var monsters =  Math.floor(x*3 + 1);
-	var time =  Math.floor((x*120) + (y*240) + 60);
-	var colors = ["" , "" , ""];
-	for( i = 0 ; i < 3 ; i++){
-		var create = true;
-		var color = "";
-		while(create){
-			x = Math.floor(Math.random()*255);
-			y= Math.floor(Math.random()*255);
-			var z = Math.floor(Math.random()*255);
-			color = "rgb(" + x + "," + y + "," + z + ")"
-			create = false;
-			for(j = 0 ; j <= i ; j++){
-				if(color == colors[i]){
-					create = true;
-				}
-			}
-		}
-		colors[i] = color;
-	}
-	gameProperties.push("ArrowUp");
-	gameProperties.push(38);
-	gameProperties.push("ArrowDown");
-	gameProperties.push(40);
-	gameProperties.push("ArrowRight");
-	gameProperties.push(39);
-	gameProperties.push("ArrowLeft");
-	gameProperties.push(37);
-	gameProperties.push(balls);
-	gameProperties.push(colors[0]);
-	gameProperties.push(colors[1]);
-	gameProperties.push(colors[2]);
-	gameProperties.push(time);
-	gameProperties.push(monsters);
-	saveUserAndProp();
-	ShowDivInProp('startGame');
-
-}
-function SaveBalls(){
-	var num = document.getElementById('numBalls').value;
-	if(validNumBalls('balls-error')){
-		gameProperties.push(num);
-		document.getElementById('cp').style.display = "inline";
-	}
-}
-function SaveTime(){
-	var num = document.getElementById('timer').value;
-	if(validTimer('time-error')){
-		gameProperties.push(num);
-		ShowDivInProp('Monsters');
-	}
-}
-function SaveMonsters(id){
-	var num = document.getElementById(id).value;
-	if(validNumberMonst('monst-error')){
-		gameProperties.push(num);
-		saveUserAndProp();
-		ShowDivInProp('startGame');
-	}
-}
-function validNumBalls(message){
-	var num = document.getElementById("numBalls").value;
-	if (num.match(/^[0-9]+$/) != null){
-		var x = parseInt(num);
-		if(50 <= x && x <= 90){
-			document.getElementById(message).style.display = "none";
-			return true;
-		}
-	}
-	document.getElementById(message).style.display = "inline";
-	return false;
-}
-function ColorPickerDisplay(){
-	document.getElementById("balls1").style.display = "none"
-	document.getElementById("balls2").style.display = "block"
-	var input1 = document.querySelectorAll("input");
-	var input2 = document.querySelectorAll("input");
-	var input3 = document.querySelectorAll("input");
-
-	for(var i = 0; i < input1.length; i++){
-		input1[i].addEventListener("input" , function () {
-			var red = document.getElementById("red1").value,
-				green = document.getElementById("grn1").value,
-				blue = document.getElementById("blu1").value;
-			var display = document.getElementById("color1");
-			display.style.background = "rgb(" + red + ", " + green + ", " + blue + ")"
-
-		})
-
-		input2[i].addEventListener("input" , function () {
-			var red = document.getElementById("red2").value,
-				green = document.getElementById("grn2").value,
-				blue = document.getElementById("blu2").value;
-			var display = document.getElementById("color2");
-			display.style.background = "rgb(" + red + ", " + green + ", " + blue + ")"
-
-		})
-
-		input3[i].addEventListener("input" , function () {
-			var red = document.getElementById("red3").value,
-				green = document.getElementById("grn3").value,
-				blue = document.getElementById("blu3").value;
-			var display = document.getElementById("color3");
-			display.style.background = "rgb(" + red + ", " + green + ", " + blue + ")"
-
-		})
-	}
-}
-function submitBalls(message){
-	var color5 = document.getElementById("color1").style.background;
-	var color15 = document.getElementById("color2").style.background;
-	var color25 = document.getElementById("color3").style.background;
-	var colors = [color5 , color15 , color25];
-	if ( color5 === color15 || color5 === color25 || color15 === color25){
-		document.getElementById(message).style.display = "inline"
-	}
-	else{
-		document.getElementById(message).style.display = "none"
-		for(var i=0 ; i < 3 ; i++){
-			gameProperties.push(colors[i]);
-		}
-		ShowDivInProp('GameTime');
-	}
-}
-function validTimer(message) {
-	var num = document.getElementById("timer").value;
-	if (num.match(/^[0-9]+$/) != null){
-		var x = parseInt(num);
-		if(x >= 60){
-			document.getElementById(message).style.display = "none";
-			return true;
-		}
-	}
-	document.getElementById(message).style.display = "inline";
-	return false;
-}
-function validNumberMonst(message) {
-	var num = document.getElementById("monst").value;
-	if (num.match(/^[0-9]+$/) != null){
-		var x = parseInt(num);
-		if(x >= 1 && x <= 4){
-			//document.getElementById(message).style.display = "none";
-			return true;
-		}
-	}
-	document.getElementById(message).style.display = "inline";
-	return false;
-}
-function closeStartGameModel(){
-	var modal = document.getElementById("startGame"); 
-	modal.style.display = "none";
-	ShowDiv("GameScreen");
-}
-/************************************* Properties - button ***************************************/
-function showBotton(event , pId) {
-	var x = event.key;
-	if(pId=="rightBotton"){
-		keyCodeRight = event.keyCode;
-	}
-	else if(pId=="leftBotton"){
-		keyCodeLeft = event.keyCode;
-	}else if(pId=="upBotton"){
-		keyCodeUp = event.keyCode;
-	}else if(pId=="downBotton"){
-		keyCodeDown = event.keyCode;
-	}
-	document.getElementById(pId).value = "" + x;
-}
-/**
- * save buttons only afer validation
- */
-function SaveButtonMoves(){
-	var right = document.getElementById("rightBotton").value;
-	var left = document.getElementById("leftBotton").value;
-	var  up = document.getElementById("upBotton").value;
-	var down = document.getElementById("downBotton").value;
-
-	if(right == "" || left == "" || down == "" || up == "" ||
-	 right == left || right == up || right == down || left == up || left == down || up == down){
-		document.getElementById('key-error').style.display = "inline";
-		window.location.hash = '#MoveButtoms';
-		return false;
-	}
-	else{
-		var next = document.getElementById("next");
-
-		document.getElementById('key-error').style.display = "none";
-		gameProperties=[];
-		gameProperties.push(up);
-		gameProperties.push(keyCodeUp);
-		gameProperties.push(down);
-		gameProperties.push(keyCodeDown);
-		gameProperties.push(right);
-		gameProperties.push(keyCodeRight);
-		gameProperties.push(left);
-		gameProperties.push(keyCodeLeft);
-
-		console.log(gameProperties);
-		console.log(gameProperties[0]);
-		console.log(gameProperties[1]);
-		console.log(gameProperties[3]);
-
-		next.style.visibility = "visible";
-		window.location.hash = '#MoveButtoms';
-		return true;
-	}
-	
-}
-/**
- * save the connected user globaly and save his property with his name to local storage
- */
-function saveUserAndProp(){
-	let userAndPr = userName+" Properties";
-	let result = gameProperties.join(';');
-	localStorage.setItem(userAndPr ,result );
-}
 /******************************************* game Prop ********************************************/
-//done  - logIn modal dialog - we fix it like RegisterModel
-//done - להוסיף את הכדורים עם הצבעים שנבחרו כשהם נאכלים, הניקוד משתנה בהתאם לניקוד של הכדור
+// Display balls Properties in the game Properties Display
+function DrawCircleProp(){
+	var canvas = document.getElementById('circle');
+	if (canvas.getContext){
+		var ctx = canvas.getContext('2d'); 
+		var X = canvas.width*3/4;
+		var Y = canvas.height/3;
+		var R = 10;
+		ctx.beginPath();
+		ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
+		ctx.strokeStyle = gameProperties[9];
+		ctx.fillStyle = gameProperties[9];
+  		ctx.fill();
+		ctx.stroke();
+		ctx.fillText("    5P",canvas.width*3/5,50);
+		var X = canvas.width*2/4;
+		var Y = canvas.height/3;
+		var R = 10;
+		ctx.beginPath();
+		ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
+		ctx.strokeStyle = gameProperties[10];
+		ctx.fillStyle = gameProperties[10];
+  		ctx.fill();
+		ctx.stroke();
+		ctx.fillText("  15P",canvas.width *2/5,50);
 
-//להוסיף לייבל שמראה כמה חיים נשארו לנו
+		var X = canvas.width/4;
+		var Y = canvas.height/3;
+		var R = 10;
+		ctx.beginPath();
+		ctx.arc(X, Y, R, 0, 2 * Math.PI, false);
+		ctx.strokeStyle = gameProperties[11];
+		ctx.fillStyle = gameProperties[11];
+  		ctx.fill();
+		ctx.stroke();
+		ctx.fillText("25P",canvas.width/5,50);
+	}
+}
+function getPropertiesVariables(){
+	lblScore.value = score;
+	lblTime.value = time_elapsed;
+	lblLives.value = Lives;
+
+	document.getElementById('lblButtonsU').value = "" + gameProperties[0];
+	keyCodeUp = gameProperties[1];
+	document.getElementById('lblButtonsD').value = "" + gameProperties[2];
+	keyCodeDown = gameProperties[3];
+	document.getElementById('lblButtonsR').value = "" + gameProperties[4];
+	keyCodeRight = gameProperties[5];
+	document.getElementById('lblButtonsL').value = "" + gameProperties[6];
+	keyCodeLeft = gameProperties[7];
+
+	document.getElementById('lblTimeT').value = "" + gameProperties[12];
+	document.getElementById('lblBalls').value = "" + gameProperties[8];
+	document.getElementById('lblMonsters').value = "" + gameProperties[13];
+
+}
+
+
+/******************************************* משימות ********************************************/
+
+
+// לטפל במוזיקה שתיהיה גם אוטומטית וגם בלופ - הצלחתי או את זה או את זה 
+// לסדר את הקירות במשחק
+// readme 
 
 
 

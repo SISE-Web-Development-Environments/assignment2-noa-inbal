@@ -4,16 +4,14 @@
 		<script src="./jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
 		<link rel="stylesheet" type="text/css" href="Pacman.css" />
-
-  		<!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-		<script src="jquery.js" type="text/javascript"></script> -->
 	
 		<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.3.min.js"></script>
 		<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
 		<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.min.js"></script>
 
 		<script src="validation.js"></script>
+		<script src="dialog.js"></script>
+		<script src="properties.js"></script>
 
 		
 	</head>
@@ -31,11 +29,22 @@
 		</div>
 		<div class="Content">
 			<div class="section" id="GameScreen">
-				<embed height="60" width="144" src="songs\GameSong.mp3" volume="30" loop="true" autostart="true" />
+				<!-- <iframe src="songs\GameSong.mp3" allow="autoplay" id="audio" style="display: none"></iframe> -->
+				<!-- <audio controls loop> -->
+					<embed height="60" width="144" src="songs\GameSong.mp3" volume="60" autostart="true" />
+					<!-- <source src="songs\GameSong.mp3" type="audio/mp3"> -->
+				  <!-- </audio> -->
+				  <audio autoplay loop>
+					<source src="songs\GameSong.mp3">
+			  </audio>
 				<div id="game">
 					<canvas id="canvas" height="700" width="1300"></canvas>
 				</div>
 				<div id="showProp">
+					<div id="lives">
+						<label for="lblLives">LIVES:</label>
+						<input class="gamePropInput" id="lblLives" type="text" />
+					</div>
 					<div id="score">
 						<label for="lblScore">SCORE:</label>
 						<input class="gamePropInput" id="lblScore" type="text" />
@@ -44,7 +53,8 @@
 						<label for="lblTime">TIME:</label>
 						<input id="lblTime" type="text" /><br><br>
 					</div> 
-					<label id="lblButtons">Properties:</label><br>
+					<div class="propertiesLables">
+						<label id="lblButtons">Properties:</label><br>
 					<div id="button">
 						<label>To move Up press :</label>
 						<input id="lblButtonsU" type="text" /><br>
@@ -68,7 +78,24 @@
 					</div>
 					<div id="propMonsters">
 						<label>Monsters :</label>
-						<input id="lblMonsters" type="text" /><br>
+						<input id="lblMonsters" type="text" />
+						<img src ="MonstersAndWall/mons1.png" width=40 height="40">
+						<img src ="MonstersAndWall/mons2.png" width=40 height="40">
+						<img src ="MonstersAndWall/mons3.png" width=40 height="40">
+						<img src ="MonstersAndWall/mons4.png" width=40 height="40">
+					</div>
+					<div id="propCandy">
+						<label>Candy for 100 points</label>
+						<img src ="CandyandClock/candy.png" width=40 height="40">
+					</div>
+					<div id="propClock">
+						<label>Double The Game Time</label>
+						<img src ="CandyandClock/clock1.png" width=40 height="40">
+					</div>
+					<div id="propSlow">
+						<label>Slow Monsters</label>
+						<img src ="CandyandClock/slow.png" width=40 height="40">
+					</div>
 					</div>
 				</div>
 			</div>
@@ -126,8 +153,8 @@
 						<br>
 						<p>
 							<label for="rpassword">Password</label>
-							<input id="LoginPW" type="password" name="psw" required onchange="validatePass(this.value, 'rpassword-error');">
-							<label id="rpassword-error" class="errorMsg">password must be at least 6 letter, only letters and numbers</label><br />
+							<input id="LoginPW" type="password" name="psw" required>
+							<!-- <label id="rpassword-error" class="errorMsg">password must be at least 6 letter, only letters and numbers</label><br /> -->
 						</p>
 						</br>
 						<p>
@@ -146,15 +173,19 @@
   				<div class="modal-content">
     				<div class="modal-header">
 						  <span onclick="document.getElementById('About').style.display='none'" class="close">&times;</span>
-      					<h2>About Us</h2>
+      					<h1>About Us</h1>
     				</div>
     				<div class="modal-body">
-      					<p>hello - we are:</p>
-						  <p>Inbal Bitton</p>
-						  <p>Noa Shabtay</p>
+      					  <h2>we are: Inbal Bitton and  Noa Shabtay</h2>
+						  <h2>PlugIn: to make the validation form we used this links :</h2>
+						  <h3>http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.3.min.js<br>
+						      http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js<br>
+						      http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.min.js</h3>
+						  <h2>Difficulties:</h2>
+						  <h3>In the beginning we had difficulty connecting the scripts to html.<br> 
+							  After many attempts we study the subject ans the work was much simpler</h3>
     				</div>
     				<div class="modal-footer">
-						  <h3>Modal Footer</h3>
 						  <button type="button" onclick="document.getElementById('About').style.display='none'" class="cancelbtn">OK</button>
     				</div>
   				</div>
@@ -185,12 +216,11 @@
 						<p>Sorry You'r Time is Over</p>
 						<p id="inputScore"></p>
 						<p>Try Next Time! </p>
-						<span style='font-size:100px;'>&#10083;</span>
 					</div>
 					<div class="modal-footer">
 						<h3>enjoy!</h3>
-						<button type="button" onclick="CloseGOWDialog('1' , 'gameOverDialog');" class="cancelbtn">New Game</button>
-						<button type="button" onclick="CloseGOWDialog('2' , 'gameOverDialog');" class="cancelbtn">Go To Welcome</button>
+						<button type="button" onclick="CloseGOWDialog('1' , 'TimeOverDialog');" class="cancelbtn">New Game</button>
+						<button type="button" onclick="CloseGOWDialog('2' , 'TimeOverDialog');" class="cancelbtn">Go To Welcome</button>
 					</div>
 				</div>
 			</div>
@@ -202,10 +232,8 @@
 					<div class="modal-body">
 						<p>Sorry But You Don't Have More Lives</p>
 						<p>Try Next Time! </p>
-						<span style='font-size:100px;'>&#10083;</span>
 					</div>
 					<div class="modal-footer">
-						<h3>enjoy!</h3>
 						<button type="button" onclick="CloseGOWDialog('1' , 'gameOverDialog');" class="cancelbtn">New Game</button>
 						<button type="button" onclick="CloseGOWDialog('2' , 'gameOverDialog');" class="cancelbtn">Go To Welcome</button>
 					</div>
@@ -219,10 +247,8 @@
 					<div class="modal-body">
 						<p>Well Done Buddy!</p>
 						<p>Congratulations! </p>
-						<span style='font-size:100px;'>&#10083;</span>
 					</div>
 					<div class="modal-footer">
-						<h3>enjoy!</h3>
 						<button type="button" onclick="CloseGOWDialog('1' , 'winnerDialog');" class="cancelbtn">New Game</button>
 						<button type="button" onclick="CloseGOWDialog('2' , 'winnerDialog');" class="cancelbtn">Go To Welcome</button>
 					</div>
@@ -368,7 +394,8 @@
 		</div>
 
 		<div class="footer">
-				Inbal &nbsp; &amp; &nbsp; Noa
+			&copy;&nbsp;Inbal Bitton &amp; Noa Shabtay &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			contact us: inbalbit@post.bgu.ac.il &nbsp;&nbsp; noashab@post.bgu.ac.il
 		</div>
 	</body>
 </html>

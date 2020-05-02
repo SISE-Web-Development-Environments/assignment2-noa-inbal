@@ -5,25 +5,24 @@
     height: 750px;
     width: 79%;
     float: right; 
-    background:rgb(167, 167, 167);
-    /*background: inherit;*/
+    /* background:rgb(167, 167, 167); */
+    background: inherit;
 }
 #canvas{
-    background-color: darksalmon;
-    /*background: inherit;*/
-    border: darkturquoise solid 2px;
+    /* background-color: darksalmon; */
+    background: inherit;
+    border: #00FF7F solid 2px;
 }
 #showProp{
     width: 20%;
-    height: 490px;
-    border: darkturquoise solid 1px;
+    height: 750px;
+    /* border: darkturquoise solid 1px; */
     float: left;
-    /*background:rgb(167, 167, 167);*/
+    /* background:rgb(167, 167, 167); */
     background: inherit;
 
 
 }
-
 .welcomePacman{
     background: inherit;
     font-family: "Century Gothic", CenturyGothic;
@@ -32,9 +31,22 @@
     font-weight: bold;
     text-shadow: 3px 3px #00FFFF;
 }
-
-#lblScore,#lblTime,#lblButtonsU,#lblButtonsD,#lblButtonsR,#lblButtonsL,#lblMonsters,#lblBalls,#lblTimeT{
-    width: 180px;
+.propertiesLables{
+    text-align: left;
+}
+#lblMonsters{
+    width: 20px;
+    color: aliceblue;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #00FF7F;
+    resize: both;
+}
+#lblScore,#lblLives,#lblTime,#lblButtonsU,#lblButtonsD,#lblButtonsR,#lblButtonsL,#lblBalls,#lblTimeT{
+    width: 80px;
     color: aliceblue;
     background: transparent;
     border: none;
@@ -204,34 +216,41 @@ button:hover,input[type=submit]:hover {
 /***************************************model dialog*********************************************/
   /* The Modal (background) */
   .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    display: none; 
+    position: fixed; 
+    z-index: 1;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(248, 141, 243); /* Fallback color */
-    background-color: rgba(196, 167, 167, 0.575); /* Black w/ opacity */
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(248, 141, 243);
+    background-color: rgba(196, 167, 167, 0.575); 
     opacity:0.9;
-    padding-top: 60px; 
+    padding-top: 0px; 
   }
 
   /* Modal Content/Box */
   .modal-content {
+    background-image: url("modalImage/modalImage2.jpeg") ;
     background-color: #fefefe;
     border: 1px solid #888;
     padding: 0;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 80%;
     position: relative;
     margin: 0 auto;
     top: 25%;
   }
   .modal-body ,.modal-footer, .modal-header {
-      color:rgb(248, 141, 243) ;
+      color: white ;
   }
-  
+  #gameOverDialog , #TimeOverDialog{
+    background-image: url("modalImage/looserImages.jpeg") ;
+  }
+  #winnerDialog{
+    background-image: url("modalImage/winImage.jpeg.jpeg") ;
+
+  }
   /* The Close Button (x) */
   .close {
     position: absolute;

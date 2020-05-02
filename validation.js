@@ -51,9 +51,6 @@ $(function() {
                 minlength: "Please enter at least 2 characters"
             }
         }
-        // submitHandler: function(form){
-        //     form.submit();
-        // }
     });
 });
 
@@ -100,41 +97,66 @@ function saveUser(){
 		document.forms["registerform"].focus();
 		return false;
 	}
-	var uName = document.forms["registerform"]["rusername"].value;//.getElementById('#rusername').value;
+	var uName = document.forms["registerform"]["rusername"].value;
 	console.log(uName);
-	var uPSW = document.forms["registerform"]["rpassword"].value;//getElementById("#rpassword").value;
-	var uFullName = document.forms["registerform"]["rfullname"].value;//getElementById("#rfullname").value;
-	var uEmail = document.forms["registerform"]["remail"].value;//getElementById("#remail").value;
-	var uDate = document.forms["registerform"]["datepicker"].value;//getElementById("#datepicker").value;
+	var uPSW = document.forms["registerform"]["rpassword"].value;
+	var uFullName = document.forms["registerform"]["rfullname"].value;
+	var uEmail = document.forms["registerform"]["remail"].value;
+	var uDate = document.forms["registerform"]["datepicker"].value;
 	var info = uName + ',' + uPSW + ',' + uFullName + ',' + uEmail + ',' + uDate
 	console.log(info);
 	localStorage.setItem(uName , info)
 	userName = uName;
 	return showRegModel('registerDialog');
 }
-function showRegModel(modelName){
-	// Get the modal
-	var modal = document.getElementById(modelName);
-	modal.style.display = "block";
-    if(modelName == 'TimeOverDialog'){
-        if(score < 100){
-            $( '#inputScore').append( "<strong>You are better than " + score.toString() + " points!</strong>" );
-        }
+ /********************************************** LogIn ***************************************************/
+//  function validatePass(value, message) {
+// 	var isValid;
+// 	if (value.length < 6) {
+//         isValid = false;
+//     }else if (value.search(/[\!\@\#\$\%\^\&\*\(\)\_\+\,\.\?\\\'\`\~\{\}\[\]\|\-]/) != -1) {
+//         isValid = false;
+// 	}
+// 	else if(value.search(/[^a-zA-Z0-9]/) != -1){
+//         isValid = false;
+// 	}
+//     else{
+// 		isValid = true;
+// 	}
 
-    }
-	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
-
-	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() {
-		//   modal.style.display = "none";
-		  CloseRegDialog();
+//     if (isValid) {
+//         document.getElementById(message).style.display = "none";
+//     }else {
+//         document.getElementById(message).style.display= "inline";
+//     }
+//     return isValid;
+// }
+ function checkLoginForm(message){
+	userName = document.getElementById('LoginUN').value;
+	console.log("in login");
+	console.log(userName);
+	let userP = userName+" Properties";
+	var PassWord = document.getElementById('LoginPW').value;
+	var info = localStorage.getItem(userName);
+	if(info === null){
+		document.getElementById(message).style.display= "inline"
 	}
-	return false;
-}
-function CloseRegDialog() {
-	var modal = document.getElementById("registerDialog"); 
-	modal.style.display = "none";
-	divToShow = "Properties";
-	ShowDiv("Properties");
+	else{
+		var pswToCheck = info.split(',')[1];
+		if ( PassWord === pswToCheck){
+            document.getElementById(message).style.display = "none";
+            if(localStorage.getItem(userP) == null){
+                divToShow = "Properties";
+                return ShowDiv("Properties");
+            }
+			gameProperties = localStorage.getItem(userP).split(';');
+			//gameProperties = localStorage.getItem(userP) ? JSON.parse(localStorage.getItem(userP)) : []
+			return showLogModel("loginDialog")			
+		}
+		else{
+			document.getElementById(message).style.display= "inline";
+		}
+	}
+	divToShow = "Login";
+	console.log(divToShow)
 }
