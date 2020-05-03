@@ -265,7 +265,7 @@ input[type=range]{
     background-image: url("modalImage/looserImages.jpeg") ;
 }
  #winnerDialog{
-    background-image: url("modalImage/winImage.jpeg.jpeg") ;
+    background-image: url("modalImage/winImage.jpeg") ;
 }
 .close {
     position: absolute;

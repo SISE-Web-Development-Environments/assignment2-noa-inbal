@@ -6,6 +6,7 @@ var start_time;
 var time_elapsed;
 var interval;
 var interval2;
+var interval3;
 
 var food_remain; // כמה אוכל רוצים שיהיה בלוח צריך לשנות את זה לפי ההגדרות אחכ
 var food5point;
@@ -24,12 +25,12 @@ var imageWall=document.createElement('img');
 var imageCandy=document.createElement('img');
 var imageClock=document.createElement('img');
 var imageSlow=document.createElement('img');
-
+var imageMovingP=document.createElement('img');
 
 
 var divToShow = "Welcome";
-var Monsters = [new Object() , new Object() , new Object() , new Object()]
-var LastMoves = [0,0,0,0]
+var Monsters = [new Object() , new Object() , new Object() , new Object(),new Object()]
+var LastMoves = [0,0,0,0,0]
 var Lives = 5;
 var keyCodeUp= "";
 var keyCodeDown= "";
@@ -37,6 +38,7 @@ var keyCodeRight= "";
 var keyCodeLeft= "";
 var numOfBalls;
 var userName = "";
+var movingPriceExist= true;
 var timeForMonsters = 300;
 var gameProperties = [];
 //0:up,1:upCode,2:down,3:downCode:,4:right,5:rightCode,6:left,7:leftCode
@@ -95,25 +97,29 @@ function Start() {
 	food5point= Math.floor(numOfBalls*0.6);
 	food15point= Math.floor(numOfBalls*0.3);
 	food25point= numOfBalls-food5point-food15point;
+	movingPriceExist= true;
 
 	var monst_remain = parseInt(gameProperties[13]); // צריך לשנות לפי ההגדרות למספר המפלצות שהמשתמש הכניס
+	let fourM = false;
+	if(monst_remain > 3){
+		fourM = true;
+	}
 	for (var i = 0; i < 22; i++) {
 		board[i] = new Array(); // יוצרים את המערך הדו מימדי 
 		for (var j = 0; j < 12; j++) {
 			/************* Put walls In Game Board************/
-			if (
-				(i == 1 && (j==0 || j == 1 || j == 2) ) ||
-				(j == 1 && (i == 2 || i == 3 || i == 4 ||i == 5) ) ||
-				(i == 3 && (j == 2 || j == 3 || j == 4 || j == 5) ) ||
-				(j == 3 && (i == 4 || i == 5 || i == 6 || i == 7) ) ||
-				(i == 20 && j == 3)
-			) {
-				board[i][j] = 4;
-				/************* Put Monster in Corners *************/
-			} else if( (i==0 && j==0) ||
-						(i==21 && j==0) ||
-						(i==0 && j==11) ||
-						(i==21 && j==11) ) {
+			enterWalls(i);
+			/************* Put movingP In Game Board************/
+			if( (!fourM && i==21 && j==11) || (fourM && i==20 && j==11) ){
+				Monsters[4].i = i;
+				Monsters[4].j = j;
+				board[i][j] = 100 ;// movingPrice
+			}
+			/************* Put Monster in Corners *************/
+			if( (i==0 && j==0) ||
+				(i==21 && j==0) ||
+				(i==0 && j==11) ||
+				(i==21 && j==11) ) {
 				if (monst_remain > 0) {
 					Monsters[monsIndex].i = i;
 					Monsters[monsIndex].j = j;
@@ -139,6 +145,9 @@ function Start() {
 		var emptyCell = findRandomEmptyCell(board);
 		enterRandomFood(emptyCell[0],emptyCell[1]);
 	}
+	food5point= Math.floor(numOfBalls*0.6);
+	food15point= Math.floor(numOfBalls*0.3);
+	food25point= numOfBalls-food5point-food15point;
 	/************* Put Pacman randomly *************/
 	var emptyCell = findRandomEmptyCell(board);
 	shape.i = emptyCell[0];
@@ -168,6 +177,34 @@ function Start() {
 	);
 	interval = setInterval(UpdatePosition, 250);
 	interval2 = setInterval(UpdateMonsters , timeForMonsters);
+	interval3 = setInterval(updateCandy, 400);
+
+}
+function enterWalls(i){
+	if ( i == 1 ){
+		board[1][0] = 4; board[1][1] = 4; board[1][2] = 4; board[1][3] = 4; board[1][8] = 4; board[1][9] = 4; board[1][10] = 4;
+	}else if ( i == 3 ){
+		board[3][5] = 4; board[3][6] = 4; board[3][7] = 4;
+	}
+	else if ( i == 5 ){
+		board[5][1] = 4; board[5][2] = 4; board[5][3] = 4; board[5][6] = 4; board[5][7] = 4; board[5][8] = 4; board[5][9] = 4;
+	}else if( i == 9 ){
+		board[9][4] = 4; board[9][3] = 4; board[9][2] = 4; board[9][5] = 4; board[9][6] = 4;
+	}else if( i == 13 ){
+		board[13][5] = 4; board[13][6] = 4; board[13][7] = 4; board[13][9] = 4; board[13][10] = 4; board[13][11] = 4;
+	}
+	else if( i == 17 ){
+		board[17][5] = 4; board[17][6] = 4; board[17][7] = 4; board[17][9] = 4; board[17][10] = 4; board[17][11] = 4;
+	}else if( i == 21 ){
+		board[20][2] = 4; board[20][3] = 4; board[20][4] = 4; 
+		board[19][2] = 4; board[18][2] = 4; board[17][2] = 4; board[16][2] = 4;
+		board[18][5] = 4; board[16][7] = 4;
+		board[10][2] = 4; board[11][2] = 4; board[12][2] = 4; board[12][3] = 4; board[8][6] = 4;
+		board[12][0] = 4; board[13][0] = 4; board[14][0] = 4; board[13][2] = 4;
+		board[7][10] = 4; board[8][10] = 4; board[9][10] = 4; board[8][9] = 4;
+		board[4][1] = 4; board[3][1] = 4; board[3][2] = 4;
+		board[21][8] = 4; board[20][8] = 4;
+	}
 }
 function enterRandomFood (i,j){
 	let stop = false;
@@ -200,7 +237,8 @@ function isPacman(i,j){
 	return board[i][j] == 2.1 || board[i][j] == 2.2 || board[i][j] == 2.3 || board[i][j] == 2.4 ;
 }
 function isMonster(i,j){
-	return board[i][j] == 3 || board[i][j] == 14 || board[i][j] == 15 || board[i][j] == 16 || board[i][j] == 204 || board[i][j] == 205 || board[i][j] == 206 ;
+	return board[i][j] == 3 || board[i][j] == 6|| board[i][j] == 14 || board[i][j] == 15 || board[i][j] == 16 || board[i][j] == 103 || 
+			board[i][j] == 204 || board[i][j] == 205 || board[i][j] == 206 ;
 }
 function findRandomEmptyCell(board) {
 	var i = Math.floor(Math.random() * 21 + 1);
@@ -212,9 +250,10 @@ function findRandomEmptyCell(board) {
 	return [i, j];
 }
 //Funstion that Draw The Canvas by The Values in the Board - 2.1 , 2.2 , 2.3 , 2.4 - Packman Morty (Left , Right < Down , Up)
-//														   - 3 , 14 , 15 , 16 , 203 , 204 , 205 - Monsters - to save the cell value before the monster came to draw the previous value of the cell
+//														   - 3 , 14 , 15 , 16 ,103, 203 , 204 , 205 - Monsters - to save the cell value before the monster came to draw the previous value of the cell
 //                                                         - 11 , 12 , 13  - Food - Different color of Ball
 //                                                         - 4 - Walls
+//														   - 100 - movingCandy
 //                                                         - 200 , 201 , 202 - Clock Feature To get More time , Candy to get more score , slowMotion emoji to slow the monsters
 function Draw() {
 	canvas.width = canvas.width; //clean board
@@ -228,8 +267,7 @@ function Draw() {
 	}
 	var monsters = [imageMons1 , imageMons2 , imageMons3 , imageMons4];
 	let ind = 0;
-
-
+	let noBalls =true;
 	/************* Show Game Part *************/
 	for (var i = 0; i < 22; i++) {
 		for (var j = 0; j < 12; j++) {
@@ -246,30 +284,35 @@ function Draw() {
 			} else if (board[i][j] == 2.4) {
 				context.drawImage(imageright, center.x, center.y, 50, 50); //RIGHT
 				/*************Drow Monsters***************/
-			} else if (board[i][j] == 3 || board[i][j] == 14 ||
-				board[i][j] == 15 || board[i][j] == 16 || board[i][j] == 203
-				|| board[i][j] == 204 || board[i][j] == 205) {
+			} else if (ind <=3 && (board[i][j] == 3 || board[i][j] == 6|| board[i][j] == 14 ||
+				board[i][j] == 15 || board[i][j] == 16 || board[i][j] == 103 || 
+				board[i][j] == 203|| board[i][j] == 204|| board[i][j] == 205) ) {
 				context.drawImage(monsters[ind], center.x, center.y, 50, 50); //Monst
 				ind++;
 			} else if (board[i][j] == 11) {
+				noBalls=false;
 				/************* Drow Food 5P *************/
 				context.beginPath();
 				context.arc(center.x + 15, center.y + 15, 20, 0, 2 * Math.PI); // circle
 				context.fillStyle = gameProperties[9]; //color 5P
 				context.fill();
 			} else if (board[i][j] == 12) {
+				noBalls=false;
 				/************* Drow Food 15P *************/
 				context.beginPath();
 				context.arc(center.x + 15, center.y + 15, 20, 0, 2 * Math.PI); // circle
 				context.fillStyle = gameProperties[10]; //color 15P
 				context.fill();
 			} else if (board[i][j] == 13) {
+				noBalls=false;
 				/************* Drow Food 25P *************/
 				context.beginPath();
 				context.arc(center.x + 15, center.y + 15, 20, 0, 2 * Math.PI); // circle
 				context.fillStyle = gameProperties[11]; //color 25P
 				context.fill();
-			} else if (board[i][j] == 4) {
+			} else if ( board[i][j] == 100 || board[i][j] == 111 || board[i][j] == 112 || board[i][j] == 113){
+				context.drawImage(imageMovingP, center.x, center.y, 50, 50); //Monst
+			}else if (board[i][j] == 4) {
 				/************* Drow Wall *************/
 				context.drawImage(imageWall, center.x, center.y, 50, 50); //Wall
 			} else if (board[i][j] == 200) {
@@ -298,6 +341,7 @@ function getImages(){
 	imageCandy.src='CandyandClock\\candy.png';
 	imageClock.src='CandyandClock\\clock1.png';
 	imageSlow.src='CandyandClock\\slow.png';
+	imageMovingP.src='CandyandClock\\movingPrice.png'
 }
 /******************************************* during game ********************************************/
 function GetKeyPressed() {
@@ -317,6 +361,8 @@ function GetKeyPressed() {
 function reorderBoard(){
 	clearInterval(interval);
 	clearInterval(interval2);
+	clearInterval(interval3);
+
 	let monsIndex = 0;
 	var monst_remain = parseInt(gameProperties[13]); // צריך לשנות לפי ההגדרות למספר המפלצות שהמשתמש הכניס
 
@@ -351,6 +397,93 @@ function reorderBoard(){
 
 	interval = setInterval(UpdatePosition, 250);
 	interval2 = setInterval(UpdateMonsters , timeForMonsters);
+	if(movingPriceExist)
+		interval3 = setInterval(updateCandy, 400);
+}
+function updateCandy(){
+	if(movingPriceExist){
+		let p =Math.floor( Math.random() * 4 +1 );
+		while(p == LastMoves[4]){
+			p = Math.floor( Math.random() * 4 +1 );
+		}
+		if (p == 1) { //up
+			if (Monsters[4].j > 0 && board[Monsters[4].i][Monsters[4].j - 1] != 4) {
+				if(board[Monsters[4].i][Monsters[4].j - 1] == 2.1 || board[Monsters[4].i][Monsters[4].j - 1] == 2.2 ||
+					board[Monsters[4].i][Monsters[4].j - 1] == 2.3 || board[Monsters[4].i][Monsters[4].j - 1] == 2.4){
+					score += 50;
+					movingPriceExist = false;
+					board[Monsters[4].i][Monsters[4].j] -= 100;
+				}
+				else{
+					board[Monsters[4].i][Monsters[4].j] -= 100;
+					LastMoves[4] = 2;
+					Monsters[4].j--;
+					board[Monsters[4].i][Monsters[4].j] += 100;
+				}
+			}
+			else{
+				LastMoves[4] = p;
+			}
+		}
+		else if (p == 2) { //down
+			if (Monsters[4].j < 11 && board[Monsters[4].i][Monsters[4].j + 1] != 4) {
+				if(board[Monsters[4].i][Monsters[4].j + 1]== 2.1 || board[Monsters[4].i][Monsters[4].j + 1] == 2.2 ||
+					board[Monsters[4].i][Monsters[4].j + 1] == 2.3 || board[Monsters[4].i][Monsters[4].j + 1] == 2.4){
+					score += 50;
+					movingPriceExist = false;
+					board[Monsters[4].i][Monsters[4].j] -= 100;
+				}
+				else{
+					board[Monsters[4].i][Monsters[4].j] -= 100;
+					LastMoves[4] = 1;
+					Monsters[4].j++;
+					board[Monsters[4].i][Monsters[4].j] += 100;
+				}
+			}
+			else{
+				LastMoves[4] = p;
+			}
+		}
+		else if (p == 3) { //left
+			if (Monsters[4].i > 0 && board[Monsters[4].i - 1][Monsters[4].j] != 4) {
+				if(board[Monsters[4].i - 1][Monsters[4].j] == 2.1 || board[Monsters[4].i - 1][Monsters[4].j] == 2.2 ||
+					board[Monsters[4].i - 1][Monsters[4].j] == 2.3 || board[Monsters[4].i - 1][Monsters[4].j] == 2.4){
+					score += 50;
+					movingPriceExist = false;
+					board[Monsters[4].i][Monsters[4].j] -= 100;
+				}
+				else{
+					board[Monsters[4].i][Monsters[4].j] -= 100;
+					LastMoves[4] = 4;
+					Monsters[4].i--;
+					board[Monsters[4].i][Monsters[4].j] += 100;
+				}
+			}
+			else{
+				LastMoves[4] = p;
+			}
+		}
+		else if (p == 4) { //right
+			if (Monsters[4].i < 21 && board[Monsters[4].i + 1][Monsters[4].j] != 4) {
+				if(board[Monsters[4].i + 1][Monsters[4].j] == 2.1 || board[Monsters[4].i + 1][Monsters[4].j] == 2.2 ||
+					board[Monsters[4].i + 1][Monsters[4].j] == 2.3 || board[Monsters[4].i + 1][Monsters[4].j] == 2.4){
+					score += 50;
+					movingPriceExist = false;
+					board[Monsters[4].i][Monsters[4].j] -= 100;
+				}
+				else{
+					board[Monsters[4].i][Monsters[4].j] -= 100;
+					LastMoves[4] = 3;
+					Monsters[4].i++;
+					board[Monsters[4].i][Monsters[4].j] += 100;
+				}
+			}
+			else{
+				LastMoves[4] = p;
+			}
+		}
+	}
+	Draw();
 }
 function UpdateMonsters() {
 	/********************************************Draw Monsters*************************************************/
@@ -426,7 +559,7 @@ function UpdateMonsters() {
 					board[Monsters[k].i + 1][Monsters[k].j] == 2.3 || board[Monsters[k].i + 1][Monsters[k].j] == 2.4){
 					score -= 10;
 					Lives--;
-					SreorderBoard();
+					reorderBoard();
 					return;
 				}
 				else{
@@ -458,6 +591,21 @@ function UpdatePosition() {
 			}
 			shape.j--;
 			pacManDirection=2.1;
+			if (board[shape.i][shape.j] == 11) {
+				score+=5; // אם זה אוכל תעלה את הניקוד
+				numOfBalls--;
+				food5point--;
+			}
+			else if (board[shape.i][shape.j] == 12) {
+				score+=15; // אם זה אוכל תעלה את הניקוד
+				numOfBalls--;
+				food15point--;
+			}
+			else if (board[shape.i][shape.j] == 13) {
+				score+=25; // אם זה אוכל תעלה את הניקוד
+				numOfBalls--;
+				food25point--;
+			}
 		}
 	}
 	if (x == 2) { //down
@@ -471,6 +619,21 @@ function UpdatePosition() {
 			}
 			shape.j++;
 			pacManDirection=2.2;
+			if (board[shape.i][shape.j] == 11) {
+				score+=5; // אם זה אוכל תעלה את הניקוד
+				numOfBalls--;
+				food5point--;
+			}
+			else if (board[shape.i][shape.j] == 12) {
+				score+=15; // אם זה אוכל תעלה את הניקוד
+				numOfBalls--;
+				food15point--;
+			}
+			else if (board[shape.i][shape.j] == 13) {
+				score+=25; // אם זה אוכל תעלה את הניקוד
+				numOfBalls--;
+				food25point--;
+			}
 		}
 	}
 	if (x == 3) { //left
@@ -484,6 +647,21 @@ function UpdatePosition() {
 			}
 			shape.i--;
 			pacManDirection=2.3;
+			if (board[shape.i][shape.j] == 11) {
+				score+=5; // אם זה אוכל תעלה את הניקוד
+				numOfBalls--;
+				food5point--;
+			}
+			else if (board[shape.i][shape.j] == 12) {
+				score+=15; // אם זה אוכל תעלה את הניקוד
+				numOfBalls--;
+				food15point--;
+			}
+			else if (board[shape.i][shape.j] == 13) {
+				score+=25; // אם זה אוכל תעלה את הניקוד
+				numOfBalls--;
+				food25point--;
+			}
 		}
 	}
 	if (x == 4) { //right
@@ -497,6 +675,21 @@ function UpdatePosition() {
 			}
 			shape.i++;
 			pacManDirection=2.4;
+			if (board[shape.i][shape.j] == 11) {
+				score+=5; // אם זה אוכל תעלה את הניקוד
+				numOfBalls--;
+				food5point--;
+			}
+			else if (board[shape.i][shape.j] == 12) {
+				score+=15; // אם זה אוכל תעלה את הניקוד
+				numOfBalls--;
+				food15point--;
+			}
+			else if (board[shape.i][shape.j] == 13) {
+				score+=25; // אם זה אוכל תעלה את הניקוד
+				numOfBalls--;
+				food25point--;
+			}
 		}
 	}
 
@@ -514,19 +707,7 @@ function UpdatePosition() {
 	Draw();
 }
 function UpdateValuesAfterMove(timer){
-	if (board[shape.i][shape.j] == 11) {
-		score+=5; // אם זה אוכל תעלה את הניקוד
-		numOfBalls--;
-	}
-	else if (board[shape.i][shape.j] == 12) {
-		score+=15; // אם זה אוכל תעלה את הניקוד
-		numOfBalls--;
-	}
-	else if (board[shape.i][shape.j] == 13) {
-		score+=25; // אם זה אוכל תעלה את הניקוד
-		numOfBalls--;
-	}
-	else if (board[shape.i][shape.j] == 200){
+	if (board[shape.i][shape.j] == 200){
 		//Eat clock
 		timer = timer*2;
 		gameProperties[12] = timer.toString();
@@ -538,8 +719,12 @@ function UpdateValuesAfterMove(timer){
 	else if (board[shape.i][shape.j] == 202){
 		//Eat Slow Motion
 		timeForMonsters = 1500;
+	}else if(board[shape.i][shape.j] == 100){
+		//Eat moving Candy
+		score += 50;
+		movingPriceExist = false;
 	}
-
+	console.log(numOfBalls);
 	var currentTime = new Date();
 	time_elapsed = (currentTime - start_time) / 1000; // מעדכן את הזמן שעבר
 
@@ -663,9 +848,8 @@ function getPropertiesVariables(){
 
 /******************************************* משימות ********************************************/
 
-
-// לטפל במוזיקה שתיהיה גם אוטומטית וגם בלופ - הצלחתי או את זה או את זה 
-// לסדר את הקירות במשחק
+// אי אפשר לנצח במשחק שלנו
+// המפלצות לא ניהייות איטיות 
 // readme 
 
 
