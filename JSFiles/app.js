@@ -37,7 +37,7 @@ var keyCodeRight= "";
 var keyCodeLeft= "";
 var numOfBalls;
 var userName = "";
-var timeForMonsters = 500;
+var timeForMonsters = 300;
 var gameProperties = [];
 //0:up,1:upCode,2:down,3:downCode:,4:right,5:rightCode,6:left,7:leftCode
 //8:numBalls,9:color5P,10:color15P,11:color25P,12:time,13:monsters
@@ -82,6 +82,8 @@ $(document).ready(function() {
 function Start() {
 
 	Lives = 5;
+	let x = document.getElementById("GameMusic");
+	x.play();
 	numOfBalls = parseInt(gameProperties[8]);
 	score = 0;
 	start_time = new Date();
@@ -374,6 +376,9 @@ function UpdateMonsters() {
 					board[Monsters[k].i][Monsters[k].j] += 3;
 				}
 			}
+			else{
+				LastMoves[k] = p;
+			}
 		}
 		else if (p == 2) { //down
 			if (Monsters[k].j < 11 && board[Monsters[k].i][Monsters[k].j + 1] != 4) {
@@ -390,6 +395,9 @@ function UpdateMonsters() {
 					Monsters[k].j++;
 					board[Monsters[k].i][Monsters[k].j] += 3;
 				}
+			}
+			else{
+				LastMoves[k] = p;
 			}
 		}
 		else if (p == 3) { //left
@@ -408,6 +416,9 @@ function UpdateMonsters() {
 					board[Monsters[k].i][Monsters[k].j] += 3;
 				}
 			}
+			else{
+				LastMoves[k] = p;
+			}
 		}
 		else if (p == 4) { //right
 			if (Monsters[k].i < 21 && board[Monsters[k].i + 1][Monsters[k].j] != 4) {
@@ -424,6 +435,9 @@ function UpdateMonsters() {
 					Monsters[k].i++;
 					board[Monsters[k].i][Monsters[k].j] += 3;
 				}
+			}
+			else{
+				LastMoves[k] = p;
 			}
 		}
 	}
@@ -583,7 +597,7 @@ function DisplayFeatures(timer){
 		}
 	}
 	if(time_elapsed > quarterTime*2 ){
-		timeForMonsters = 500;
+		timeForMonsters = 300;
 	}
 }
 
