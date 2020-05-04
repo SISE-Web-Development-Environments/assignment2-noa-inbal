@@ -82,7 +82,6 @@ $(document).ready(function() {
 //                                                        3 - monster
 //                                                        4 - Walls
 function Start() {
-	// clearIntervals();
 	Lives = 5;
 	let x = document.getElementById("GameMusic");
 	x.play();
@@ -591,7 +590,6 @@ function UpdateMonsters() {
 	Draw();
 }
 function UpdatePosition() {
-	// clearInterval(interval);
 	let pacManDirection = board[shape.i][shape.j];
 	board[shape.i][shape.j] = 0; //clean pacman
 	var x = GetKeyPressed(); //get pressed key
@@ -660,7 +658,6 @@ function UpdatePosition() {
 		board[shape.i][shape.j] = pacManDirection; // נרצה לצבוע מחדש את הקאנבס, גם אם הצלחתי להתקדם וגם אם לא
 	}
 	Draw();
-	// interval = setInterval(UpdatePosition, 200);
 }
 function UpdateValuesAfterMove(timer){
 	if (board[shape.i][shape.j] == 11) {
@@ -828,8 +825,7 @@ function getPropertiesVariables(){
 
 
 /******************************************* משימות ********************************************/
-
-// אי אפשר לנצח במשחק שלנו
+// אולי להוסיף את זה שמפלצת לא יכולה לעלות על מפלצת אחרת
 // המפלצות לא ניהייות איטיות 
 // readme 
 
