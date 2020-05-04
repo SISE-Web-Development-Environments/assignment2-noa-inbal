@@ -5,7 +5,7 @@ $(function() {
             || value.length >=6
             && value.search(/[\!\@\#\$\%\^\&\*\(\)\_\+\,\.\?\\\'\`\~\{\}\[\]\|\-]/) == -1
             && value.search(/[^a-zA-Z0-9]/) == -1 ;
-    },"your passs is not good at all!!!")
+    },"The password should be at least 6 characters long, only numbers and letters");
 
     $.validator.addMethod('validateName',function(value,element){
         return this.optional(element)
@@ -48,7 +48,7 @@ $(function() {
             },
             rpassword:{
                 required: "Password is required",
-                minlength: "Please enter at least 2 characters"
+                minlength: "Please enter at least 6 characters"
             }
         }
     });
@@ -110,27 +110,6 @@ function saveUser(){
 	return showRegModel('registerDialog');
 }
  /********************************************** LogIn ***************************************************/
-//  function validatePass(value, message) {
-// 	var isValid;
-// 	if (value.length < 6) {
-//         isValid = false;
-//     }else if (value.search(/[\!\@\#\$\%\^\&\*\(\)\_\+\,\.\?\\\'\`\~\{\}\[\]\|\-]/) != -1) {
-//         isValid = false;
-// 	}
-// 	else if(value.search(/[^a-zA-Z0-9]/) != -1){
-//         isValid = false;
-// 	}
-//     else{
-// 		isValid = true;
-// 	}
-
-//     if (isValid) {
-//         document.getElementById(message).style.display = "none";
-//     }else {
-//         document.getElementById(message).style.display= "inline";
-//     }
-//     return isValid;
-// }
  function checkLoginForm(message){
 	userName = document.getElementById('LoginUN').value;
 	console.log("in login");

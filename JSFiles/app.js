@@ -39,7 +39,7 @@ var keyCodeLeft= "";
 var numOfBalls;
 var userName = "";
 var movingPriceExist= true;
-var timeForMonsters = 300;
+var timeForMonsters = 600;
 var gameProperties = [];
 //0:up,1:upCode,2:down,3:downCode:,4:right,5:rightCode,6:left,7:leftCode
 //8:numBalls,9:color5P,10:color15P,11:color25P,12:time,13:monsters
@@ -284,12 +284,16 @@ function Draw() {
 			} else if (board[i][j] == 2.4) {
 				context.drawImage(imageright, center.x, center.y, 50, 50); //RIGHT
 				/*************Drow Monsters***************/
-			} else if (ind <=3 && (board[i][j] == 3 || board[i][j] == 6|| board[i][j] == 14 ||
-				board[i][j] == 15 || board[i][j] == 16 || board[i][j] == 103 || 
-				board[i][j] == 203|| board[i][j] == 204|| board[i][j] == 205) ) {
+			} else if (ind <=3 && (board[i][j] == 3 || board[i][j] == 6 || board[i][j] == 103 
+						|| board[i][j] == 203|| board[i][j] == 204|| board[i][j] == 205) ) {
 				context.drawImage(monsters[ind], center.x, center.y, 50, 50); //Monst
 				ind++;
-			} else if (board[i][j] == 11) {
+			} else if( ind<= 3 && (board[i][j] == 14 ||board[i][j] == 15 || board[i][j] == 16)){
+				context.drawImage(monsters[ind], center.x, center.y, 50, 50); //Monst
+				ind++;
+				noBalls=false;
+			}
+			else if (board[i][j] == 11) {
 				noBalls=false;
 				/************* Drow Food 5P *************/
 				context.beginPath();
@@ -327,6 +331,12 @@ function Draw() {
 			}
 		}
 	}
+	if(noBalls){
+		clearIntervals();
+		let sound = document.getElementById("GameMusic");
+		sound.currentTime = 0;
+		return showRegModel('winnerDialog');
+	}
 }
 function getImages(){
 	imageup.src="PacmanImages\\mortiU.png";
@@ -359,10 +369,9 @@ function GetKeyPressed() {
 	}
 }
 function reorderBoard(){
-	clearInterval(interval);
-	clearInterval(interval2);
-	clearInterval(interval3);
-
+	clearIntervals();
+	let sound = document.getElementById("GameMusic");
+	sound.play();	
 	let monsIndex = 0;
 	var monst_remain = parseInt(gameProperties[13]); // צריך לשנות לפי ההגדרות למספר המפלצות שהמשתמש הכניס
 
@@ -395,10 +404,10 @@ function reorderBoard(){
 	shape.j = emptyCell[1];
 	board[shape.i][shape.j] = 2.1;
 
-	interval = setInterval(UpdatePosition, 250);
+	interval = setInterval(UpdatePosition, 200);
 	interval2 = setInterval(UpdateMonsters , timeForMonsters);
 	if(movingPriceExist)
-		interval3 = setInterval(updateCandy, 400);
+		interval3 = setInterval(updateCandy, 800);
 }
 function updateCandy(){
 	if(movingPriceExist){
@@ -729,20 +738,30 @@ function UpdateValuesAfterMove(timer){
 	time_elapsed = (currentTime - start_time) / 1000; // מעדכן את הזמן שעבר
 
 	if(time_elapsed >= timer){
-		clearInterval(interval);
-		clearInterval(interval2);
+		clearIntervals();
+		let sound = document.getElementById("GameMusic");
+		sound.currentTime = 0;	
 		return showRegModel('TimeOverDialog');
 	}
 	if(Lives == 0){
-		clearInterval(interval);
-		clearInterval(interval2);
+		clearIntervals();
+		let sound = document.getElementById("GameMusic");
+		sound.currentTime = 0;
 		return showRegModel('gameOverDialog');
 	}
 	if(numOfBalls == 0){
-		clearInterval(interval);
-		clearInterval(interval2);
+		clearIntervals();
+		let sound = document.getElementById("GameMusic");
+		sound.currentTime = 0;
 		return showRegModel('winnerDialog');
 	}
+}
+function clearIntervals(){
+	clearInterval(interval);
+	clearInterval(interval2);
+	clearInterval(interval3);
+	let sound = document.getElementById("GameMusic");
+	sound.pause();
 }
 function DisplayFeatures(timer){
 	let quarterTime = Math.floor(timer/4);
