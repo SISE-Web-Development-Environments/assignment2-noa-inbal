@@ -586,6 +586,7 @@ function UpdateMonsters() {
 	Draw();
 }
 function UpdatePosition() {
+	clearInterval(interval);
 	let pacManDirection = board[shape.i][shape.j];
 	board[shape.i][shape.j] = 0; //clean pacman
 	var x = GetKeyPressed(); //get pressed key
@@ -714,6 +715,7 @@ function UpdatePosition() {
 		board[shape.i][shape.j] = pacManDirection; // נרצה לצבוע מחדש את הקאנבס, גם אם הצלחתי להתקדם וגם אם לא
 	}
 	Draw();
+	interval = setInterval(UpdatePosition, 200);
 }
 function UpdateValuesAfterMove(timer){
 	if (board[shape.i][shape.j] == 200){
