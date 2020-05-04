@@ -51,6 +51,9 @@ function ShowDiv(show) {
 	var allDives = document.getElementsByClassName('section');
 	var allModals = document.getElementsByClassName('modal')
 	var target = document.getElementById(show);
+	if(show != 'GameScreen' && document.getElementById('GameScreen').style.display == 'block'){
+		clearIntervals();
+	}
 	for(var i = 0 ; i < allDives.length ; i++){
 		allDives[i].style.display = 'none';
 	}
@@ -58,6 +61,9 @@ function ShowDiv(show) {
 		allModals[i].style.display = 'none';
 	}
 	target.style.display = 'block';
+	if(show == "Welcome"){
+		window.location.hash = '#Welcome';
+	}
 	if(show == "GameScreen"){
 		Start();
 		window.location.hash = '#GameScreen';
