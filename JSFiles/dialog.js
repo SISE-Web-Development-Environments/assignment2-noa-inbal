@@ -52,6 +52,10 @@ function showRegModel(modelName){
 			$( '#inputScore').empty();
             $( '#inputScore').append( "<strong>You are better than " + score.toString() + " points!</strong>" );
         }
+	}
+	else if(modelName == 'winnerDialog'){
+		$( '#inputScoreWin').empty();
+        $( '#inputScoreWin').append( "<strong>Your score : " + score.toString() + " points!</strong>" );
     }
 	// Get the <span> element that closes the modal
 	var span = document.getElementsByClassName("close")[0];

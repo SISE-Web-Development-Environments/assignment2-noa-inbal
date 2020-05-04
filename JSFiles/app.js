@@ -82,7 +82,7 @@ $(document).ready(function() {
 //                                                        3 - monster
 //                                                        4 - Walls
 function Start() {
-
+	// clearIntervals();
 	Lives = 5;
 	let x = document.getElementById("GameMusic");
 	x.play();
@@ -104,16 +104,24 @@ function Start() {
 	if(monst_remain > 3){
 		fourM = true;
 	}
+	/************* Put walls In Game Board************/
 	for (var i = 0; i < 22; i++) {
-		board[i] = new Array(); // יוצרים את המערך הדו מימדי 
+		board[i] = new Array(); 
+		enterWalls(i);
+	}
+
+	for (var i = 0; i < 22; i++) {
+		// board[i] = new Array(); // יוצרים את המערך הדו מימדי 
 		for (var j = 0; j < 12; j++) {
-			/************* Put walls In Game Board************/
-			enterWalls(i);
+			if( board[i][j] == 4){
+				continue;
+			}
 			/************* Put movingP In Game Board************/
 			if( (!fourM && i==21 && j==11) || (fourM && i==20 && j==11) ){
 				Monsters[4].i = i;
 				Monsters[4].j = j;
 				board[i][j] = 100 ;// movingPrice
+				continue;
 			}
 			/************* Put Monster in Corners *************/
 			if( (i==0 && j==0) ||
@@ -126,17 +134,20 @@ function Start() {
 					monst_remain--;
 					monsIndex++;
 					board[i][j] = 3;
+					continue;
 				}
 			}
-			else{
-				/************* Put food randomly *************/
-				var randomNum = Math.random();
-				if (randomNum <= (1.0 * food_remain) / cnt) {
-					enterRandomFood(i,j);
-				} else{
-					board[i][j] = 0;
+			let prob = Math.floor(Math.random() * 100 + 1);
+			if( prob > 70 ){
+				//************* Put food randomly *************/
+				if (food_remain >0 ){
+					if (food_remain > 0 && (board[i].length < j || board[i][j] == 0 || board[i][j] == null)){ 
+						enterRandomFood(i,j);
+						continue;
+					}
 				}
 			}
+			board[i][j] = 0;
 			cnt--;
 		}
 	}
@@ -177,7 +188,7 @@ function Start() {
 	);
 	interval = setInterval(UpdatePosition, 250);
 	interval2 = setInterval(UpdateMonsters , timeForMonsters);
-	interval3 = setInterval(updateCandy, 400);
+	interval3 = setInterval(updateCandy, 800);
 
 }
 function enterWalls(i){
@@ -215,12 +226,12 @@ function enterRandomFood (i,j){
 			board[i][j] = randomFood;
 			stop=true;
 		}
-		if(randomFood == 12 && food15point > 0 ){
+		else if(randomFood == 12 && food15point > 0 ){
 			food15point--;
 			board[i][j] = randomFood;
 			stop = true;
 		}
-		if(randomFood == 13 && food25point > 0 ){
+		else if(randomFood == 13 && food25point > 0 ){
 			food25point--;
 			board[i][j] = randomFood;
 			stop = true;
@@ -331,12 +342,6 @@ function Draw() {
 			}
 		}
 	}
-	if(noBalls){
-		clearIntervals();
-		let sound = document.getElementById("GameMusic");
-		sound.currentTime = 0;
-		return showRegModel('winnerDialog');
-	}
 }
 function getImages(){
 	imageup.src="PacmanImages\\mortiU.png";
@@ -369,9 +374,9 @@ function GetKeyPressed() {
 	}
 }
 function reorderBoard(){
-	clearIntervals();
-	let sound = document.getElementById("GameMusic");
-	sound.play();	
+	clearInterval(interval);
+	clearInterval(interval2);
+	clearInterval(interval3);
 	let monsIndex = 0;
 	var monst_remain = parseInt(gameProperties[13]); // צריך לשנות לפי ההגדרות למספר המפלצות שהמשתמש הכניס
 
@@ -404,7 +409,7 @@ function reorderBoard(){
 	shape.j = emptyCell[1];
 	board[shape.i][shape.j] = 2.1;
 
-	interval = setInterval(UpdatePosition, 200);
+	interval = setInterval(UpdatePosition, 250);
 	interval2 = setInterval(UpdateMonsters , timeForMonsters);
 	if(movingPriceExist)
 		interval3 = setInterval(updateCandy, 800);
@@ -586,7 +591,7 @@ function UpdateMonsters() {
 	Draw();
 }
 function UpdatePosition() {
-	clearInterval(interval);
+	// clearInterval(interval);
 	let pacManDirection = board[shape.i][shape.j];
 	board[shape.i][shape.j] = 0; //clean pacman
 	var x = GetKeyPressed(); //get pressed key
@@ -601,21 +606,6 @@ function UpdatePosition() {
 			}
 			shape.j--;
 			pacManDirection=2.1;
-			if (board[shape.i][shape.j] == 11) {
-				score+=5; // אם זה אוכל תעלה את הניקוד
-				numOfBalls--;
-				food5point--;
-			}
-			else if (board[shape.i][shape.j] == 12) {
-				score+=15; // אם זה אוכל תעלה את הניקוד
-				numOfBalls--;
-				food15point--;
-			}
-			else if (board[shape.i][shape.j] == 13) {
-				score+=25; // אם זה אוכל תעלה את הניקוד
-				numOfBalls--;
-				food25point--;
-			}
 		}
 	}
 	if (x == 2) { //down
@@ -629,21 +619,6 @@ function UpdatePosition() {
 			}
 			shape.j++;
 			pacManDirection=2.2;
-			if (board[shape.i][shape.j] == 11) {
-				score+=5; // אם זה אוכל תעלה את הניקוד
-				numOfBalls--;
-				food5point--;
-			}
-			else if (board[shape.i][shape.j] == 12) {
-				score+=15; // אם זה אוכל תעלה את הניקוד
-				numOfBalls--;
-				food15point--;
-			}
-			else if (board[shape.i][shape.j] == 13) {
-				score+=25; // אם זה אוכל תעלה את הניקוד
-				numOfBalls--;
-				food25point--;
-			}
 		}
 	}
 	if (x == 3) { //left
@@ -657,21 +632,6 @@ function UpdatePosition() {
 			}
 			shape.i--;
 			pacManDirection=2.3;
-			if (board[shape.i][shape.j] == 11) {
-				score+=5; // אם זה אוכל תעלה את הניקוד
-				numOfBalls--;
-				food5point--;
-			}
-			else if (board[shape.i][shape.j] == 12) {
-				score+=15; // אם זה אוכל תעלה את הניקוד
-				numOfBalls--;
-				food15point--;
-			}
-			else if (board[shape.i][shape.j] == 13) {
-				score+=25; // אם זה אוכל תעלה את הניקוד
-				numOfBalls--;
-				food25point--;
-			}
 		}
 	}
 	if (x == 4) { //right
@@ -685,21 +645,6 @@ function UpdatePosition() {
 			}
 			shape.i++;
 			pacManDirection=2.4;
-			if (board[shape.i][shape.j] == 11) {
-				score+=5; // אם זה אוכל תעלה את הניקוד
-				numOfBalls--;
-				food5point--;
-			}
-			else if (board[shape.i][shape.j] == 12) {
-				score+=15; // אם זה אוכל תעלה את הניקוד
-				numOfBalls--;
-				food15point--;
-			}
-			else if (board[shape.i][shape.j] == 13) {
-				score+=25; // אם זה אוכל תעלה את הניקוד
-				numOfBalls--;
-				food25point--;
-			}
 		}
 	}
 
@@ -715,9 +660,24 @@ function UpdatePosition() {
 		board[shape.i][shape.j] = pacManDirection; // נרצה לצבוע מחדש את הקאנבס, גם אם הצלחתי להתקדם וגם אם לא
 	}
 	Draw();
-	interval = setInterval(UpdatePosition, 200);
+	// interval = setInterval(UpdatePosition, 200);
 }
 function UpdateValuesAfterMove(timer){
+	if (board[shape.i][shape.j] == 11) {
+		score+=5; // אם זה אוכל תעלה את הניקוד
+		numOfBalls--;
+		food5point--;
+	}
+	else if (board[shape.i][shape.j] == 12) {
+		score+=15; // אם זה אוכל תעלה את הניקוד
+		numOfBalls--;
+		food15point--;
+	}
+	else if (board[shape.i][shape.j] == 13) {
+		score+=25; // אם זה אוכל תעלה את הניקוד
+		numOfBalls--;
+		food25point--;
+	}
 	if (board[shape.i][shape.j] == 200){
 		//Eat clock
 		timer = timer*2;
