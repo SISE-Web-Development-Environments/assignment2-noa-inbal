@@ -207,11 +207,6 @@ function SaveButtonMoves(){
 		gameProperties.push(left);
 		gameProperties.push(keyCodeLeft);
 
-		console.log(gameProperties);
-		console.log(gameProperties[0]);
-		console.log(gameProperties[1]);
-		console.log(gameProperties[3]);
-
 		next.style.visibility = "visible";
 		window.location.hash = '#MoveButtoms';
 		return true;

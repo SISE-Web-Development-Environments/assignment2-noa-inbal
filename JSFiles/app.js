@@ -24,7 +24,7 @@ var imageMons4=document.createElement('img');
 var imageWall=document.createElement('img');
 var imageCandy=document.createElement('img');
 var imageClock=document.createElement('img');
-var imageSlow=document.createElement('img');
+var imageExtraLive=document.createElement('img');
 var imageMovingP=document.createElement('img');
 
 
@@ -44,7 +44,7 @@ var gameProperties = [];
 //0:up,1:upCode,2:down,3:downCode:,4:right,5:rightCode,6:left,7:leftCode
 //8:numBalls,9:color5P,10:color15P,11:color25P,12:time,13:monsters
 var Features = [new Object() , new Object() , new Object() , new Object() ,  new Object()]
-//0:Clock ; 1:Candy1 ; 2:Candy2 ; 3:Candy3 ; 4:Slow
+//0:Clock ; 1:Candy1 ; 2:Candy2 ; 3:Candy3 ; 4:ExtraLive
 var userInfo = [];
 
 function ShowDiv(show) {
@@ -185,7 +185,7 @@ function Start() {
 		},
 		false
 	);
-	interval = setInterval(UpdatePosition, 250);
+	interval = setInterval(UpdatePosition, 200);
 	interval2 = setInterval(UpdateMonsters , timeForMonsters);
 	interval3 = setInterval(updateCandy, 800);
 
@@ -264,7 +264,7 @@ function findRandomEmptyCell(board) {
 //                                                         - 11 , 12 , 13  - Food - Different color of Ball
 //                                                         - 4 - Walls
 //														   - 100 - movingCandy
-//                                                         - 200 , 201 , 202 - Clock Feature To get More time , Candy to get more score , slowMotion emoji to slow the monsters
+//                                                         - 200 , 201 , 202 - Clock Feature To get More time , Candy to get more score ,ExtraLive emoji
 function Draw() {
 	canvas.width = canvas.width; //clean board
 
@@ -294,7 +294,7 @@ function Draw() {
 			} else if (board[i][j] == 2.4) {
 				context.drawImage(imageright, center.x, center.y, 50, 50); //RIGHT
 				/*************Drow Monsters***************/
-			} else if (ind <=3 && (board[i][j] == 3 || board[i][j] == 6 || board[i][j] == 103 
+			} else if (ind <=3 && (board[i][j] == 3 || board[i][j] == 6 || board[i][j] == 103 || board[i][j] == 106
 						|| board[i][j] == 203|| board[i][j] == 204|| board[i][j] == 205) ) {
 				context.drawImage(monsters[ind], center.x, center.y, 50, 50); //Monst
 				ind++;
@@ -325,7 +325,7 @@ function Draw() {
 				context.fillStyle = gameProperties[11]; //color 25P
 				context.fill();
 			} else if ( board[i][j] == 100 || board[i][j] == 111 || board[i][j] == 112 || board[i][j] == 113){
-				context.drawImage(imageMovingP, center.x, center.y, 50, 50); //Monst
+				context.drawImage(imageMovingP, center.x, center.y, 50, 50); //moving candy
 			}else if (board[i][j] == 4) {
 				/************* Drow Wall *************/
 				context.drawImage(imageWall, center.x, center.y, 50, 50); //Wall
@@ -336,8 +336,8 @@ function Draw() {
 				/************* Drow Candy *************/
 				context.drawImage(imageCandy, center.x, center.y, 50, 50); //candy
 			} else if (board[i][j] == 202) {
-				/************* Drow SlowMotion *************/
-				context.drawImage(imageSlow, center.x, center.y, 50, 50); //slow
+				/************* Drow Extra Live *************/
+				context.drawImage(imageExtraLive, center.x, center.y, 50, 50); //ExtraLive
 			}
 		}
 	}
@@ -354,7 +354,7 @@ function getImages(){
 	imageWall.src="MonstersAndWall\\potal.png";
 	imageCandy.src='CandyandClock\\candy.png';
 	imageClock.src='CandyandClock\\clock1.png';
-	imageSlow.src='CandyandClock\\slow.png';
+	imageExtraLive.src='CandyandClock\\extraLive.png';
 	imageMovingP.src='CandyandClock\\movingPrice.png'
 }
 /******************************************* during game ********************************************/
@@ -408,7 +408,7 @@ function reorderBoard(){
 	shape.j = emptyCell[1];
 	board[shape.i][shape.j] = 2.1;
 
-	interval = setInterval(UpdatePosition, 250);
+	interval = setInterval(UpdatePosition, 200);
 	interval2 = setInterval(UpdateMonsters , timeForMonsters);
 	if(movingPriceExist)
 		interval3 = setInterval(updateCandy, 800);
@@ -685,8 +685,8 @@ function UpdateValuesAfterMove(timer){
 		score += 100;
 	}
 	else if (board[shape.i][shape.j] == 202){
-		//Eat Slow Motion
-		timeForMonsters = 1500;
+		//Eat Extra Live
+		Lives ++;
 	}else if(board[shape.i][shape.j] == 100){
 		//Eat moving Candy
 		score += 50;
@@ -749,7 +749,7 @@ function DisplayFeatures(timer){
 		}
 	}
 	if( time_elapsed <= quarterTime*2 && time_elapsed >= quarterTime){ // ברבע השני של הזמן
-		//Slow Motion
+		//Extrs Live
 		if(!Features[4].eat){
 			if(Features[4].i == 999 && Features[4].j == 999){
 				let emptyCell = findRandomEmptyCell(board);
@@ -759,9 +759,9 @@ function DisplayFeatures(timer){
 			board[Features[4].i][Features[4].j] = 202;
 		}
 	}
-	if(time_elapsed > quarterTime*2 ){
-		timeForMonsters = 300;
-	}
+	// if(time_elapsed > quarterTime*2 ){
+	// 	timeForMonsters = 300;
+	// }
 }
 
 /******************************************* game Prop ********************************************/

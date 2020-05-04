@@ -26,7 +26,6 @@
 			<a onclick="ShowDiv('Welcome')">Welcome</a>
 			<a onclick="ShowDiv('Register')">Register</a>
 			<a onclick="ShowDiv('Login')">Login</a>
-			<!-- <a onclick="ShowDiv('Properties')">Properties</a> -->
 			<a onclick="showModel('About')">About</a>
 		</div>
 		<div class="Content">
@@ -95,9 +94,9 @@
 						<label>Double The Game Time</label>
 						<img src ="CandyandClock/clock1.png" width=40 height="40">
 					</div>
-					<div id="propSlow">
-						<label>Slow Monsters</label>
-						<img src ="CandyandClock/slow.png" width=40 height="40">
+					<div id="propExtreLive">
+						<label>Extra Lives</label>
+						<img src ="CandyandClock/extraLive.png" width=40 height="40">
 					</div>
 					</div>
 				</div>
@@ -183,14 +182,14 @@
       					<h1>About Us</h1>
     				</div>
     				<div class="modal-body">
-      					  <h2>we are: Inbal Bitton and  Noa Shabtay</h2>
-						  <h2>PlugIn: to make the validation form we used this links :</h2>
-						  <h3>http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.3.min.js<br>
-						      http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js<br>
-						      http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.min.js</h3>
-						  <h2>Difficulties:</h2>
-						  <h3>In the beginning we had difficulty connecting the scripts to html.<br> 
-							  After many attempts we study the subject ans the work was much simpler</h3>
+      					  <h2 ><span>we are: Inbal Bitton and  Noa Shabtay</span></h2>
+						  <h2><span>PlugIn: to make the validation form we used this links :</span></h2>
+						  <h3><span>https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.3.min.js</span><br>
+						      https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js<br>
+						      https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/additional-methods.min.js</span></h3>
+						  <h2><span>Difficulties:</span></h2>
+						  <h3><span>In the beginning we had difficulty connecting the scripts to html.<br> 
+							  After many attempts we study the subject ans the work was much simpler</span></h3>
     				</div>
     				<div class="modal-footer">
 						  <button type="button" onclick="document.getElementById('About').style.display='none'" class="cancelbtn">OK</button>
@@ -201,44 +200,44 @@
 				<div class="modal-content">
 				  <div class="modal-header">
 						<span onclick="CloseRegDialog();" class="close">&times;</span>
-						<h2>you regsiter Successfully</h2>
+						<h2><span>you regsiter Successfully</span></h2>
 				  </div>
 				  <div class="modal-body">
-						<p>thank you for register</p>
-						<p>please enter your Properties </p>
+						<p><span>thank you for register</span></p>
+						<p><span>please enter your Properties</span> </p>
 						<span style='font-size:100px;'>&#10083;</span>
 				  </div>
 				  <div class="modal-footer">
-						<h3>enjoy!</h3>
+						<h3><span>enjoy!</span></h3>
 						<button type="button" onclick="CloseRegDialog();" class="cancelbtn">Close</button>
 				  </div>
 				</div>
 			</div>
 			<div class="modal" id="TimeOverDialog">
-				<div class="modal-content">
+				<div class="modal-contentLoose">
 					<div class="modal-header">
-						<h2>Loser!!!</h2>
+						<h2><span>Loser!!!</span></h2>
 					</div>
 					<div class="modal-body">
-						<p>Sorry You'r Time is Over</p>
-						<p id="inputScore"></p>
-						<p>Try Next Time! </p>
+						<p><span>Sorry You'r Time is Over</span></p>
+						<p id="inputScore"><span></span></p>
+						<p><span>Try Next Time! </span></p>
 					</div>
 					<div class="modal-footer">
-						<h3>enjoy!</h3>
+						<h3><span>enjoy!</span></h3>
 						<button type="button" onclick="CloseGOWDialog('1' , 'TimeOverDialog');" class="cancelbtn">New Game</button>
 						<button type="button" onclick="CloseGOWDialog('2' , 'TimeOverDialog');" class="cancelbtn">Go To Welcome</button>
 					</div>
 				</div>
 			</div>
 			<div class="modal" id="gameOverDialog">
-				<div class="modal-content">
+				<div class="modal-contentLoose">
 					<div class="modal-header">
-						<h2>Loser!!!</h2>
+						<h2><span>Loser!!!</span></h2>
 					</div>
 					<div class="modal-body">
-						<p>Sorry But You Don't Have More Lives</p>
-						<p>Try Next Time! </p>
+						<p><span>Sorry But You Don't Have More Lives</span></p>
+						<p><span>Try Next Time! </span></p>
 					</div>
 					<div class="modal-footer">
 						<button type="button" onclick="CloseGOWDialog('1' , 'gameOverDialog');" class="cancelbtn">New Game</button>
@@ -247,7 +246,7 @@
 				</div>
 			</div>
 			<div class="modal" id="winnerDialog">
-				<div class="modal-content">
+				<div class="modal-contentWin">
 					<div class="modal-header">
 						<h2>WINNER!!!!</h2>
 					</div>
@@ -256,6 +255,7 @@
 						<p id="inputScoreWin"></p>
 						<p>Congratulations! </p>
 					</div>
+					<br><br><br><br>
 					<div class="modal-footer">
 						<button type="button" onclick="CloseGOWDialog('1' , 'winnerDialog');" class="cancelbtn">New Game</button>
 						<button type="button" onclick="CloseGOWDialog('2' , 'winnerDialog');" class="cancelbtn">Go To Welcome</button>
@@ -266,32 +266,42 @@
 				<div class="modal-content">
 				  <div class="modal-header">
 						<span onclick="CloseLogDialog();" class="close">&times;</span>
-						<h2>You've Logged in Successfully!</h2>
+						<h2><span>You've Logged in Successfully!</span></h2>
 				  </div>
 				  <div class="modal-body">
-						<p>close dialog for play</p>
+						<p><span>close dialog for play</span></p>
 						<span style='font-size:100px;'>&#10083;</span>
 				  </div>
 				  <div class="modal-footer">
-						<h3>enjoy!</h3>
+						<h3><span>enjoy!</span></h3>
 						<button type="button" onclick="CloseLogDialog();" class="cancelbtn">Close</button>
 				  </div>
 				</div>
 			</div>
 			<div class="section" id="Properties">
 				<div class="PropSection" id="introProperties">
-					<p>
-						Choose Start To Initialize Game Properties
+					<br>
+					<img src ="PacmanImages/mortiD.png" width=70 height="70">
+					<br><br>
+					<h1>Enter Setting Please</h1>
+					<br><br>
+					<h2>
+						Click 'Start' To Initialize Game Setting
 						<br>
-						Choose Random To Auto Initialize
-					</p>
+						Choose 'Random' To Auto Setting
+
+					</h2>
+					<br><br>
 					<button type="button" onclick="ShowDivInProp('MoveButtoms')">Start</button>
+					<br>
 					<button type="button" onclick="RandomProperties()">Random</button>
 				</div>
 				<div class="PropSection" id="MoveButtoms">
+					<br>
+					<img src ="PacmanImages/mortiD.png" width=70 height="70">
+					<br><br>
 					<form class="MyForm" name="MoveButtoms" method="get">
-					
-						<label class="lablball"><strong>Choose Moves Buttons:</strong></label><br>
+						<label class="lablball"><strong>Choose Your Moves Buttons:</strong></label><br>
 						<br><br>
 						<label class="lablball"><strong>please press the button to move right</strong></label>
 						<input id= "rightBotton" type="text" maxlength="1" onkeydown="showBotton(event,'rightBotton')">
@@ -313,19 +323,25 @@
 				</div>
 				<div class="PropSection" id="Balls">
 					<div id="balls1">
+						<br>
+						<img src ="PacmanImages/mortiD.png" width=70 height="70">
+						<br><br>
 						<p>
-							<label class="lablball"><strong>Choose Number Of Balls In The Game (Between 50 To 90):</strong></label>
-							<br>
-							<input id="numBalls" type="text" name="numB" required onchange="validNumBalls('balls-error')">
+							<label class="lablball"><strong>Write Number Of Balls In The Game (Between 50 To 90):</strong></label>
+							<br><br>
+							<input id="numBalls" type="text" name="numB" autofocus required onchange="validNumBalls('balls-error')">
 							<br>
 							<label class="errorMsg" id="balls-error">Invalid Number Of Balls</label>
-							<br>
+							<br><br>
 							<button type="button" onclick="SaveBalls()">Choose</button>
-							<br>
+							<br><br>
 							<button type="button" id="cp" onclick="ColorPickerDisplay()" style="display: none;">Choose Colors</button>
 						</p>
 					</div>
 					<div id="balls2" style="display: none;">
+						<br>
+						<img src ="PacmanImages/mortiD.png" width=70 height="70">
+						<br><br>
 						<p>
 							<lable class="lablball">Choose Different Colors For 3 Type Of Balls:</lable>
 						</p>
@@ -359,11 +375,16 @@
 					</div>
 				</div>
 				<div class="PropSection" id="GameTime">
+					<br>
+					<img src ="PacmanImages/mortiD.png" width=70 height="70">
+					<br><br>
 					<p>
-						<lable class="lablball"><strong>Choose Timer For The Game in Seconds (60 seconds Or More):</strong></lable>
-						<br>
-						<input id="timer" type="text" name="time" required onchange="validTimer('time-error')">
-						<br>
+						<lable class="lablball"><strong>Write Time in Seconds (60 seconds Or More):</strong></lable>
+						<br><br>
+						<img src ="CandyandClock/clock1.png" width=50 height="50">
+						<br><br>
+						<input id="timer" type="text" name="time" autofocus required onchange="validTimer('time-error')">
+						<br><br><br><br>
 						<button type="button" onclick="SaveTime()">Submit</button>
 						<br>
 						<label class="errorMsg" id="time-error">Invalid Time!</label>
@@ -371,12 +392,20 @@
 
 				</div>
 				<div class="PropSection" id="Monsters">
-					<lable class="lablball"><strong>Choose Number Of Monsters:</strong></lable>
+					<br>
+					<img src ="PacmanImages/mortiD.png" width=70 height="70">
+					<br><br>
+					<lable class="lablball"><strong>Write Number Of Monsters:</strong></lable>
 					<br>
 					<lable class="lablball"><strong>(Between 1 To 4 include)</strong></lable>
-					<br>
-					<input id="monst" type="text" name="mst" required onchange="validNumberMonst('monst-error')">
-					<br>
+					<br><br>
+					<input id="monst" replace="number of monsters" type="text" name="mst" required onchange="validNumberMonst('monst-error')">
+					<br><br><br><br>
+					<img src ="MonstersAndWall/mons1.png" width=70 height="70">
+					<img src ="MonstersAndWall/mons2.png" width=70 height="70">
+					<img src ="MonstersAndWall/mons3.png" width=70 height="70">
+					<img src ="MonstersAndWall/mons4.png" width=70 height="70">
+					<br><br><br><br>
 					<button type="button" onclick="SaveMonsters('monst')">Submit</button>
 					<br>
 					<label class="errorMsg" id="monst-error">Invalid Number Of Monsters!</label>
@@ -385,15 +414,15 @@
 					<div class="modal-content">
 					  <div class="modal-header">
 							<span onclick="closeStartGameModel()" class="close">&times;</span>
-							<h2>You Enter Your Properties Successfully</h2>
+							<h2><span> You Enter Your Properties Successfully</span></h2>
 					  </div>
 					  <div class="modal-body">
-							<p>you can strat the game now</p>
-							<p>click start </p>
+							<p><span>you can strat the game now </span></p>
+							<p> <span>click start  </span></p>
 							<span style='font-size:100px;'>&#10083;</span>
 					  </div>
 					  <div class="modal-footer">
-							<h3>enjoy!</h3>
+							<h3> <span>enjoy! </span></h3>
 							<button type="button" onclick="closeStartGameModel()" class="cancelbtn">Start!</button>
 					  </div>
 					</div>

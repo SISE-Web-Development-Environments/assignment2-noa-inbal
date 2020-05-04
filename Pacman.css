@@ -69,6 +69,7 @@ body{
     padding-top: 0px;
     padding-bottom: 0px;
 }
+
 .section{
     display: none;
     padding-top: 0px;
@@ -188,7 +189,18 @@ input[type=range]{
     border-bottom: 1px solid #00FF7F;
     resize: both;
 }
-#lblScore,#lblLives,#lblTime,#lblButtonsU,#lblButtonsD,#lblButtonsR,#lblButtonsL,#lblBalls,#lblTimeT{
+#lblScore,#lblLives,#lblTime{
+    width: 80px;
+    color: rgb(3, 129, 66);
+    background: transparent;
+    border: none;
+    outline: none;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #00FF7F;
+    resize: both;
+}
+#lblButtonsU,#lblButtonsD,#lblButtonsR,#lblButtonsL,#lblBalls,#lblTimeT{
     width: 80px;
     color: aliceblue;
     background: transparent;
@@ -252,20 +264,60 @@ input[type=range]{
     background-image: url("modalImage/modalImage2.jpeg") ;
     background-color: #fefefe;
     border: 1px solid #888;
+    color: white;
     padding: 0;
     width: 80%;
     position: relative;
     margin: 0 auto;
     top: 25%;
 }
-.modal-body ,.modal-footer, .modal-header {
+/* .modal-body ,.modal-footer, .modal-header {
       color: white ;
+} */
+h1 span { 
+    background-color: gb(0, 0, 0); 
+}
+h2 span { 
+    background-color: rgb(0, 0, 0); 
+}
+h3 span { 
+    background-color:rgb(0, 0, 0);  
+}
+p span{
+    background-color: rgb(0, 0, 0);  
 }
 #gameOverDialog , #TimeOverDialog{
-    background-image: url("modalImage/looserImages.jpeg") ;
+    background-image: url("modalImage/looser.jpg") ;
+    background-size: cover;
 }
- #winnerDialog{
-    background-image: url("modalImage/winImage.jpeg") ;
+.modal-footer{
+    bottom: 0px;
+}
+ /* #winnerDialog{
+    background-image: url("modalImage/winner.gif") ;
+    background-size: cover;
+} */
+.modal-contentWin {
+    background-image: url("modalImage/winner.gif") ;
+    background-size: cover ;
+    color: #000;
+    border: 1px solid #888;
+    padding: 0;
+    width: 50%;
+    height: 50%;
+    position: relative;
+    margin: 0 auto;
+    top: 25%;
+}
+.modal-contentLoose {
+    background-color: black;
+    border: 1px solid #888;
+    padding: 0;
+    color: white;
+    width: 60%;
+    position: relative;
+    margin: 0 auto;
+    top: 15%;
 }
 .close {
     position: absolute;
