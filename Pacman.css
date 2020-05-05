@@ -38,7 +38,8 @@ body{
     float: left;
     padding: 14px 16px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 20px;
+    text-align: center;
     display: block;
     transition: 0.3s;
     position: relative;
@@ -97,10 +98,11 @@ body{
     color: #F00;
     /* background-color: #FFF; */
   }
-#MoveButtoms , #Balls , #GameTime , #Monsters , #GameScreen{
+#MoveButtoms , #Balls , #GameTime , #Monsters, #GameScreen {
     display: none;
 
 }
+
 .MyForm {
     border: none;
     outline: none;
@@ -122,7 +124,7 @@ input[type=text], input[type=password], input[type=email] {
     border-bottom: 1px solid #00FF7F;
     resize: both;
 }
-button, input[type=submit] {
+button, input[type=submit] ,input[type=button]{
     background-color: antiquewhite;
     color: black;
     padding: 14px 20px;
@@ -153,13 +155,36 @@ input[type=range]{
     font-size: 25px;
     color: darksalmon;
 }
+table{
+    background: inherit;
+    height: 85%;
+    width: 100%;
+}
+#clr1{
+    height: 80%;
+    width: 30%;
+}
+#clr2{
+    height: 80%;
+    width: 30%;
+}
+#clr3{
+    height: 80%;
+    width: 30%;
+}
 /**********************Game Screen*********************************/
 #GameScreen{
     overflow: auto;
 }
-#game{
-    height: 500px;
+#GameRunTimeProp{
     width: 79%;
+    float: right;
+    text-align: center;
+    background: inherit;
+}
+#game{
+    height: 100%;
+    width: 75%;
     float: right; 
     background: inherit;
 }
@@ -168,10 +193,12 @@ input[type=range]{
     border: #00FF7F solid 2px;
 }
 #showProp{
-    width: 20%;
-    height: 750px;
+    width: 24%;
+    height: 100%;
     float: left;
     background: inherit;
+    font-size: 15px;
+    font-weight: bold;
 }
 .propertiesLables{
     text-align: left;
@@ -195,7 +222,7 @@ input[type=range]{
 }
 #lblScore,#lblLives,#lblTime{
     width: 80px;
-    color: rgb(3, 129, 66);
+    color:darksalmon;
     background: transparent;
     border: none;
     outline: none;
@@ -203,6 +230,8 @@ input[type=range]{
     padding-bottom: 4px;
     border-bottom: 1px solid #00FF7F;
     resize: both;
+    font-size: 20px;
+    font-weight: bold;
 }
 #lblButtonsU,#lblButtonsD,#lblButtonsR,#lblButtonsL,#lblBalls,#lblTimeT{
     width: 80px;
@@ -215,35 +244,47 @@ input[type=range]{
     border-bottom: 1px solid #00FF7F;
     resize: both;
 }
+#smallBTN{
+    width: 23%;
+}
 /**********************Welcome Page*********************************/
 .welcomePacman{
     background: inherit;
     font-family: "Century Gothic", CenturyGothic;
     color: deepskyblue;
-    font-size: 75px;
     font-weight: bold;
+    font-size: 75px;
     text-shadow: 3px 3px #00FFFF;
     margin-top: 2px;
+    
+}
 
+#LoginBT , #RegisterBT{
+    cursor: pointer;
+    font-size: 110px;
 }
-#fa1 , #fa2{
-    margin-top: 2px;
-}
+
 #side1{
     float: left;
     text-align: center;
     width: 45%;
     height: 200px;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 #side2{
     float: right;
     text-align: center;
     width: 45%;
     height: 200px;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 .WelcomeIcon{
-    font-size:36px;
-    cursor: pointer;
+    width: 60%;
+    height: 200px;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 #Welcome{
     display: block;
@@ -304,6 +345,7 @@ p span{
     height: 50%;
     position: relative;
     margin: 0 auto;
+    font-size: 20px;
     top: 25%;
 }
 .modal-contentLoose {
@@ -315,6 +357,7 @@ p span{
     position: relative;
     margin: 0 auto;
     top: 15%;
+    font-size: 20px;
 }
 .close {
     position: absolute;
@@ -345,321 +388,8 @@ p span{
     color: #fff;
     text-align: center;
     border-radius: 6px;
-    padding: 5px 0;
-  
+    padding: 0;
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
   }
-
-/*
-#GameScreen{
-    overflow: auto;
-}
-#game{
-    height: 750px;
-    width: 79%;
-    float: right; 
-    background: inherit;
-}
-#canvas{
-    background: inherit;
-    border: #00FF7F solid 2px;
-}
-#showProp{
-    width: 20%;
-    height: 750px;
-    float: left;
-    background: inherit;
-}
-
-.welcomePacman{
-    background: inherit;
-    font-family: "Century Gothic", CenturyGothic;
-    color: deepskyblue;
-    font-size: 75px;
-    font-weight: bold;
-    text-shadow: 3px 3px #00FFFF;
-    margin-top: 2px;
-
-}
-#fa1 , #fa2{
-    margin-top: 2px;
-}
-
-#side1{
-    float: left;
-    text-align: center;
-    width: 45%;
-    height: 200px;
-}
-
-#side2{
-    float: right;
-    text-align: center;
-    width: 45%;
-    height: 200px;
-}
-
-.propertiesLables{
-    text-align: left;
-}
-#lblMonsters{
-    width: 20px;
-    color: aliceblue;
-    background: transparent;
-    border: none;
-    outline: none;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    border-bottom: 1px solid #00FF7F;
-    resize: both;
-}
-#lblScore,#lblLives,#lblTime,#lblButtonsU,#lblButtonsD,#lblButtonsR,#lblButtonsL,#lblBalls,#lblTimeT{
-    width: 80px;
-    color: aliceblue;
-    background: transparent;
-    border: none;
-    outline: none;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    border-bottom: 1px solid #00FF7F;
-    resize: both;
-}
-body{
-    background-image: url("BackGround/space.jpg");
-    background-size: cover;
-
-    color: #00FF7F;
-    font-family: "Century Gothic", CenturyGothic;
-}
-
-.Header {
-    width: 100%;
-    height: 40px;
-    color: #00FF7F;
-    background: black;
-    overflow: hidden;
-    position: fixed;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    top: 0;
-    text-align: center;
-}
-
-#headerImg{
-    width: 30px;
-    height: 30px;
-}
-
-.WelcomeIcon{
-    font-size:36px;
-    cursor: pointer;
-}
-
-.topnav {
-    width: 100%;
-    height: 60px;
-    background: black;
-    overflow: hidden;
-    border: 4px solid black;
-    position: fixed;
-    margin-top: 35px;
-    top: 0;
-    text-align: center;
-}
-.topnav a {
-    overflow-x: hidden;
-    float: left;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-    display: block;
-    transition: 0.3s;
-    position: relative;
-    left: 35%;
-}
-.topnav a:hover:not(.active)  {
-    color: darksalmon;
-    cursor: pointer;
-}
-
-.Content{
-    font-family: "Century Gothic", CenturyGothic;
-    color: #00FF7F;
-    margin-top: 120px;
-    margin-bottom: 45px;
-    padding-top: 0px;
-    text-align: center;
-}
-
-.footer{
-    width: 100%;
-    height: 35px;
-    color: #00FF7F;
-    background: black;
-    overflow: hidden;
-    border: 4px solid black;
-    position: fixed;
-    bottom: 0px;
-    text-align: center;
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
-.section{
-    display: none;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    text-align: center;
-}
-
-.PageTitle{
-    font-family: "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
-    color: darksalmon;
-    font-size: 50px;
-}
-
-.subTitle{
-    font-family: "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
-    color: darksalmon;
-    font-size: 30px;
-}
-
-.errorMsg {
-    display:none;
-    color:Red;
-}
-
-#Welcome{
-    display: block;
-    padding: 2px;
-}
-
-#Register , #Login , #About , #Properties{
-    display: none;
-}
-
-#MoveButtoms , #Balls , #GameTime , #Monsters , #GameScreen{
-    display: none;
-
-}
-
-.MyForm {
-    border: none;
-    outline: none;
-    text-align: center;
-    font-size: 20px;
-
-}
-
-lable{
-    font-weight: bold;
-}
-
-input[type=text], input[type=password], input[type=email] {
-    width: 450px;
-    color: aliceblue;
-    background: transparent;
-    border: none;
-    outline: none;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    border-bottom: 1px solid #00FF7F;
-    resize: both;
-}
-
-button, input[type=submit] {
-    background-color: antiquewhite;
-    color: black;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 30%;
-}
-
-button:hover,input[type=submit]:hover {
-    background-color: brown;
-    opacity: 0.8;
-    cursor: pointer;
-}
-
-  .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgb(248, 141, 243);
-    background-color: rgba(196, 167, 167, 0.575); 
-    opacity:0.9;
-    padding-top: 0px; 
-  }
-
-
-  .modal-content {
-    background-image: url("modalImage/modalImage2.jpeg") ;
-    background-color: #fefefe;
-    border: 1px solid #888;
-    padding: 0;
-    width: 80%;
-    position: relative;
-    margin: 0 auto;
-    top: 25%;
-  }
-  .modal-body ,.modal-footer, .modal-header {
-      color: white ;
-  }
-  #gameOverDialog , #TimeOverDialog{
-    background-image: url("modalImage/looserImages.jpeg") ;
-  }
-  #winnerDialog{
-    background-image: url("modalImage/winImage.jpeg.jpeg") ;
-
-  }
-
-  .close {
-    position: absolute;
-    right: 25px;
-    top: 0;
-    color: rgb(196, 226, 23);
-    font-size: 35px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: red;
-    cursor: pointer;
-  } 
-  #next {
-    visibility:hidden;
-}
-input[type=range]{
-    margin-top: 5px;
-    width: 25%;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-.displayColor{
-    height: 100px;
-    width: 25%;
-    margin-left: 38%;
-    border: aliceblue solid 1px;
-}
-.lablball{
-    font-size: 25px;
-    color: darksalmon;
-}
-#button{
-    text-align: left;
-}
-
-#lblButtonsU , #lblButtonsD , #lblButtonsR , #lblButtonsL{
-    width: 100px;
-}
-*/

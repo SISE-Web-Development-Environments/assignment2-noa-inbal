@@ -8,6 +8,7 @@ function ShowDivInProp(show){
 	target.style.display = 'block';
 }
 function RandomProperties(){
+	gameProperties = [];
 	var x = Math.random();
 	var y= Math.random();
 	var balls =  Math.floor(x*40 + 50);

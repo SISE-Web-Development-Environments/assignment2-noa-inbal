@@ -30,14 +30,14 @@
 		</div>
 		<div class="Content">
 			<div class="section" id="GameScreen">
-				<div>
+				<div id="GameRunTimeProp">
+					<audio id="GameMusic" controls autoplay loop>
+						<source src="songs\GameSong.mp3" type="audio/mpeg">
+					</audio>
 					<label for="lblLives">LIVES:</label><img src ="PacmanImages/mortiD.png" width=50 height="50"> X 
 					<input class="gamePropInput" id="lblLives" type="text" />
 					<label for="lblScore">SCORE:</label>
 					<input class="gamePropInput" id="lblScore" type="text" />
-					<audio id="GameMusic" controls autoplay loop>
-						<source src="songs\GameSong.mp3" type="audio/mpeg">
-					</audio>
 					<label for="lblTime">TIME LEFT:</label>
 					<input id="lblTime" type="text" />
 				</div>
@@ -45,18 +45,6 @@
 					<canvas id="canvas" height="500" width="1000"></canvas>
 				</div>
 				<div id="showProp">
-					<!-- <div id="lives">
-						<label for="lblLives">LIVES:</label>
-						<input class="gamePropInput" id="lblLives" type="text" />
-					</div> -->
-					<!-- <div id="score">
-						<label for="lblScore">SCORE:</label>
-						<input class="gamePropInput" id="lblScore" type="text" />
-					</div> -->
-					<!-- <div id="time1">
-						<label for="lblTime">TIME:</label>
-						<input id="lblTime" type="text" /><br><br>
-					</div>  -->
 					<div class="propertiesLables">
 						<label id="lblButtons">Properties:</label><br>
 					<div id="button">
@@ -104,23 +92,20 @@
 						<label>Extra Lives</label>
 						<img src ="CandyandClock/extraLive.png" width=40 height="40">
 					</div>
+					<button type="button" id="smallBTN" onclick="ShowDiv('Properties')">Change Game Properties</button>
 					</div>
 				</div>
 			</div>
 			<div class="section" id="Welcome">
 				<h1 class='welcomePacman'>Welcome</h1>
-				<img src="WelcomePage\welcome.png">
+				<img class="WelcomeIcon" src="WelcomePage\welcome.png">
 				<br>
 				<div class='welcomePacman'>Packman Game!</div>
 				<div id="side1">
-					<h2 class='welcomePacman'>Login</h2>
-					&nbsp;&nbsp;&nbsp;
-					<i class="fa fa-sign-in" id='fa1' onclick="ShowDiv('Login')" style='cursor: pointer;font-size: 110px;' ></i>
+					<span class='welcomePacman' id="LoginBT" onclick="ShowDiv('Login')">Login</span>
 				</div>
 				<div id="side2" >
-					<h2 class="welcomePacman">Register</h2>
-					&nbsp;&nbsp;&nbsp;
-					<i class='fa fa-edit' id='fa2' onclick="ShowDiv('Register')" style='cursor: pointer;font-size: 100px;'></i>
+					<span class="welcomePacman" id="RegisterBT" onclick="ShowDiv('Register')">Register</span>
 				</div>
 			</div>
 			<div class="section" id="Register">
@@ -288,32 +273,25 @@
 			</div>
 			<div class="section" id="Properties">
 				<div class="PropSection" id="introProperties">
-					<br>
-					<img src ="PacmanImages/mortiD.png" width=70 height="70">
-					<br><br>
+					<img src ="PacmanImages/mortiD.png" width=60 height="60">
 					<h1>Enter Setting Please</h1>
-					<br><br>
 					<div class="tooltip"><h2>Click 'Customize Setting' To Initialize Game Setting</h2>
 						<button type="button" onclick="ShowDivInProp('MoveButtoms')">Customize Setting</button>
 						<span class="tooltiptext">By clicking on 'Customize Setting' you will need to fill in the following:<br> 
 							- Choosing the buttons you move with,<br> - choosing the total number of balls and their colors,<br> -  choosing the amount of monsters 
 								and choosing the game time</span>
 					</div>
-					<br><h2>or</h2>
+					<h2>or</h2>
 					<div class="tooltip"><h2>Click 'Start With Randomize Setting'</h2>
 						<button type="button" onclick="RandomProperties()">Start With Randomize Setting</button>
 						<span class="tooltiptext">By clicking on 'Start With Randomize Setting' you will get:<br> 
 							- defult buttons to move with,<br> - random of total number of balls and their colors,<br> -  random the amount of monsters(1-4) 
 							and random the game (min 60 sec)</span>
 					</div>
-					<br><br>
-					<!-- <button type="button" onclick="ShowDivInProp('MoveButtoms')">Customize Setting</button> -->
-					<br>
-					<!-- <button type="button" onclick="RandomProperties()">Start With Randomize Setting</button> -->
 				</div>
 				<div class="PropSection" id="MoveButtoms">
 					<br>
-					<img src ="PacmanImages/mortiD.png" width=70 height="70">
+					<img src ="PacmanImages/mortiD.png" width=60 height="60">
 					<br><br>
 					<form class="MyForm" name="MoveButtoms" method="get">
 						<label class="lablball"><strong>Enter Your Moves Buttons:</strong></label><br>
@@ -339,7 +317,7 @@
 				<div class="PropSection" id="Balls">
 					<div id="balls1">
 						<br>
-						<img src ="PacmanImages/mortiD.png" width=70 height="70">
+						<img src ="PacmanImages/mortiD.png" width=60 height="60">
 						<br><br>
 						<p>
 							<label class="lablball"><strong>Write Number Of Balls In The Game (Between 50 To 90):</strong></label>
@@ -355,34 +333,45 @@
 					</div>
 					<div id="balls2" style="display: none;">
 						<br>
-						<img src ="PacmanImages/mortiD.png" width=70 height="70">
+						<img src ="PacmanImages/mortiD.png" width=60 height="60">
 						<br><br>
 						<p>
 							<lable class="lablball">Choose Different Colors For 3 Type Of Balls:</lable>
 						</p>
-						<p>
-							<label class="lablball"><strong>5 Points Ball Color:</strong> </label><br>
-							Red <input class="c1" type="range" min="0" max="255" step="1" id="red1" ><br>
-							Green <input class="c1" type="range" min="0" max="255" step="1" id="grn1"><br>
-							Blue <input class="c1" type="range" min="0" max="255" step="1" id="blu1"><br>
-						<div class="displayColor" id="color1"></div>
-						</p>
+						<table>
+							<tr>
+							  <th>
+								<label class="lablball"><strong>5 Points Ball Color:</strong> </label>
+							  </th>
+							  <th>
+								<label class="lablball"><strong>15 Points Ball Color:</strong> </label>
+							  </th>
+							  <th>
+								<label class="lablball"><strong>25 Points Ball Color: </strong></label>
+							  </th>
+							</tr>
+							<tr>
+									<td id="clr1">
+										Red <input class="c1" type="range" min="0" max="255" step="1" id="red1" ><br>
+										Green <input class="c1" type="range" min="0" max="255" step="1" id="grn1"><br>
+										Blue <input class="c1" type="range" min="0" max="255" step="1" id="blu1"><br>
+									<div class="displayColor" id="color1"></div>
+									</td>
+									<td id="clr2">
+										Red <input class="c2" type="range" min="0" max="255" step="1" id="red2" ><br>
+										Green <input class="c2" type="range" min="0" max="255" step="1" id="grn2"><br>
+										Blue <input class="c2" type="range" min="0" max="255" step="1" id="blu2"><br>
+										<div class="displayColor" id="color2"></div>
+									</td>
+									<td id="clr3">
+										Red<input class="c3" type="range" min="0" max="255" step="1" id="red3"><br>
+										Green<input class="c3" type="range" min="0" max="255" step="1" id="grn3"><br>
+										Blue<input class="c3" type="range" min="0" max="255" step="1" id="blu3"><br>
+										<div class="displayColor" id="color3"></div>
+									</td>
+							</tr>
+						  </table>
 						<br>
-						<p>
-							<label class="lablball"><strong>15 Points Ball Color:</strong> </label><br>
-							Red <input class="c2" type="range" min="0" max="255" step="1" id="red2" ><br>
-							Green <input class="c2" type="range" min="0" max="255" step="1" id="grn2"><br>
-							Blue <input class="c2" type="range" min="0" max="255" step="1" id="blu2"><br>
-						<div class="displayColor" id="color2"></div>
-						</p>
-						<br>
-						<p>
-							<label class="lablball"><strong>25 Points Ball Color: </strong></label><br>
-							Red<input class="c3" type="range" min="0" max="255" step="1" id="red3"><br>
-							Green<input class="c3" type="range" min="0" max="255" step="1" id="grn3"><br>
-							Blue<input class="c3" type="range" min="0" max="255" step="1" id="blu3"><br>
-						<div class="displayColor" id="color3"></div>
-						</p>
 						<p>
 							<button type="button" onclick="submitBalls('color-error')">Next</button><br>
 							<label class="errorMsg" id="color-error">Invalid Colors! 1 Or More are The Same!</label>
