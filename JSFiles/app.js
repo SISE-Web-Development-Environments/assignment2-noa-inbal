@@ -201,28 +201,21 @@ function Start() {
 }
 function enterWalls(i){
 	if ( i == 1 ){
-		board[1][0] = 4; board[1][1] = 4; board[1][2] = 4; board[1][3] = 4;// board[1][8] = 4; board[1][9] = 4; board[1][10] = 4;
+		board[1][0] = 4; board[1][1] = 4; board[1][2] = 4; board[1][3] = 4;
 	}else if ( i == 3 ){
 		board[3][5] = 4; board[3][6] = 4; board[3][7] = 4;
 	}
 	else if ( i == 5 ){
-		board[5][1] = 4; board[5][2] = 4; board[5][3] = 4; board[5][6] = 4; board[5][7] = 4;// board[5][8] = 4; board[5][9] = 4;
+		board[5][1] = 4; board[5][2] = 4; board[5][3] = 4; board[5][6] = 4; board[5][7] = 4;
 	}else if( i == 9 ){
 		board[9][4] = 4; board[9][3] = 4; board[9][2] = 4; board[9][5] = 4; board[9][6] = 4;
-	// }else if( i == 13 ){
-	// 	board[13][5] = 4; board[13][6] = 4; board[13][7] = 4; board[13][9] = 4; board[13][10] = 4; board[13][11] = 4;
-	// }
-	// else if( i == 17 ){
-	// 	board[17][5] = 4; board[17][6] = 4; board[17][7] = 4; board[17][9] = 4; board[17][10] = 4; board[17][11] = 4;
-	}else if( i == 11 ){
-		// board[20][2] = 4; board[20][3] = 4; board[20][4] = 4; 
-		// board[19][2] = 4; board[18][2] = 4; board[17][2] = 4; board[16][2] = 4;
-		// board[18][5] = 4; board[16][7] = 4;
-		board[10][2] = 4; board[11][2] = 4; //board[12][2] = 4; board[12][3] = 4; board[8][6] = 4;
-		// board[12][0] = 4; board[13][0] = 4; board[14][0] = 4; board[13][2] = 4;
-		//board[7][10] = 4; board[8][10] = 4; board[9][10] = 4; board[8][9] = 4;
+	}else if( i == 13 ){
+		board[13][5] = 4; board[13][6] = 4; board[13][7] = 4; 
+	}else if( i == 16 ){
+		board[16][2] = 4; board[16][7] = 4;
+		board[10][2] = 4; board[11][2] = 4; board[12][2] = 4; board[12][3] = 4; board[8][6] = 4;
+		board[12][0] = 4; board[13][0] = 4; board[14][0] = 4; board[13][2] = 4;
 		board[4][1] = 4; board[3][1] = 4; board[3][2] = 4;
-		// board[21][8] = 4; board[20][8] = 4;
 	}
 }
 function enterRandomFood (i,j){
