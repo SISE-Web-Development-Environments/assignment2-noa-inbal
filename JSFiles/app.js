@@ -4,9 +4,11 @@ var board; // game matrix
 var score; 
 var start_time;
 var time_elapsed;
+var time_left;
 var interval;
 var interval2;
 var interval3;
+// var startTimer;
 
 var food_remain; // כמה אוכל רוצים שיהיה בלוח צריך לשנות את זה לפי ההגדרות אחכ
 var food5point;
@@ -93,6 +95,7 @@ function Start() {
 	x.play();
 	numOfBalls = parseInt(gameProperties[8]);
 	score = 0;
+	// startTimer = gameProperties[12];
 	start_time = new Date();
 	board = new Array(); // init game
 	var monsIndex = 0;
@@ -658,6 +661,7 @@ function UpdatePosition() {
 		}
 	}
 	var timer = parseInt(gameProperties[12]);
+	// startTimer = timer;
 	UpdateValuesAfterMove(timer);
 	DisplayFeatures(timer)
 	if(!(shape.i<0 || shape.j<0 || shape.i>21 ||shape.j>11)){
@@ -701,6 +705,7 @@ function UpdateValuesAfterMove(timer){
 	console.log(numOfBalls);
 	var currentTime = new Date();
 	time_elapsed = (currentTime - start_time) / 1000; // מעדכן את הזמן שעבר
+	time_left = (timer - time_elapsed);
 
 	if(time_elapsed >= timer){
 		clearIntervals();
@@ -811,7 +816,7 @@ function DrawCircleProp(){
 }
 function getPropertiesVariables(){
 	lblScore.value = score;
-	lblTime.value = time_elapsed;
+	lblTime.value = time_left;
 	lblLives.value = Lives;
 
 	document.getElementById('lblButtonsU').value = "" + gameProperties[0];
