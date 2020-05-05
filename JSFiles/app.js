@@ -99,7 +99,7 @@ function Start() {
 	start_time = new Date();
 	board = new Array(); // init game
 	var monsIndex = 0;
-	var cnt = 300; //  מאפשר לנו להגדיר אחוזים מסויימים בהמשך
+	var cnt = 119; //  מאפשר לנו להגדיר אחוזים מסויימים בהמשך
 	
 	food_remain = numOfBalls; // כמה אוכל רוצים שיהיה בלוח צריך לשנות את זה לפי ההגדרות אחכ
 	food5point= Math.floor(numOfBalls*0.6);
@@ -113,19 +113,19 @@ function Start() {
 		fourM = true;
 	}
 	/************* Put walls In Game Board************/
-	for (var i = 0; i < 22; i++) {
+	for (var i = 0; i < 17; i++) {
 		board[i] = new Array(); 
 		enterWalls(i);
 	}
 
-	for (var i = 0; i < 22; i++) {
+	for (var i = 0; i < 17; i++) {
 		// board[i] = new Array(); // יוצרים את המערך הדו מימדי 
-		for (var j = 0; j < 12; j++) {
+		for (var j = 0; j < 8; j++) {
 			if( board[i][j] == 4){
 				continue;
 			}
 			/************* Put movingP In Game Board************/
-			if( (!fourM && i==21 && j==11) || (fourM && i==20 && j==11) ){
+			if( (!fourM && i==16 && j==7) || (fourM && i==15 && j==7) ){
 				Monsters[4].i = i;
 				Monsters[4].j = j;
 				board[i][j] = 100 ;// movingPrice
@@ -133,9 +133,9 @@ function Start() {
 			}
 			/************* Put Monster in Corners *************/
 			if( (i==0 && j==0) ||
-				(i==21 && j==0) ||
-				(i==0 && j==11) ||
-				(i==21 && j==11) ) {
+				(i==16 && j==0) ||
+				(i==0 && j==7) ||
+				(i==16 && j==7) ) {
 				if (monst_remain > 0) {
 					Monsters[monsIndex].i = i;
 					Monsters[monsIndex].j = j;
@@ -201,28 +201,28 @@ function Start() {
 }
 function enterWalls(i){
 	if ( i == 1 ){
-		board[1][0] = 4; board[1][1] = 4; board[1][2] = 4; board[1][3] = 4; board[1][8] = 4; board[1][9] = 4; board[1][10] = 4;
+		board[1][0] = 4; board[1][1] = 4; board[1][2] = 4; board[1][3] = 4;// board[1][8] = 4; board[1][9] = 4; board[1][10] = 4;
 	}else if ( i == 3 ){
 		board[3][5] = 4; board[3][6] = 4; board[3][7] = 4;
 	}
 	else if ( i == 5 ){
-		board[5][1] = 4; board[5][2] = 4; board[5][3] = 4; board[5][6] = 4; board[5][7] = 4; board[5][8] = 4; board[5][9] = 4;
+		board[5][1] = 4; board[5][2] = 4; board[5][3] = 4; board[5][6] = 4; board[5][7] = 4;// board[5][8] = 4; board[5][9] = 4;
 	}else if( i == 9 ){
 		board[9][4] = 4; board[9][3] = 4; board[9][2] = 4; board[9][5] = 4; board[9][6] = 4;
-	}else if( i == 13 ){
-		board[13][5] = 4; board[13][6] = 4; board[13][7] = 4; board[13][9] = 4; board[13][10] = 4; board[13][11] = 4;
-	}
-	else if( i == 17 ){
-		board[17][5] = 4; board[17][6] = 4; board[17][7] = 4; board[17][9] = 4; board[17][10] = 4; board[17][11] = 4;
-	}else if( i == 21 ){
-		board[20][2] = 4; board[20][3] = 4; board[20][4] = 4; 
-		board[19][2] = 4; board[18][2] = 4; board[17][2] = 4; board[16][2] = 4;
-		board[18][5] = 4; board[16][7] = 4;
-		board[10][2] = 4; board[11][2] = 4; board[12][2] = 4; board[12][3] = 4; board[8][6] = 4;
-		board[12][0] = 4; board[13][0] = 4; board[14][0] = 4; board[13][2] = 4;
-		board[7][10] = 4; board[8][10] = 4; board[9][10] = 4; board[8][9] = 4;
+	// }else if( i == 13 ){
+	// 	board[13][5] = 4; board[13][6] = 4; board[13][7] = 4; board[13][9] = 4; board[13][10] = 4; board[13][11] = 4;
+	// }
+	// else if( i == 17 ){
+	// 	board[17][5] = 4; board[17][6] = 4; board[17][7] = 4; board[17][9] = 4; board[17][10] = 4; board[17][11] = 4;
+	}else if( i == 11 ){
+		// board[20][2] = 4; board[20][3] = 4; board[20][4] = 4; 
+		// board[19][2] = 4; board[18][2] = 4; board[17][2] = 4; board[16][2] = 4;
+		// board[18][5] = 4; board[16][7] = 4;
+		board[10][2] = 4; board[11][2] = 4; //board[12][2] = 4; board[12][3] = 4; board[8][6] = 4;
+		// board[12][0] = 4; board[13][0] = 4; board[14][0] = 4; board[13][2] = 4;
+		//board[7][10] = 4; board[8][10] = 4; board[9][10] = 4; board[8][9] = 4;
 		board[4][1] = 4; board[3][1] = 4; board[3][2] = 4;
-		board[21][8] = 4; board[20][8] = 4;
+		// board[21][8] = 4; board[20][8] = 4;
 	}
 }
 function enterRandomFood (i,j){
@@ -260,11 +260,11 @@ function isMonster(i,j){
 			board[i][j] == 204 || board[i][j] == 205 || board[i][j] == 206 ;
 }
 function findRandomEmptyCell(board) {
-	var i = Math.floor(Math.random() * 21 + 1);
-	var j = Math.floor(Math.random() * 11 + 1);
+	var i = Math.floor(Math.random() * 16 + 1);
+	var j = Math.floor(Math.random() * 7 + 1);
 	while (board[i][j] != 0) {
-		i = Math.floor(Math.random() * 21 + 1);
-		j = Math.floor(Math.random() * 11 + 1);
+		i = Math.floor(Math.random() * 16 + 1);
+		j = Math.floor(Math.random() * 7 + 1);
 	}
 	return [i, j];
 }
@@ -288,8 +288,8 @@ function Draw() {
 	let ind = 0;
 	let noBalls =true;
 	/************* Show Game Part *************/
-	for (var i = 0; i < 22; i++) {
-		for (var j = 0; j < 12; j++) {
+	for (var i = 0; i < 17; i++) {
+		for (var j = 0; j < 8; j++) {
 			var center = new Object();
 			center.x = i * 60;
 			center.y = j * 60;
@@ -389,8 +389,8 @@ function reorderBoard(){
 	var monst_remain = parseInt(gameProperties[13]); // צריך לשנות לפי ההגדרות למספר המפלצות שהמשתמש הכניס
 
 	/************* Put Monster in Corners *************/
-	for (var i = 0; i < 22; i++) {
-		for (var j = 0; j < 12; j++) {
+	for (var i = 0; i < 12; i++) {
+		for (var j = 0; j < 8; j++) {
 			if(isPacman(i,j)){
 				board[i][j] = 0;
 			}
@@ -398,9 +398,9 @@ function reorderBoard(){
 				board[i][j] -= 3;
 			} 
 			if( (i==0 && j==0) ||
-				(i==21 && j==0) ||
-				(i==0 && j==11) ||
-				(i==21 && j==11) ) {
+				(i==11 && j==0) ||
+				(i==0 && j==7) ||
+				(i==11 && j==7) ) {
 				if (monst_remain > 0) {
 					Monsters[monsIndex].i = i;
 					Monsters[monsIndex].j = j;
@@ -448,7 +448,7 @@ function updateCandy(){
 			}
 		}
 		else if (p == 2) { //down
-			if (Monsters[4].j < 11 && board[Monsters[4].i][Monsters[4].j + 1] != 4) {
+			if (Monsters[4].j < 7 && board[Monsters[4].i][Monsters[4].j + 1] != 4) {
 				if(board[Monsters[4].i][Monsters[4].j + 1]== 2.1 || board[Monsters[4].i][Monsters[4].j + 1] == 2.2 ||
 					board[Monsters[4].i][Monsters[4].j + 1] == 2.3 || board[Monsters[4].i][Monsters[4].j + 1] == 2.4){
 					score += 50;
@@ -486,7 +486,7 @@ function updateCandy(){
 			}
 		}
 		else if (p == 4) { //right
-			if (Monsters[4].i < 21 && board[Monsters[4].i + 1][Monsters[4].j] != 4) {
+			if (Monsters[4].i < 16 && board[Monsters[4].i + 1][Monsters[4].j] != 4) {
 				if(board[Monsters[4].i + 1][Monsters[4].j] == 2.1 || board[Monsters[4].i + 1][Monsters[4].j] == 2.2 ||
 					board[Monsters[4].i + 1][Monsters[4].j] == 2.3 || board[Monsters[4].i + 1][Monsters[4].j] == 2.4){
 					score += 50;
@@ -536,7 +536,7 @@ function UpdateMonsters() {
 			}
 		}
 		else if (p == 2) { //down
-			if (Monsters[k].j < 11 && board[Monsters[k].i][Monsters[k].j + 1] != 4) {
+			if (Monsters[k].j < 7 && board[Monsters[k].i][Monsters[k].j + 1] != 4) {
 				if(board[Monsters[k].i][Monsters[k].j + 1]== 2.1 || board[Monsters[k].i][Monsters[k].j + 1] == 2.2 ||
 					board[Monsters[k].i][Monsters[k].j + 1] == 2.3 || board[Monsters[k].i][Monsters[k].j + 1] == 2.4){
 					score -= 10;
@@ -576,7 +576,7 @@ function UpdateMonsters() {
 			}
 		}
 		else if (p == 4) { //right
-			if (Monsters[k].i < 21 && board[Monsters[k].i + 1][Monsters[k].j] != 4) {
+			if (Monsters[k].i < 16 && board[Monsters[k].i + 1][Monsters[k].j] != 4) {
 				if(board[Monsters[k].i + 1][Monsters[k].j] == 2.1 || board[Monsters[k].i + 1][Monsters[k].j] == 2.2 ||
 					board[Monsters[k].i + 1][Monsters[k].j] == 2.3 || board[Monsters[k].i + 1][Monsters[k].j] == 2.4){
 					score -= 10;
@@ -616,7 +616,7 @@ function UpdatePosition() {
 		}
 	}
 	if (x == 2) { //down
-		if (shape.j < 11 && board[shape.i][shape.j + 1] != 4 ) {
+		if (shape.j < 7 && board[shape.i][shape.j + 1] != 4 ) {
 			if(board[shape.i][shape.j + 1] == 3 ||board[shape.i][shape.j + 1] == 14 ||
 				board[shape.i][shape.j + 1] == 15 ||board[shape.i][shape.j + 1] == 16 ){
 				score -= 10;
@@ -642,7 +642,7 @@ function UpdatePosition() {
 		}
 	}
 	if (x == 4) { //right
-		if (shape.i < 21 && board[shape.i + 1][shape.j] != 4) {
+		if (shape.i < 16 && board[shape.i + 1][shape.j] != 4) {
 			if(board[shape.i + 1][shape.j] == 3 || board[shape.i + 1][shape.j] == 14 ||
 				board[shape.i + 1][shape.j] == 15 || board[shape.i + 1][shape.j] == 16){
 				score -= 10;
@@ -664,7 +664,7 @@ function UpdatePosition() {
 	// startTimer = timer;
 	UpdateValuesAfterMove(timer);
 	DisplayFeatures(timer)
-	if(!(shape.i<0 || shape.j<0 || shape.i>21 ||shape.j>11)){
+	if(!(shape.i<0 || shape.j<0 || shape.i>16 ||shape.j>7)){
 		board[shape.i][shape.j] = pacManDirection; // נרצה לצבוע מחדש את הקאנבס, גם אם הצלחתי להתקדם וגם אם לא
 	}
 	Draw();
@@ -770,9 +770,6 @@ function DisplayFeatures(timer){
 			board[Features[4].i][Features[4].j] = 202;
 		}
 	}
-	// if(time_elapsed > quarterTime*2 ){
-	// 	timeForMonsters = 300;
-	// }
 }
 
 /******************************************* game Prop ********************************************/

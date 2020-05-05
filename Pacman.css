@@ -158,7 +158,7 @@ input[type=range]{
     overflow: auto;
 }
 #game{
-    height: 750px;
+    height: 500px;
     width: 79%;
     float: right; 
     background: inherit;
@@ -275,9 +275,6 @@ input[type=range]{
     margin: 0 auto;
     top: 25%;
 }
-/* .modal-body ,.modal-footer, .modal-header {
-      color: white ;
-} */
 h1 span { 
     background-color: gb(0, 0, 0); 
 }
@@ -297,10 +294,6 @@ p span{
 .modal-footer{
     bottom: 0px;
 }
- /* #winnerDialog{
-    background-image: url("modalImage/winner.gif") ;
-    background-size: cover;
-} */
 .modal-contentWin {
     background-image: url("modalImage/winner.gif") ;
     background-size: cover ;
