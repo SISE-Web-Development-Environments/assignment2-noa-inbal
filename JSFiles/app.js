@@ -5,10 +5,11 @@ var score;
 var start_time;
 var time_elapsed;
 var time_left;
+var GameTimer;
+
 var interval;
 var interval2;
 var interval3;
-// var startTimer;
 
 var food_remain; // כמה אוכל רוצים שיהיה בלוח צריך לשנות את זה לפי ההגדרות אחכ
 var food5point;
@@ -91,6 +92,7 @@ $(document).ready(function() {
 //                                                        4 - Walls
 function Start() {
 	Lives = 5;
+	GameTimer = gameProperties[12];
 	let x = document.getElementById("GameMusic");
 	x.play();
 	numOfBalls = parseInt(gameProperties[8]);
@@ -249,9 +251,16 @@ function isPacman(i,j){
 	return board[i][j] == 2.1 || board[i][j] == 2.2 || board[i][j] == 2.3 || board[i][j] == 2.4 ;
 }
 function isMonster(i,j){
-	return board[i][j] == 3 || board[i][j] == 6|| board[i][j] == 14 || board[i][j] == 15 || board[i][j] == 16 || board[i][j] == 103 || 
-			board[i][j] == 204 || board[i][j] == 205 || board[i][j] == 206 ;
+	return board[i][j] == 3 || board[i][j] == 14 || board[i][j] == 15 || board[i][j] == 16 || 
+			board[i][j] == 203 || board[i][j] == 204 || board[i][j] == 205;
 }
+function isCandy(i,j){
+	return board[i][j] == 100 || board[i][j] == 111 || board[i][j] == 112 || board[i][j] == 113 ;
+}
+function isFeatures(i,j){
+	return board[i][j] == 200 || board[i][j] == 201 || board[i][j] == 202;
+}
+
 function findRandomEmptyCell(board) {
 	var i = Math.floor(Math.random() * 16 + 1);
 	var j = Math.floor(Math.random() * 7 + 1);
@@ -296,11 +305,11 @@ function Draw() {
 			} else if (board[i][j] == 2.4) {
 				context.drawImage(imageright, center.x, center.y, 50, 50); //RIGHT
 				/*************Drow Monsters***************/
-			} else if (ind <=3 && (board[i][j] == 3 || board[i][j] == 6 || board[i][j] == 103 || board[i][j] == 106
-						|| board[i][j] == 203|| board[i][j] == 204|| board[i][j] == 205) ) {
+			} else if (ind <= 3 && (board[i][j] == 3 || board[i][j] == 203||
+				 board[i][j] == 204|| board[i][j] == 205) ) {
 				context.drawImage(monsters[ind], center.x, center.y, 50, 50); //Monst
 				ind++;
-			} else if( ind<= 3 && (board[i][j] == 14 ||board[i][j] == 15 || board[i][j] == 16)){
+			} else if( ind <= 3 && (board[i][j] == 14 ||board[i][j] == 15 || board[i][j] == 16)){
 				context.drawImage(monsters[ind], center.x, center.y, 50, 50); //Monst
 				ind++;
 				noBalls=false;
@@ -379,10 +388,10 @@ function reorderBoard(){
 	clearInterval(interval2);
 	clearInterval(interval3);
 	let monsIndex = 0;
-	var monst_remain = parseInt(gameProperties[13]); // צריך לשנות לפי ההגדרות למספר המפלצות שהמשתמש הכניס
+	var monst_remain = parseInt(gameProperties[13]);
 
 	/************* Put Monster in Corners *************/
-	for (var i = 0; i < 12; i++) {
+	for (var i = 0; i < 17; i++) {
 		for (var j = 0; j < 8; j++) {
 			if(isPacman(i,j)){
 				board[i][j] = 0;
@@ -391,9 +400,9 @@ function reorderBoard(){
 				board[i][j] -= 3;
 			} 
 			if( (i==0 && j==0) ||
-				(i==11 && j==0) ||
+				(i==16 && j==0) ||
 				(i==0 && j==7) ||
-				(i==11 && j==7) ) {
+				(i==16 && j==7) ) {
 				if (monst_remain > 0) {
 					Monsters[monsIndex].i = i;
 					Monsters[monsIndex].j = j;
@@ -422,9 +431,8 @@ function updateCandy(){
 			p = Math.floor( Math.random() * 4 +1 );
 		}
 		if (p == 1) { //up
-			if (Monsters[4].j > 0 && board[Monsters[4].i][Monsters[4].j - 1] != 4) {
-				if(board[Monsters[4].i][Monsters[4].j - 1] == 2.1 || board[Monsters[4].i][Monsters[4].j - 1] == 2.2 ||
-					board[Monsters[4].i][Monsters[4].j - 1] == 2.3 || board[Monsters[4].i][Monsters[4].j - 1] == 2.4){
+			if (Monsters[4].j > 0 && board[Monsters[4].i][Monsters[4].j - 1] != 4 && !isMonster(Monsters[4].i , Monsters[4].j - 1) && !isFeatures(Monsters[4].i , Monsters[4].j - 1)) {
+				if(isPacman(Monsters[4].i , Monsters[4].j - 1)){
 					score += 50;
 					movingPriceExist = false;
 					board[Monsters[4].i][Monsters[4].j] -= 100;
@@ -441,9 +449,8 @@ function updateCandy(){
 			}
 		}
 		else if (p == 2) { //down
-			if (Monsters[4].j < 7 && board[Monsters[4].i][Monsters[4].j + 1] != 4) {
-				if(board[Monsters[4].i][Monsters[4].j + 1]== 2.1 || board[Monsters[4].i][Monsters[4].j + 1] == 2.2 ||
-					board[Monsters[4].i][Monsters[4].j + 1] == 2.3 || board[Monsters[4].i][Monsters[4].j + 1] == 2.4){
+			if (Monsters[4].j < 7 && board[Monsters[4].i][Monsters[4].j + 1] != 4  && !isMonster(Monsters[4].i , Monsters[4].j + 1) && !isFeatures(Monsters[4].i , Monsters[4].j + 1)) {
+				if(isPacman(Monsters[4].i , Monsters[4].j + 1)){
 					score += 50;
 					movingPriceExist = false;
 					board[Monsters[4].i][Monsters[4].j] -= 100;
@@ -460,9 +467,8 @@ function updateCandy(){
 			}
 		}
 		else if (p == 3) { //left
-			if (Monsters[4].i > 0 && board[Monsters[4].i - 1][Monsters[4].j] != 4) {
-				if(board[Monsters[4].i - 1][Monsters[4].j] == 2.1 || board[Monsters[4].i - 1][Monsters[4].j] == 2.2 ||
-					board[Monsters[4].i - 1][Monsters[4].j] == 2.3 || board[Monsters[4].i - 1][Monsters[4].j] == 2.4){
+			if (Monsters[4].i > 0 && board[Monsters[4].i - 1][Monsters[4].j] != 4  && !isMonster(Monsters[4].i-1 , Monsters[4].j) && !isFeatures(Monsters[4].i-1 , Monsters[4].j)) {
+				if(isPacman(Monsters[4].i-1 , Monsters[4].j)){
 					score += 50;
 					movingPriceExist = false;
 					board[Monsters[4].i][Monsters[4].j] -= 100;
@@ -479,9 +485,8 @@ function updateCandy(){
 			}
 		}
 		else if (p == 4) { //right
-			if (Monsters[4].i < 16 && board[Monsters[4].i + 1][Monsters[4].j] != 4) {
-				if(board[Monsters[4].i + 1][Monsters[4].j] == 2.1 || board[Monsters[4].i + 1][Monsters[4].j] == 2.2 ||
-					board[Monsters[4].i + 1][Monsters[4].j] == 2.3 || board[Monsters[4].i + 1][Monsters[4].j] == 2.4){
+			if (Monsters[4].i < 16 && board[Monsters[4].i + 1][Monsters[4].j] != 4 && !isMonster(Monsters[4].i+1 , Monsters[4].j) && !isFeatures(Monsters[4].i+1 , Monsters[4].j)) {
+				if(isPacman(Monsters[4].i+1 , Monsters[4].j)){
 					score += 50;
 					movingPriceExist = false;
 					board[Monsters[4].i][Monsters[4].j] -= 100;
@@ -504,14 +509,13 @@ function UpdateMonsters() {
 	/********************************************Draw Monsters*************************************************/
 	let numOfMonsters = parseInt(gameProperties[13]);
 	for(let k = 0 ; k < numOfMonsters ; k++){
-		let p =Math.floor( Math.random() * 4 +1 );
+		let p = Math.floor( Math.random() * 4 +1 );
 		while(p == LastMoves[k]){
 			p = Math.floor( Math.random() * 4 +1 );
 		}
 		if (p == 1) { //up
-			if (Monsters[k].j > 0 && board[Monsters[k].i][Monsters[k].j - 1] != 4) {
-				if(board[Monsters[k].i][Monsters[k].j - 1] == 2.1 || board[Monsters[k].i][Monsters[k].j - 1] == 2.2 ||
-					board[Monsters[k].i][Monsters[k].j - 1] == 2.3 || board[Monsters[k].i][Monsters[k].j - 1] == 2.4){
+			if (Monsters[k].j > 0 && board[Monsters[k].i][Monsters[k].j - 1] != 4 && !isMonster(Monsters[k].i , Monsters[k].j - 1) && !isCandy(Monsters[k].i , Monsters[k].j - 1)) {
+				if(isPacman(Monsters[k].i , Monsters[k].j - 1)){
 					score -= 10;
 					Lives--;
 					reorderBoard();
@@ -529,9 +533,8 @@ function UpdateMonsters() {
 			}
 		}
 		else if (p == 2) { //down
-			if (Monsters[k].j < 7 && board[Monsters[k].i][Monsters[k].j + 1] != 4) {
-				if(board[Monsters[k].i][Monsters[k].j + 1]== 2.1 || board[Monsters[k].i][Monsters[k].j + 1] == 2.2 ||
-					board[Monsters[k].i][Monsters[k].j + 1] == 2.3 || board[Monsters[k].i][Monsters[k].j + 1] == 2.4){
+			if (Monsters[k].j < 7 && board[Monsters[k].i][Monsters[k].j + 1] != 4 && !isMonster(Monsters[k].i , Monsters[k].j + 1) && !isCandy(Monsters[k].i , Monsters[k].j + 1)) {
+				if(isPacman(Monsters[k].i , Monsters[k].j + 1)){
 					score -= 10;
 					Lives--;
 					reorderBoard();
@@ -549,9 +552,8 @@ function UpdateMonsters() {
 			}
 		}
 		else if (p == 3) { //left
-			if (Monsters[k].i > 0 && board[Monsters[k].i - 1][Monsters[k].j] != 4) {
-				if(board[Monsters[k].i - 1][Monsters[k].j] == 2.1 || board[Monsters[k].i - 1][Monsters[k].j] == 2.2 ||
-					board[Monsters[k].i - 1][Monsters[k].j] == 2.3 || board[Monsters[k].i - 1][Monsters[k].j] == 2.4){
+			if (Monsters[k].i > 0 && board[Monsters[k].i - 1][Monsters[k].j] != 4 && !isMonster(Monsters[k].i-1 , Monsters[k].j) && !isCandy(Monsters[k].i-1 , Monsters[k].j)) {
+				if(isPacman(Monsters[k].i-1 , Monsters[k].j)){
 					score -= 10;
 					Lives--;
 					reorderBoard();
@@ -569,9 +571,8 @@ function UpdateMonsters() {
 			}
 		}
 		else if (p == 4) { //right
-			if (Monsters[k].i < 16 && board[Monsters[k].i + 1][Monsters[k].j] != 4) {
-				if(board[Monsters[k].i + 1][Monsters[k].j] == 2.1 || board[Monsters[k].i + 1][Monsters[k].j] == 2.2 ||
-					board[Monsters[k].i + 1][Monsters[k].j] == 2.3 || board[Monsters[k].i + 1][Monsters[k].j] == 2.4){
+			if (Monsters[k].i < 16 && board[Monsters[k].i + 1][Monsters[k].j] != 4 && !isMonster(Monsters[k].i+1 , Monsters[k].j) && !isCandy(Monsters[k].i+1 , Monsters[k].j)) {
+				if(isPacman(Monsters[k].i+1 , Monsters[k].j)){
 					score -= 10;
 					Lives--;
 					reorderBoard();
@@ -597,8 +598,7 @@ function UpdatePosition() {
 	var x = GetKeyPressed(); //get pressed key
 	if (x == 1) { //up
 		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
-			if(board[shape.i][shape.j - 1] == 3 || board[shape.i][shape.j - 1] == 14 ||
-				board[shape.i][shape.j - 1] == 15 || board[shape.i][shape.j - 1] == 16){
+			if(isMonster(shape.i , shape.j - 1)){
 				score -= 10;
 				Lives--;
 				reorderBoard();
@@ -610,8 +610,7 @@ function UpdatePosition() {
 	}
 	if (x == 2) { //down
 		if (shape.j < 7 && board[shape.i][shape.j + 1] != 4 ) {
-			if(board[shape.i][shape.j + 1] == 3 ||board[shape.i][shape.j + 1] == 14 ||
-				board[shape.i][shape.j + 1] == 15 ||board[shape.i][shape.j + 1] == 16 ){
+			if(isMonster(shape.i , shape.j + 1)){
 				score -= 10;
 				Lives--;
 				reorderBoard();
@@ -623,8 +622,7 @@ function UpdatePosition() {
 	}
 	if (x == 3) { //left
 		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
-			if(board[shape.i - 1][shape.j] == 3 || board[shape.i - 1][shape.j] == 14 ||
-				board[shape.i - 1][shape.j] == 15 || board[shape.i - 1][shape.j] == 16){
+			if(isMonster(shape.i-1 , shape.j)){
 				score -= 10;
 				Lives--;
 				reorderBoard();
@@ -636,8 +634,7 @@ function UpdatePosition() {
 	}
 	if (x == 4) { //right
 		if (shape.i < 16 && board[shape.i + 1][shape.j] != 4) {
-			if(board[shape.i + 1][shape.j] == 3 || board[shape.i + 1][shape.j] == 14 ||
-				board[shape.i + 1][shape.j] == 15 || board[shape.i + 1][shape.j] == 16){
+			if(isMonster(shape.i+1 , shape.j)){
 				score -= 10;
 				Lives--;
 				reorderBoard();
@@ -653,10 +650,10 @@ function UpdatePosition() {
 			Features[i].eat = true;
 		}
 	}
-	var timer = parseInt(gameProperties[12]);
+	//var timer = parseInt(gameProperties[12]);
 	// startTimer = timer;
-	UpdateValuesAfterMove(timer);
-	DisplayFeatures(timer)
+	UpdateValuesAfterMove(GameTimer);
+	DisplayFeatures(GameTimer)
 	if(!(shape.i<0 || shape.j<0 || shape.i>16 ||shape.j>7)){
 		board[shape.i][shape.j] = pacManDirection; // נרצה לצבוע מחדש את הקאנבס, גם אם הצלחתי להתקדם וגם אם לא
 	}
@@ -680,8 +677,7 @@ function UpdateValuesAfterMove(timer){
 	}
 	if (board[shape.i][shape.j] == 200){
 		//Eat clock
-		timer = timer*2;
-		gameProperties[12] = timer.toString();
+		GameTimer = GameTimer*2;
 	}
 	else if (board[shape.i][shape.j] == 201){
 		//Eat Candy
@@ -694,13 +690,28 @@ function UpdateValuesAfterMove(timer){
 		//Eat moving Candy
 		score += 50;
 		movingPriceExist = false;
+		board[shape.i][shape.j] -= 100;
+	}else if(board[shape.i][shape.j] == 111){
+		//Eat moving Candy + 5 points Ball
+		score += 55;
+		movingPriceExist = false;
+		board[shape.i][shape.j] -= 111;
+	}else if(board[shape.i][shape.j] == 112){
+		//Eat moving Candy + 15 points Ball
+		score += 65;
+		movingPriceExist = false;
+		board[shape.i][shape.j] -= 112;
+	}else if(board[shape.i][shape.j] == 113){
+		//Eat moving Candy + 25 points Ball
+		score += 75;
+		movingPriceExist = false;
+		board[shape.i][shape.j] -= 113;
 	}
 	console.log(numOfBalls);
 	var currentTime = new Date();
 	time_elapsed = (currentTime - start_time) / 1000; // מעדכן את הזמן שעבר
-	time_left = (timer - time_elapsed);
-
-	if(time_elapsed >= timer){
+	time_left = (Math.round( (GameTimer - time_elapsed) * 100) / 100).toFixed(2);
+	if(time_elapsed >= GameTimer){
 		clearIntervals();
 		let sound = document.getElementById("GameMusic");
 		sound.currentTime = 0;	
