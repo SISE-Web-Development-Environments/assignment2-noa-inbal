@@ -214,7 +214,7 @@ function enterWalls(i){
 	}else if( i == 13 ){
 		board[13][5] = 4; board[13][6] = 4; board[13][7] = 4; 
 	}else if( i == 16 ){
-		board[16][2] = 4; board[16][7] = 4;
+		board[16][2] = 4; board[16][5] = 4;
 		board[10][2] = 4; board[11][2] = 4; board[12][2] = 4; board[12][3] = 4; board[8][6] = 4;
 		board[12][0] = 4; board[13][0] = 4; board[14][0] = 4; board[13][2] = 4;
 		board[4][1] = 4; board[3][1] = 4; board[3][2] = 4;
@@ -696,16 +696,22 @@ function UpdateValuesAfterMove(timer){
 		score += 55;
 		movingPriceExist = false;
 		board[shape.i][shape.j] -= 111;
+		numOfBalls--;
+		food5point--;
 	}else if(board[shape.i][shape.j] == 112){
 		//Eat moving Candy + 15 points Ball
 		score += 65;
 		movingPriceExist = false;
 		board[shape.i][shape.j] -= 112;
+		numOfBalls--;
+		food15point--;
 	}else if(board[shape.i][shape.j] == 113){
 		//Eat moving Candy + 25 points Ball
 		score += 75;
 		movingPriceExist = false;
 		board[shape.i][shape.j] -= 113;
+		numOfBalls--;
+		food25point--;
 	}
 	console.log(numOfBalls);
 	var currentTime = new Date();
