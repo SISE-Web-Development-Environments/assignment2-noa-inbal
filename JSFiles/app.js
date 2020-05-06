@@ -68,8 +68,8 @@ function ShowDiv(show) {
 		window.location.hash = '#Welcome';
 	}
 	if(show == "GameScreen"){
-		Start();
 		window.location.hash = '#GameScreen';
+		Start();
 	}
 	if(show === 'Properties'){
 		ShowDivInProp('introProperties');

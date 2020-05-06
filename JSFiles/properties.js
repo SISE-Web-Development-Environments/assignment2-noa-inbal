@@ -1,11 +1,16 @@
 /********************************************* Properties ************************************************/
 function ShowDivInProp(show){
+
 	var allDives = document.getElementsByClassName('PropSection');
 	var target = document.getElementById(show);
+	clearDiv(show);
 	for(var i = 0 ; i < allDives.length ; i++){
 		allDives[i].style.display = 'none';
 	}
 	target.style.display = 'block';
+	let divId  ='#'+show;
+	console.log(divId);
+	// window.location.hash = divId;
 }
 function RandomProperties(){
 	gameProperties = [];
@@ -50,12 +55,31 @@ function RandomProperties(){
 	ShowDivInProp('startGame');
 
 }
+function clearDiv(show){
+	if(show == "MoveButtoms"){
+		document.getElementById("buttonsForm").reset();
+		let next = document.getElementById("nextInvisible");
+		next.style.visibility = "hidden";
+	}
+	else if(show == "Balls1"){
+		document.getElementById('numBalls').value = '';
+		let next = document.getElementById("cp");
+		next.style.visibility = "hidden";
+	}
+	else if(show == "GameTime"){
+		document.getElementById("timer").value = '';
+	}
+	else if(show == "Monsters"){
+		document.getElementById("monst").value = '';
+	}
+}
 /************************************* Properties - balls ***************************************/
 function SaveBalls(){
 	var num = document.getElementById('numBalls').value;
 	if(validNumBalls('balls-error')){
 		gameProperties.push(num);
-		document.getElementById('cp').style.display = "inline";
+		let next = document.getElementById("cp");
+		next.style.visibility = "visible";
 	}
 }
 function validNumBalls(message){
@@ -184,6 +208,7 @@ function showBotton(event , pId) {
  * save buttons only afer validation
  */
 function SaveButtonMoves(){
+
 	var right = document.getElementById("rightBotton").value;
 	var left = document.getElementById("leftBotton").value;
 	var  up = document.getElementById("upBotton").value;
@@ -196,9 +221,13 @@ function SaveButtonMoves(){
 		return false;
 	}
 	else{
-		var next = document.getElementById("next");
-
+		var next = document.getElementById("nextInvisible");
 		document.getElementById('key-error').style.display = "none";
+		userName = document.getElementById('LoginUN').value;
+		let userP = userName+" Properties";
+		if(localStorage.getItem(userP) != null){
+			localStorage.removeItem(userP);
+		}
 		gameProperties=[];
 		gameProperties.push(up);
 		gameProperties.push(keyCodeUp);
