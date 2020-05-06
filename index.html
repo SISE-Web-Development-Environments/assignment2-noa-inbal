@@ -311,11 +311,10 @@
 						<label id="key-error" class="errorMsg">Please enter uniqe key</label><br />
 						<br><br>
 						<button type="button" onclick="SaveButtonMoves()">Save My button moves</button><br>
-						<button type="button" id="next" onclick="ShowDivInProp('Balls')">move to next step</button>
+						<button type="button" id="next" onclick="ShowDivInProp('Balls1')">move to next step</button>
 					</form>
 				</div>
-				<div class="PropSection" id="Balls">
-					<div id="balls1">
+				<div class="PropSection" id="Balls1">
 						<br>
 						<img src ="PacmanImages/mortiD.png" width=60 height="60">
 						<br><br>
@@ -330,8 +329,8 @@
 							<br><br>
 							<button type="button" id="cp" onclick="ColorPickerDisplay()" style="display: none;">Next</button>
 						</p>
-					</div>
-					<div id="balls2" style="display: none;">
+				</div>
+				<div class="PropSection" id="balls2" style="display: none;">
 						<br>
 						<img src ="PacmanImages/mortiD.png" width=60 height="60">
 						<br><br>
@@ -376,7 +375,7 @@
 							<button type="button" onclick="submitBalls('color-error')">Next</button><br>
 							<label class="errorMsg" id="color-error">Invalid Colors! 1 Or More are The Same!</label>
 						</p>
-					</div>
+				</div>
 				</div>
 				<div class="PropSection" id="GameTime">
 					<br>

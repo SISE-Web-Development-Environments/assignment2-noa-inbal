@@ -695,16 +695,22 @@ function UpdateValuesAfterMove(timer){
 		score += 55;
 		movingPriceExist = false;
 		board[shape.i][shape.j] -= 111;
+		numOfBalls--;
+		food5point--;
 	}else if(board[shape.i][shape.j] == 112){
 		//Eat moving Candy + 15 points Ball
 		score += 65;
 		movingPriceExist = false;
 		board[shape.i][shape.j] -= 112;
+		numOfBalls--;
+		food15point--;
 	}else if(board[shape.i][shape.j] == 113){
 		//Eat moving Candy + 25 points Ball
 		score += 75;
 		movingPriceExist = false;
 		board[shape.i][shape.j] -= 113;
+		numOfBalls--;
+		food25point--;
 	}
 	console.log(numOfBalls);
 	var currentTime = new Date();

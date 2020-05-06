@@ -129,8 +129,8 @@ function validNumberMonst(message) {
 }
 /************************************* Properties - color ***************************************/
 function ColorPickerDisplay(){
-	document.getElementById("balls1").style.display = "none"
-	document.getElementById("balls2").style.display = "block"
+	//document.getElementById("balls1").style.display = "none"
+	//document.getElementById("balls2").style.display = "block"
 	var input1 = document.querySelectorAll("input");
 	var input2 = document.querySelectorAll("input");
 	var input3 = document.querySelectorAll("input");
@@ -163,6 +163,7 @@ function ColorPickerDisplay(){
 
 		})
 	}
+	ShowDivInProp('balls2');
 }
 /************************************* Properties - button ***************************************/
 function showBotton(event , pId) {
