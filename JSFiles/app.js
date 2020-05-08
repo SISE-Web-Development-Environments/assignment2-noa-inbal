@@ -54,8 +54,9 @@ function ShowDiv(show) {
 	var allDives = document.getElementsByClassName('section');
 	var allModals = document.getElementsByClassName('modal')
 	var target = document.getElementById(show);
-	let x = document.getElementById("GameMusic");
-	if(x!=null){
+	
+	if(show != 'GameScreen'){
+		let x = document.getElementById("GameMusic");
 		x.pause();
 	}
 	if(show != 'GameScreen' && document.getElementById('GameScreen').style.display == 'block'){
@@ -97,9 +98,8 @@ $(document).ready(function() {
 function Start() {
 	Lives = 5;
 	GameTimer = gameProperties[12];
-	string = "<audio id='GameMusic' controls autoplay loop><source src='songs\\GameSong.mp3' type='audio/mpeg'></audio>"
-	$( '#musicTag').empty();
-    $( '#musicTag').append( string );
+	//$( '#musicTag').empty();
+    //$( '#musicTag').append("<audio id='GameMusic' controls autoplay loop><source src='songs\\GameSong.mp3' type='audio/mpeg'></audio>");
 	let x = document.getElementById("GameMusic");
 	x.play();
 	numOfBalls = parseInt(gameProperties[8]);
