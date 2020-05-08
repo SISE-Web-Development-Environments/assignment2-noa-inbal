@@ -55,6 +55,8 @@ function ShowDiv(show) {
 	var allModals = document.getElementsByClassName('modal')
 	var target = document.getElementById(show);
 	if(show != 'GameScreen' && document.getElementById('GameScreen').style.display == 'block'){
+		let x = document.getElementById("GameMusic");
+		x.pause();
 		clearIntervals();
 	}
 	for(var i = 0 ; i < allDives.length ; i++){
