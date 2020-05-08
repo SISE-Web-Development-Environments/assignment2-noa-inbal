@@ -93,8 +93,6 @@ $(document).ready(function() {
 function Start() {
 	Lives = 5;
 	GameTimer = gameProperties[12];
-	//$( '#musicTag').empty();
-    //$( '#musicTag').append("<audio id='GameMusic' controls autoplay loop><source src='songs\\GameSong.mp3' type='audio/mpeg'></audio>");
 	let x = document.getElementById("GameMusic");
 	x.play();
 	numOfBalls = parseInt(gameProperties[8]);
