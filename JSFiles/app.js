@@ -97,7 +97,7 @@ $(document).ready(function() {
 function Start() {
 	Lives = 5;
 	GameTimer = gameProperties[12];
-	string = "<audio id='GameMusic' controls autoplay loop"+'>'+"<source src='songs\GameSong.mp3' type='audio/mpeg'></audio>"
+	string = "<audio id='GameMusic' controls autoplay loop><source src='songs\\GameSong.mp3' type='audio/mpeg'></audio>"
 	$( '#musicTag').empty();
     $( '#musicTag').append( string );
 	let x = document.getElementById("GameMusic");
