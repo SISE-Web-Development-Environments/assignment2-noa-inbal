@@ -54,6 +54,8 @@ function ShowDiv(show) {
 	var allDives = document.getElementsByClassName('section');
 	var allModals = document.getElementsByClassName('modal')
 	var target = document.getElementById(show);
+	let x = document.getElementById("GameMusic");
+	x.pause();
 	if(show != 'GameScreen' && document.getElementById('GameScreen').style.display == 'block'){
 		clearIntervals();
 	}
